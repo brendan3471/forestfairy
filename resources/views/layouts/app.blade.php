@@ -77,13 +77,6 @@
                 </a>
 
                 <!-- Desktop Nav -->
-                <div class="desktop-nav">
-                    <a href="/" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
-                    <a href="/shop" class="nav-link {{ request()->is('shop*') ? 'active' : '' }}">Shop</a>
-                    <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">Our Story</a>
-                    <a href="/blog" class="nav-link {{ request()->is('blog*') ? 'active' : '' }}">Blog</a>
-                    <a href="/contact" class="nav-link {{ request()->is('contact') ? 'active' : '' }}">Contact</a>
-                </div>
 
                 <div class="nav-actions">
                     <a href="/shop" class="btn-primary nav-cta" id="shopNowBtn">Shop Now</a>
@@ -98,11 +91,6 @@
             <!-- Mobile Nav -->
             <div class="mobile-nav hidden" id="mobileNav">
                 <div class="container mobile-nav-inner">
-                    <a href="/" class="mobile-nav-link">Home</a>
-                    <a href="/shop" class="mobile-nav-link">Shop</a>
-                    <a href="/about" class="mobile-nav-link">Our Story</a>
-                    <a href="/blog" class="mobile-nav-link">Blog</a>
-                    <a href="/contact" class="mobile-nav-link">Contact</a>
                     <a href="/shop" class="btn-primary mobile-cta" id="mobileShopBtn">Shop Honey</a>
                 </div>
             </div>
@@ -143,10 +131,10 @@
                         <h3 class="footer-heading">Shop</h3>
                         <ul class="footer-links">
                             <li><a href="/shop"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> All Honey</a></li>
-                            <li><a href="/shop/raw-manuka-honey-250g"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Manuka Honey</a></li>
-                            <li><a href="/shop/forest-clover-honey-500g"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Clover Honey</a></li>
-                            <li><a href="/shop/bush-honey-500g"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Bush Honey</a></li>
-                            <li><a href="/shop/honeydew-honey-250g"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honeydew Honey</a></li>
+                            <li><a href="/shop/omanawa-falls-creamed-honey"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Omanawa Falls</a></li>
+                            <li><a href="/shop/mamaku-creamed-honey"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Mamaku Creamed</a></li>
+                            <li><a href="/shop/otumoetai-summer-harvest-creamed-honey"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Summer Harvest</a></li>
+                            <li><a href="/shop/rewarewa-honey"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Rewarewa Honey</a></li>
                         </ul>
                     </div>
 
@@ -166,7 +154,7 @@
                         <ul class="footer-contact">
                             <li>
                                 <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-                                <span>Auckland, New Zealand</span>
+                                <span>Bay of Plenty, New Zealand</span>
                             </li>
                             <li>
                                 <a href="mailto:hello@forestfairyhoney.co.nz">

@@ -15,7 +15,7 @@
   "email": "hello@forestfairyhoney.co.nz",
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Auckland",
+    "addressLocality": "Bay of Plenty",
     "addressCountry": "NZ"
   },
   "description": "Pure, raw New Zealand honey harvested from pristine NZ forests and meadows. Online honey store shipping across New Zealand.",
@@ -59,7 +59,7 @@
                         <div class="contact-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
                         <div>
                             <strong>Location</strong>
-                            <span>Auckland, New Zealand</span>
+                            <span>Bay of Plenty, New Zealand</span>
                         </div>
                     </li>
                     <li>

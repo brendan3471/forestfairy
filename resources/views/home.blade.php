@@ -19,7 +19,7 @@
       "description": "Pure, raw New Zealand honey harvested from pristine NZ forests and meadows.",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Auckland",
+        "addressLocality": "Bay of Plenty",
         "addressCountry": "NZ"
       },
       "email": "hello@forestfairyhoney.co.nz",
@@ -49,12 +49,27 @@
     <div class="hero-slides" id="heroSlides">
         <div class="hero-slide active" data-slide="0">
             <img src="/images/behives-shot.jpg" alt="Forest Fairy Honey beehives in a lush New Zealand native bush setting" loading="eager">
+            <div class="hero-product-floating">
+                <a href="/shop/omanawa-falls-creamed-honey" class="hero-product-link">
+                    <img src="/images/omanawa-falls-floating.png" alt="Omanawa Falls Creamed Honey Jar" class="floating-jar">
+                </a>
+            </div>
         </div>
         <div class="hero-slide" data-slide="1">
             <img src="/images/honey-collection.jpg" alt="Our range of raw New Zealand honey varieties correctly bottled and labelled" loading="lazy">
+            <div class="hero-product-floating">
+                <a href="/shop/mamaku-creamed-honey" class="hero-product-link">
+                    <img src="/images/mamaku-floating.png" alt="Mamaku Creamed Honey Jar" class="floating-jar">
+                </a>
+            </div>
         </div>
         <div class="hero-slide" data-slide="2">
             <img src="/images/creator-photo-with-behives.jpg" alt="Our beekeeper working with the hives in a sunny NZ meadow" loading="lazy">
+            <div class="hero-product-floating">
+                <a href="/shop/rewarewa-honey" class="hero-product-link">
+                    <img src="/images/rewarewa-floating.png" alt="Rewarewa Honey Jar" class="floating-jar">
+                </a>
+            </div>
         </div>
     </div>
     <div class="hero-overlay"></div>
@@ -352,7 +367,7 @@
                     <div class="testimonial-avatar" aria-hidden="true">S</div>
                     <div>
                         <strong>Sarah M.</strong>
-                        <span>Auckland</span>
+                        <span>Bay of Plenty</span>
                     </div>
                 </footer>
             </article>
