@@ -2001,3 +2001,113 @@ h2 em {
         transform: translateY(-25px);
     }
 }
+
+/* =====================================================
+   CHECKOUT RESULT PAGES (success / cancel)
+   ===================================================== */
+.checkout-result-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.checkout-result-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 56px 48px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .checkout-result-card {
+        padding: 40px 24px;
+    }
+}
+
+.checkout-result-icon {
+    font-size: 4rem;
+    margin-bottom: 24px;
+    line-height: 1;
+}
+
+.checkout-result-icon--success {
+    color: var(--green-dark);
+}
+
+.checkout-result-icon--cancel {
+    color: #c0392b;
+}
+
+.checkout-result-title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    color: var(--dark);
+    margin-bottom: 16px;
+}
+
+.checkout-result-body {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.checkout-order-summary {
+    background: var(--cream-2);
+    border-radius: var(--radius-sm);
+    padding: 16px 24px;
+    margin-bottom: 28px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkout-order-summary p {
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.checkout-order-summary i {
+    color: var(--gold-dark);
+    width: 18px;
+    margin-right: 8px;
+}
+
+.checkout-trust-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.checkout-trust-strip i {
+    color: var(--gold);
+    margin-right: 6px;
+}
+
+.checkout-result-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Buy Now button — loading state */
+#buyNowBtn[disabled],
+#buyNowBtn.loading {
+    opacity: 0.7;
+    cursor: wait;
+    pointer-events: none;
+}
+
+#checkoutForm button[type="submit"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 16px 32px;
+}

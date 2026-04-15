@@ -93,7 +93,12 @@
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ $benefit }}</li>
                     @endforeach
                 </ul>
-                <a href="/contact" class="btn-primary btn-full" id="orderBtn">Order Now — Contact Us</a>
+                <form action="/checkout/{{ $slug }}" method="POST" id="checkoutForm">
+                    @csrf
+                    <button type="submit" class="btn-primary btn-full" id="buyNowBtn">
+                        <i class="fa-brands fa-stripe" aria-hidden="true"></i> Buy Now — Secure Checkout
+                    </button>
+                </form>
                 <p class="product-note"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Free NZ shipping on orders over $75</p>
             </div>
         </div>
