@@ -79,6 +79,14 @@
                 <!-- Desktop Nav -->
 
                 <div class="nav-actions">
+                    <!-- Cart Icon -->
+                    @php $cartCount = array_sum(array_column(session('cart', []), 'quantity')); @endphp
+                    <a href="/cart" class="nav-cart" aria-label="View cart ({{ $cartCount }} item{{ $cartCount !== 1 ? 's' : '' }})" id="navCartBtn">
+                        <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i>
+                        @if($cartCount > 0)
+                        <span class="cart-badge" aria-hidden="true">{{ $cartCount }}</span>
+                        @endif
+                    </a>
                     <a href="/shop" class="btn-primary nav-cta" id="shopNowBtn">Shop Now</a>
                     <!-- Mobile Menu Button -->
                     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">

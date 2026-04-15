@@ -42,18 +42,24 @@
     <div class="container">
         <div class="shop-header animate-on-scroll">
             <h2 class="shop-heading sr-only" id="shop-heading">All Honey Products</h2>
-            <p class="shop-count">Showing <strong>4</strong> products</p>
+            <p class="shop-count">Showing <strong>{{ count(config('products')) }}</strong> products</p>
+            @if(session('cart_flash'))
+            <div class="cart-flash-banner" role="alert">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ session('cart_flash') }}
+                <a href="/cart">View Cart →</a>
+            </div>
+            @endif
         </div>
         <div class="products-grid products-grid--shop">
             @php
-            $products = [
+            $shopProducts = [
                 ['slug' => 'omanawa-falls-creamed-honey', 'name' => 'Omanawa Falls Creamed Honey', 'type' => 'Creamed', 'price' => '32.90', 'weight' => '900g', 'rating' => '5.0', 'reviews' => 42, 'badge' => 'Bestseller', 'badge_class' => '', 'img' => '/images/Omanawa-falls-creamed-honey.jpg', 'img_alt' => 'Omanawa Falls Creamed Honey jar'],
                 ['slug' => 'mamaku-creamed-honey', 'name' => 'Mamaku Creamed Honey', 'type' => 'Creamed', 'price' => '34.90', 'weight' => '950g', 'rating' => '4.9', 'reviews' => 56, 'badge' => '', 'badge_class' => '', 'img' => '/images/mamaku-creamed-honey.jpg', 'img_alt' => 'Mamaku Creamed Honey jar'],
                 ['slug' => 'otumoetai-summer-harvest-creamed-honey', 'name' => 'Ōtumoetai Summer Harvest Creamed Honey', 'type' => 'Creamed', 'price' => '29.90', 'weight' => '950g', 'rating' => '4.8', 'reviews' => 38, 'badge' => 'Seasonal', 'badge_class' => 'product-badge--green', 'img' => '/images/otumoetai-summer-harvest-creamed-honey.jpg', 'img_alt' => 'Ōtumoetai Summer Harvest Creamed Honey jar'],
                 ['slug' => 'rewarewa-honey', 'name' => 'Rewarewa Honey', 'type' => 'Native', 'price' => '36.90', 'weight' => '950g', 'rating' => '5.0', 'reviews' => 29, 'badge' => 'Premium', 'badge_class' => 'product-badge--brown', 'img' => '/images/rewarewa-honey.jpg', 'img_alt' => 'Rewarewa Honey jar'],
             ];
             @endphp
-            @foreach($products as $p)
+            @foreach($shopProducts as $p)
             <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
                 <a href="/shop/{{ $p['slug'] }}" class="product-card-link" aria-label="View {{ $p['name'] }} {{ $p['weight'] }}">
                     <div class="product-image">
@@ -82,10 +88,19 @@
                             <meta itemprop="priceCurrency" content="NZD">
                             <meta itemprop="availability" content="https://schema.org/InStock">
                             <span class="product-price">${{ $p['price'] }} <small>/ {{ $p['weight'] }}</small></span>
-                            <span class="product-cta">Shop Now →</span>
                         </div>
                     </div>
                 </a>
+                <!-- Add to Cart -->
+                <div class="product-card-atc">
+                    <form action="/cart/add/{{ $p['slug'] }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn-primary product-atc-btn" aria-label="Add {{ $p['name'] }} to cart">
+                            <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
             </article>
             @endforeach
         </div>

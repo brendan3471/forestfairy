@@ -93,13 +93,45 @@
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ $benefit }}</li>
                     @endforeach
                 </ul>
-                <form action="/checkout/{{ $slug }}" method="POST" id="checkoutForm">
+                @if(session('cart_flash'))
+                <div class="product-cart-flash" role="alert">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ session('cart_flash') }}
+                </div>
+                @endif
+
+                <!-- Add to Cart -->
+                <form action="/cart/add/{{ $slug }}" method="POST" id="addToCartForm" class="product-atc-form">
                     @csrf
-                    <button type="submit" class="btn-primary btn-full" id="buyNowBtn">
-                        <i class="fa-brands fa-stripe" aria-hidden="true"></i> Buy Now — Secure Checkout
+                    <div class="product-qty-row">
+                        <label for="qty" class="product-qty-label">Quantity</label>
+                        <div class="product-qty-stepper">
+                            <button type="button" class="qty-btn" id="qtyMinus" aria-label="Decrease quantity"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+                            <input type="number" id="qty" name="quantity" value="1" min="1" max="10" class="qty-input" aria-label="Quantity">
+                            <button type="button" class="qty-btn" id="qtyPlus" aria-label="Increase quantity"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary btn-full" id="addToCartBtn">
+                        <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
                     </button>
                 </form>
+
+                <a href="/cart" class="btn-secondary btn-full" id="viewCartBtn" style="margin-top:10px; text-align:center;">
+                    View Cart &amp; Checkout
+                </a>
+
                 <p class="product-note"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Free NZ shipping on orders over $75</p>
+
+                <script>
+                (function(){
+                    var input = document.getElementById('qty');
+                    document.getElementById('qtyMinus').addEventListener('click', function(){
+                        if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+                    });
+                    document.getElementById('qtyPlus').addEventListener('click', function(){
+                        if(parseInt(input.value) < 10) input.value = parseInt(input.value) + 1;
+                    });
+                })();
+                </script>
             </div>
         </div>
     </div>
