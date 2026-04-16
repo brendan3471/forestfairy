@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ConnectController;
 
 Route::get('/', function () {
     return view('home');
@@ -51,4 +52,20 @@ Route::post('/cart/add/{slug}',        [CartController::class, 'add'])->name('ca
 Route::post('/cart/update/{slug}',     [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{slug}',     [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/checkout',          [CartController::class, 'checkout'])->name('cart.checkout');
+
+// ---------------------------------------------------------------------------
+// Stripe Connect
+// ---------------------------------------------------------------------------
+Route::get('/connect/dashboard',                          [ConnectController::class, 'dashboard'])->name('connect.dashboard');
+Route::post('/connect/accounts',                          [ConnectController::class, 'createAccount'])->name('connect.createAccount');
+Route::post('/connect/accounts/{accountId}/onboard',      [ConnectController::class, 'onboard'])->name('connect.onboard');
+Route::get('/connect/onboard/return',                     [ConnectController::class, 'onboardReturn'])->name('connect.onboard.return');
+Route::get('/connect/onboard/refresh',                    [ConnectController::class, 'onboardRefresh'])->name('connect.onboard.refresh');
+Route::post('/connect/accounts/{accountId}/products',     [ConnectController::class, 'createProduct'])->name('connect.createProduct');
+Route::get('/connect/store/{accountId}',                  [ConnectController::class, 'storefront'])->name('connect.storefront');
+Route::post('/connect/store/{accountId}/buy',             [ConnectController::class, 'buy'])->name('connect.buy');
+Route::get('/connect/success',                            [ConnectController::class, 'success'])->name('connect.success');
+
+// Connect webhook — CSRF exempt (see bootstrap/app.php), receives thin events
+Route::post('/connect/webhook',                           [ConnectController::class, 'webhook'])->name('connect.webhook');
 
