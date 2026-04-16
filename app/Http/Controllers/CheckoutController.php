@@ -12,6 +12,27 @@ use Stripe\Webhook;
 class CheckoutController extends Controller
 {
     /**
+     * Build payment_intent_data for Destination Charges.
+     * Returns empty array if no connected account is configured,
+     * so checkout works with or without Connect.
+     */
+    private function connectPaymentIntentData(int $amountInCents): array
+    {
+        $connectAccountId = config('services.stripe.client_account_id');
+
+        if (! $connectAccountId || $connectAccountId === 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') {
+            return [];
+        }
+
+        return [
+            'application_fee_amount' => (int) round($amountInCents * 0.10), // 10% platform fee
+            'transfer_data' => [
+                'destination' => $connectAccountId,
+            ],
+        ];
+    }
+
+    /**
      * Create a Stripe Checkout Session for the given product slug
      * and redirect the customer to Stripe's hosted checkout page.
      */
@@ -77,6 +98,8 @@ class CheckoutController extends Controller
                     ],
                 ],
             ],
+            // Destination Charge: 10% platform fee, rest goes to connected account
+            'payment_intent_data'  => $this->connectPaymentIntentData($product['price_cents']),
             'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'           => route('checkout.cancel', ['slug' => $slug]),
             'metadata'             => [
