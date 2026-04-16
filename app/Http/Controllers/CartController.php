@@ -146,14 +146,12 @@ class CartController extends Controller
         }
 
         // ---------------------------------------------------------------
-        // Destination Charge:
-        //   - Payment is created on the PLATFORM account
-        //   - transfer_data.destination sends funds to the connected account
+        // Direct Charge via Connected Account:
+        //   - Payment is created DIRECTLY on the connected account
         //   - application_fee_amount is the platform's 10% cut
-        //
-        // NOTE: Do NOT pass 'stripe_account' in the second param — that
-        // would make it a Direct Charge instead. Destination Charges keep
-        // the payment on the platform and transfer to the client.
+        //   - The connected account receives the remaining 90%
+        //   - Requires passing the connected account ID as a Stripe-Account header
+        //   - This works with Express accounts that have card_payments capability
         // ---------------------------------------------------------------
         $connectAccountId = config('services.stripe.client_account_id');
 
@@ -184,15 +182,20 @@ class CartController extends Controller
 
         // Only add Connect fee split if a connected account is configured
         if ($connectAccountId && $connectAccountId !== 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') {
+            // Add 10% platform fee to the payment intent
             $sessionParams['payment_intent_data'] = [
                 'application_fee_amount' => (int) round($totalAmount * 0.10), // 10% platform fee
-                'transfer_data' => [
-                    'destination' => $connectAccountId,
-                ],
             ];
-        }
 
-        $session = Session::create($sessionParams);
+            // Direct Charge: create the session ON the connected account
+            // by passing stripeAccount as a request option (Stripe-Account header)
+            $session = Session::create($sessionParams, [
+                'stripe_account' => $connectAccountId,
+            ]);
+        } else {
+            // No connected account configured — charge platform account directly
+            $session = Session::create($sessionParams);
+        }
 
         // Clear cart after redirect to Stripe
         session()->forget('cart');
