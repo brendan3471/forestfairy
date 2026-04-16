@@ -56,7 +56,7 @@ class CheckoutController extends Controller
 
         $imageUrl = url($imageMap[$product['image']] ?? '');
 
-        $session = Session::create([
+        $sessionParams = [
             'payment_method_types' => ['card'],
             'line_items'           => [
                 [
@@ -98,15 +98,21 @@ class CheckoutController extends Controller
                     ],
                 ],
             ],
-            // Destination Charge: 10% platform fee, rest goes to connected account
-            'payment_intent_data'  => $this->connectPaymentIntentData($product['price_cents']),
             'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'           => route('checkout.cancel', ['slug' => $slug]),
             'metadata'             => [
                 'product_slug' => $slug,
                 'product_name' => $product['name'],
             ],
-        ]);
+        ];
+
+        // Only add Connect fee split if a connected account is configured
+        $connectData = $this->connectPaymentIntentData($product['price_cents']);
+        if (! empty($connectData)) {
+            $sessionParams['payment_intent_data'] = $connectData;
+        }
+
+        $session = Session::create($sessionParams);
 
         return redirect($session->url, 303);
     }
