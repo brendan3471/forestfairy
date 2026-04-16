@@ -8,6 +8,9 @@ use Stripe\Exception\SignatureVerificationException;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use Stripe\Webhook;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -175,13 +178,39 @@ class CheckoutController extends Controller
         switch ($event->type) {
             case 'checkout.session.completed':
                 $session = $event->data->object;
-                Log::info('Stripe checkout.session.completed', [
-                    'session_id'   => $session->id,
-                    'customer_email' => $session->customer_details?->email,
-                    'amount_total' => $session->amount_total,
-                    'metadata'     => (array) $session->metadata,
+                
+                // Retrieve the session with line items expanded
+                Stripe::setApiKey(config('services.stripe.secret'));
+                $fullSession = Session::retrieve([
+                    'id' => $session->id,
+                    'expand' => ['line_items']
                 ]);
-                // TODO: send confirmation email, update order records, etc.
+
+                DB::transaction(function () use ($fullSession) {
+                    $order = Order::create([
+                        'stripe_session_id' => $fullSession->id,
+                        'customer_email'    => $fullSession->customer_details->email,
+                        'customer_name'     => $fullSession->customer_details->name,
+                        'total_amount'      => $fullSession->amount_total,
+                        'currency'          => $fullSession->currency,
+                        'payment_status'    => $fullSession->payment_status,
+                        'shipping_status'   => 'pending',
+                        'shipping_address'  => json_encode($fullSession->shipping_details),
+                        'shipping_amount'   => $fullSession->total_details->amount_shipping ?? 0,
+                    ]);
+
+                    foreach ($fullSession->line_items->data as $item) {
+                        OrderItem::create([
+                            'order_id'     => $order->id,
+                            'product_slug' => $item->price->product->metadata->product_slug ?? 'unknown',
+                            'product_name' => $item->description,
+                            'quantity'     => $item->quantity,
+                            'unit_price'   => $item->price->unit_amount,
+                        ]);
+                    }
+                });
+
+                Log::info('Order stored successfully', ['session_id' => $session->id]);
                 break;
 
             default:

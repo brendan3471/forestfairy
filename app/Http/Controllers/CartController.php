@@ -132,6 +132,7 @@ class CartController extends Controller
                         'name'        => $product['name'],
                         'description' => $product['weight'],
                         'images'      => [url($imgMap[$product['image']] ?? '')],
+                        'metadata'    => ['product_slug' => $slug],
                     ],
                     'unit_amount'  => $product['price_cents'],
                 ],

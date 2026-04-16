@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('home');
@@ -51,4 +52,17 @@ Route::post('/cart/add/{slug}',        [CartController::class, 'add'])->name('ca
 Route::post('/cart/update/{slug}',     [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{slug}',     [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/checkout',          [CartController::class, 'checkout'])->name('cart.checkout');
+
+// ---------------------------------------------------------------------------
+// Admin Panel
+// ---------------------------------------------------------------------------
+Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/orders', [AdminController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
+});
 
