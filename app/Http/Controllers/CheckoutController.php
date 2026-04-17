@@ -15,24 +15,20 @@ use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     /**
-     * Build payment_intent_data for Destination Charges.
-     * Returns empty array if no connected account is configured,
-     * so checkout works with or without Connect.
+     * Returns the connected account ID if configured, or null.
      */
-    private function connectPaymentIntentData(int $amountInCents): array
+    private function connectedAccountId(): ?string
     {
-        $connectAccountId = config('services.stripe.client_account_id');
+        $id = config('services.stripe.client_account_id');
+        return ($id && $id !== 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') ? $id : null;
+    }
 
-        if (! $connectAccountId || $connectAccountId === 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') {
-            return [];
-        }
-
-        return [
-            'application_fee_amount' => (int) round($amountInCents * 0.10), // 10% platform fee
-            'transfer_data' => [
-                'destination' => $connectAccountId,
-            ],
-        ];
+    /**
+     * Returns a StripeClient instance.
+     */
+    private function stripeClient(): \Stripe\StripeClient
+    {
+        return new \Stripe\StripeClient(config('services.stripe.secret'));
     }
 
     /**
@@ -48,7 +44,8 @@ class CheckoutController extends Controller
             abort(404);
         }
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $stripe           = $this->stripeClient();
+        $connectAccountId = $this->connectedAccountId();
 
         $imageMap = [
             'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
@@ -109,13 +106,18 @@ class CheckoutController extends Controller
             ],
         ];
 
-        // Only add Connect fee split if a connected account is configured
-        $connectData = $this->connectPaymentIntentData($product['price_cents']);
-        if (! empty($connectData)) {
-            $sessionParams['payment_intent_data'] = $connectData;
+        // Direct Charge: create session ON the connected account with 10% platform fee
+        if ($connectAccountId) {
+            $sessionParams['payment_intent_data'] = [
+                'application_fee_amount' => (int) round($product['price_cents'] * 0.10),
+            ];
+            $session = $stripe->checkout->sessions->create(
+                $sessionParams,
+                ['stripe_account' => $connectAccountId]
+            );
+        } else {
+            $session = $stripe->checkout->sessions->create($sessionParams);
         }
-
-        $session = Session::create($sessionParams);
 
         return redirect($session->url, 303);
     }
@@ -130,8 +132,10 @@ class CheckoutController extends Controller
 
         if ($sessionId && config('services.stripe.secret')) {
             try {
-                Stripe::setApiKey(config('services.stripe.secret'));
-                $session = Session::retrieve($sessionId);
+                $stripe           = $this->stripeClient();
+                $connectAccountId = $this->connectedAccountId();
+                $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
+                $session          = $stripe->checkout->sessions->retrieve($sessionId, [], $options);
             } catch (\Exception $e) {
                 // Non-fatal — page still renders without order details
                 Log::warning('Could not retrieve Stripe session: ' . $e->getMessage());
