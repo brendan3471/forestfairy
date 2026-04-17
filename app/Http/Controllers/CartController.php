@@ -189,3 +189,4 @@ class CartController extends Controller
 
     return redirect($session->url, 303);
 }
+}
