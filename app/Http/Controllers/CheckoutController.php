@@ -184,11 +184,14 @@ class CheckoutController extends Controller
                 $session = $event->data->object;
                 
                 // Retrieve the session with line items expanded
-                Stripe::setApiKey(config('services.stripe.secret'));
-                $fullSession = Session::retrieve([
-                    'id' => $session->id,
-                    'expand' => ['line_items']
-                ]);
+                $stripe           = $this->stripeClient();
+                $connectAccountId = $this->connectedAccountId();
+                $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
+                $fullSession      = $stripe->checkout->sessions->retrieve(
+                    $session->id,
+                    ['expand' => ['line_items']],
+                    $options
+                );
 
                 DB::transaction(function () use ($fullSession) {
                     $order = Order::create([
