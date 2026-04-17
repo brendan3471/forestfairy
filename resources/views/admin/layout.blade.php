@@ -183,7 +183,7 @@
         }
 
         .btn-logout {
-            color: rgba(255,255,255,0.5);
+            color: rgba(243, 17, 17, 0.5);
             font-size: 0.85rem;
         }
 

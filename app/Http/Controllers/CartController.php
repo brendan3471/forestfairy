@@ -101,106 +101,91 @@ class CartController extends Controller
     // Creates a Stripe Checkout Session with all cart items as line_items
     // -----------------------------------------------------------------------
     public function checkout()
-    {
-        $cart     = session('cart', []);
-        $products = config('products');
+{
+    $cart     = session('cart', []);
+    $products = config('products');
 
-        if (empty($cart)) {
-            return redirect()->route('cart.show')->with('cart_error', 'Your cart is empty.');
-        }
+    if (empty($cart)) {
+        return redirect()->route('cart.show')->with('cart_error', 'Your cart is empty.');
+    }
 
-        Stripe::setApiKey(config('services.stripe.secret'));
+    $imgMap = [
+        'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
+        'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+        'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+        'rewarewa'      => '/images/rewarewa-honey.jpg',
+    ];
 
-        $imgMap = [
-            'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
-            'mamaku'        => '/images/mamaku-creamed-honey.jpg',
-            'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
-            'rewarewa'      => '/images/rewarewa-honey.jpg',
+    $lineItems   = [];
+    $totalAmount = 0;
+
+    foreach ($cart as $slug => $row) {
+        if (! isset($products[$slug])) continue;
+        $product = $products[$slug];
+        $qty     = max(1, (int) $row['quantity']);
+
+        $lineItems[] = [
+            'price_data' => [
+                'currency'     => 'nzd',
+                'product_data' => [
+                    'name'        => $product['name'],
+                    'description' => $product['weight'],
+                    'images'      => [url($imgMap[$product['image']] ?? '')],
+                ],
+                'unit_amount'  => $product['price_cents'],
+            ],
+            'quantity' => $qty,
         ];
 
-        $lineItems = [];
+        $totalAmount += $product['price_cents'] * $qty;
+    }
 
-        foreach ($cart as $slug => $row) {
-            if (! isset($products[$slug])) continue;
-            $product = $products[$slug];
-            $qty     = max(1, (int) $row['quantity']);
+    $connectAccountId = config('services.stripe.client_account_id');
 
-            $lineItems[] = [
-                'price_data' => [
-                    'currency'     => 'nzd',
-                    'product_data' => [
-                        'name'        => $product['name'],
-                        'description' => $product['weight'],
-                        'images'      => [url($imgMap[$product['image']] ?? '')],
-                        'metadata'    => ['product_slug' => $slug],
-                    ],
-                    'unit_amount'  => $product['price_cents'],
-                ],
-                'quantity' => $qty,
-            ];
-        }
+    // Use StripeClient directly instead of static Stripe::setApiKey
+    // This ensures the stripe_account header is properly scoped
+    $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
 
-        // Calculate total amount for the application fee (10% platform cut)
-        $totalAmount = 0;
-        foreach ($lineItems as $item) {
-            $totalAmount += $item['price_data']['unit_amount'] * $item['quantity'];
-        }
-
-        // ---------------------------------------------------------------
-        // Direct Charge via Connected Account:
-        //   - Payment is created DIRECTLY on the connected account
-        //   - application_fee_amount is the platform's 10% cut
-        //   - The connected account receives the remaining 90%
-        //   - Requires passing the connected account ID as a Stripe-Account header
-        //   - This works with Express accounts that have card_payments capability
-        // ---------------------------------------------------------------
-        $connectAccountId = config('services.stripe.client_account_id');
-
-        $sessionParams = [
-            'payment_method_types'        => ['card'],
-            'line_items'                  => $lineItems,
-            'mode'                        => 'payment',
-            'shipping_address_collection' => ['allowed_countries' => ['NZ']],
-            'shipping_options'            => [
-                [
-                    'shipping_rate_data' => [
-                        'type'         => 'fixed_amount',
-                        'fixed_amount' => ['amount' => 0, 'currency' => 'nzd'],
-                        'display_name' => 'Free NZ Shipping (orders $75+)',
-                    ],
-                ],
-                [
-                    'shipping_rate_data' => [
-                        'type'         => 'fixed_amount',
-                        'fixed_amount' => ['amount' => 750, 'currency' => 'nzd'],
-                        'display_name' => 'Standard NZ Shipping',
-                    ],
+    $sessionParams = [
+        'payment_method_types'        => ['card'],
+        'line_items'                  => $lineItems,
+        'mode'                        => 'payment',
+        'shipping_address_collection' => ['allowed_countries' => ['NZ']],
+        'shipping_options'            => [
+            [
+                'shipping_rate_data' => [
+                    'type'         => 'fixed_amount',
+                    'fixed_amount' => ['amount' => 0, 'currency' => 'nzd'],
+                    'display_name' => 'Free NZ Shipping (orders $75+)',
                 ],
             ],
-            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url'  => route('cart.show'),
+            [
+                'shipping_rate_data' => [
+                    'type'         => 'fixed_amount',
+                    'fixed_amount' => ['amount' => 750, 'currency' => 'nzd'],
+                    'display_name' => 'Standard NZ Shipping',
+                ],
+            ],
+        ],
+        'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url'  => route('cart.show'),
+    ];
+
+    if ($connectAccountId && $connectAccountId !== 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') {
+        // Direct Charge on connected account with 10% platform fee
+        $sessionParams['payment_intent_data'] = [
+            'application_fee_amount' => (int) round($totalAmount * 0.10),
         ];
 
-        // Only add Connect fee split if a connected account is configured
-        if ($connectAccountId && $connectAccountId !== 'acct_REPLACE_WITH_YOUR_CLIENT_ACCOUNT_ID') {
-            // Add 10% platform fee to the payment intent
-            $sessionParams['payment_intent_data'] = [
-                'application_fee_amount' => (int) round($totalAmount * 0.10), // 10% platform fee
-            ];
-
-            // Direct Charge: create the session ON the connected account
-            // by passing stripeAccount as a request option (Stripe-Account header)
-            $session = Session::create($sessionParams, [
-                'stripe_account' => $connectAccountId,
-            ]);
-        } else {
-            // No connected account configured — charge platform account directly
-            $session = Session::create($sessionParams);
-        }
-
-        // Clear cart after redirect to Stripe
-        session()->forget('cart');
-
-        return redirect($session->url, 303);
+        $session = $stripe->checkout->sessions->create(
+            $sessionParams,
+            ['stripe_account' => $connectAccountId]
+        );
+    } else {
+        $session = $stripe->checkout->sessions->create($sessionParams);
     }
+
+    session()->forget('cart');
+
+    return redirect($session->url, 303);
 }
