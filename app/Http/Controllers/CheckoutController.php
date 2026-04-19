@@ -98,6 +98,10 @@ class CheckoutController extends Controller
                             'name'        => $product['name'] . ' (' . $option['weight'] . ')',
                             'description' => $option['weight'],
                             'images'      => [$imageUrl],
+                            'metadata'    => [
+                                'sku'          => $option['sku'],
+                                'product_slug' => $slug,
+                            ],
                         ],
                         'unit_amount'  => $option['price_cents'],
                     ],
