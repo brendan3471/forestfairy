@@ -205,10 +205,9 @@ class CheckoutController extends Controller
                 $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
                 $fullSession      = $stripe->checkout->sessions->retrieve(
                     $session->id,
-                    ['expand' => ['line_items', 'payment_intent']],
+                    ['expand' => ['line_items.data.price.product', 'payment_intent']],
                     $options
                 );
-
                 Log::info('Stripe Session retrieved', ['session' => $fullSession->toArray()]);
                 file_put_contents('/tmp/stripe_debug.log', json_encode($fullSession->toArray(), JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
 
@@ -242,6 +241,7 @@ class CheckoutController extends Controller
                         OrderItem::create([
                             'order_id'     => $order->id,
                             'product_slug' => $item->price->product->metadata->product_slug ?? 'unknown',
+                            'sku'          => $item->price->product->metadata->sku ?? null,
                             'product_name' => $item->description,
                             'quantity'     => $item->quantity,
                             'unit_price'   => $item->price->unit_amount,

@@ -32,7 +32,9 @@
                     <tr>
                         <td style="padding-left: 0;">
                             <div style="font-weight: 600;">{{ $item->product_name }}</div>
-                            <div style="font-size: 0.8rem; color: var(--text-muted);">{{ $item->product_slug }}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">
+                                {{ $item->product_slug }} @if($item->sku) &bull; SKU: {{ $item->sku }} @endif
+                            </div>
                         </td>
                         <td>{{ $item->quantity }}</td>
                         <td>${{ number_format($item->unit_price / 100, 2) }}</td>
