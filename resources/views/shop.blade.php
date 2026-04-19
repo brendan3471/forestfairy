@@ -10,14 +10,15 @@
 @verbatim
 {
   "@context": "https://schema.org",
+  "@id": "https://forestfairyhoney.co.nz/shop#itemList",
   "@type": "ItemList",
   "name": "Forest Fairy Honey — NZ Honey Products",
   "url": "https://forestfairyhoney.co.nz/shop",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"url":"https://forestfairyhoney.co.nz/shop/raw-manuka-honey-250g","name":"Raw Māori Manuka Honey 250g"},
-    {"@type":"ListItem","position":2,"url":"https://forestfairyhoney.co.nz/shop/forest-clover-honey-500g","name":"Forest Clover Honey 500g"},
-    {"@type":"ListItem","position":3,"url":"https://forestfairyhoney.co.nz/shop/bush-honey-500g","name":"NZ Bush Honey 500g"},
-    {"@type":"ListItem","position":4,"url":"https://forestfairyhoney.co.nz/shop/honeydew-honey-250g","name":"Honeydew Honey 250g"}
+    {"@type":"ListItem","position":1,"url":"https://forestfairyhoney.co.nz/shop/omanawa-falls-creamed-honey","name":"Omanawa Falls Creamed Honey"},
+    {"@type":"ListItem","position":2,"url":"https://forestfairyhoney.co.nz/shop/mamaku-creamed-honey","name":"Mamaku Creamed Honey"},
+    {"@type":"ListItem","position":3,"url":"https://forestfairyhoney.co.nz/shop/otumoetai-summer-harvest-creamed-honey","name":"Ōtumoetai Summer Harvest Creamed Honey"},
+    {"@type":"ListItem","position":4,"url":"https://forestfairyhoney.co.nz/shop/rewarewa-honey","name":"Rewarewa Honey"}
   ]
 }
 @endverbatim
@@ -52,24 +53,35 @@
         </div>
         <div class="products-grid products-grid--shop">
             @php
-            $shopProducts = [
-                ['slug' => 'omanawa-falls-creamed-honey', 'name' => 'Omanawa Falls Creamed Honey', 'type' => 'Creamed', 'price' => '32.90', 'weight' => '900g', 'rating' => '5.0', 'reviews' => 42, 'badge' => 'Bestseller', 'badge_class' => '', 'img' => '/images/Omanawa-falls-creamed-honey.jpg', 'img_alt' => 'Omanawa Falls Creamed Honey jar'],
-                ['slug' => 'mamaku-creamed-honey', 'name' => 'Mamaku Creamed Honey', 'type' => 'Creamed', 'price' => '34.90', 'weight' => '950g', 'rating' => '4.9', 'reviews' => 56, 'badge' => '', 'badge_class' => '', 'img' => '/images/mamaku-creamed-honey.jpg', 'img_alt' => 'Mamaku Creamed Honey jar'],
-                ['slug' => 'otumoetai-summer-harvest-creamed-honey', 'name' => 'Ōtumoetai Summer Harvest Creamed Honey', 'type' => 'Creamed', 'price' => '29.90', 'weight' => '950g', 'rating' => '4.8', 'reviews' => 38, 'badge' => 'Seasonal', 'badge_class' => 'product-badge--green', 'img' => '/images/otumoetai-summer-harvest-creamed-honey.jpg', 'img_alt' => 'Ōtumoetai Summer Harvest Creamed Honey jar'],
-                ['slug' => 'rewarewa-honey', 'name' => 'Rewarewa Honey', 'type' => 'Native', 'price' => '36.90', 'weight' => '950g', 'rating' => '5.0', 'reviews' => 29, 'badge' => 'Premium', 'badge_class' => 'product-badge--brown', 'img' => '/images/rewarewa-honey.jpg', 'img_alt' => 'Rewarewa Honey jar'],
+            $productsConfig = config('products');
+            $imgMap = [
+                'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
+                'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+                'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+                'rewarewa'      => '/images/rewarewa-honey.jpg',
             ];
             @endphp
-            @foreach($shopProducts as $p)
+            
+            @foreach($productsConfig as $slug => $p)
+            @php
+                $defaultOpt = $p['options'][$p['default_option']];
+                // Badge logic
+                $badge = '';
+                $badgeClass = '';
+                if ($slug === 'omanawa-falls-creamed-honey') { $badge = 'Bestseller'; }
+                if ($slug === 'otumoetai-summer-harvest-creamed-honey') { $badge = 'Seasonal'; $badgeClass = 'product-badge--green'; }
+                if ($slug === 'rewarewa-honey') { $badge = 'Premium'; $badgeClass = 'product-badge--brown'; }
+            @endphp
             <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/{{ $p['slug'] }}" class="product-card-link" aria-label="View {{ $p['name'] }} {{ $p['weight'] }}">
+                <a href="/shop/{{ $slug }}" class="product-card-link" aria-label="View {{ $p['name'] }} {{ $defaultOpt['weight'] }}">
                     <div class="product-image">
-                        <img src="{{ $p['img'] }}" alt="{{ $p['img_alt'] }}" loading="lazy" itemprop="image">
-                        @if($p['badge'])
-                        <div class="product-badge {{ $p['badge_class'] }}">{{ $p['badge'] }}</div>
+                        <img src="{{ $imgMap[$p['image']] ?? '' }}" alt="{{ $p['name'] }}" loading="lazy" itemprop="image">
+                        @if($badge)
+                        <div class="product-badge {{ $badgeClass }}">{{ $badge }}</div>
                         @endif
                     </div>
                     <div class="product-info">
-                        <span class="product-type">{{ $p['type'] }}</span>
+                        <span class="product-type">New Zealand Honey</span>
                         <h3 class="product-name" itemprop="name">{{ $p['name'] }}</h3>
                         <div class="product-stars" aria-label="Rated {{ $p['rating'] }} out of 5">
                             @for($i = 0; $i < 5; $i++)
@@ -84,18 +96,19 @@
                             <span>({{ $p['reviews'] }})</span>
                         </div>
                         <div class="product-price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                            <meta itemprop="price" content="{{ $p['price'] }}">
+                            <meta itemprop="price" content="{{ $defaultOpt['price'] }}">
                             <meta itemprop="priceCurrency" content="NZD">
                             <meta itemprop="availability" content="https://schema.org/InStock">
-                            <span class="product-price">${{ $p['price'] }} <small>/ {{ $p['weight'] }}</small></span>
+                            <span class="product-price">${{ $defaultOpt['price'] }} <small>/ {{ $defaultOpt['weight'] }}</small></span>
                         </div>
                     </div>
                 </a>
                 <!-- Add to Cart -->
                 <div class="product-card-atc">
-                    <form action="/cart/add/{{ $p['slug'] }}" method="POST">
+                    <form action="/cart/add/{{ $slug }}" method="POST">
                         @csrf
                         <input type="hidden" name="quantity" value="1">
+                        <input type="hidden" name="option" value="{{ $p['default_option'] }}">
                         <button type="submit" class="btn-primary product-atc-btn" aria-label="Add {{ $p['name'] }} to cart">
                             <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
                         </button>

@@ -48,7 +48,7 @@
                     </div>
                     <div class="cart-item-qty">
                         <!-- Decrease -->
-                        <form action="/cart/update/{{ $item['slug'] }}" method="POST" style="display:inline">
+                        <form action="/cart/update/{{ $item['key'] }}" method="POST" style="display:inline">
                             @csrf
                             <input type="hidden" name="quantity" value="{{ $item['quantity'] - 1 }}">
                             <button type="submit" class="qty-btn" aria-label="Decrease quantity" {{ $item['quantity'] <= 1 ? 'disabled' : '' }}>
@@ -59,7 +59,7 @@
                         <span class="qty-value" aria-live="polite">{{ $item['quantity'] }}</span>
 
                         <!-- Increase -->
-                        <form action="/cart/update/{{ $item['slug'] }}" method="POST" style="display:inline">
+                        <form action="/cart/update/{{ $item['key'] }}" method="POST" style="display:inline">
                             @csrf
                             <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
                             <button type="submit" class="qty-btn" aria-label="Increase quantity">
@@ -71,7 +71,7 @@
                         ${{ number_format($item['line_total'] / 100, 2) }}
                     </div>
                     <!-- Remove -->
-                    <form action="/cart/remove/{{ $item['slug'] }}" method="POST" class="cart-item-remove-form">
+                    <form action="/cart/remove/{{ $item['key'] }}" method="POST" class="cart-item-remove-form">
                         @csrf
                         <button type="submit" class="cart-item-remove" aria-label="Remove {{ $item['name'] }} from cart">
                             <i class="fa-solid fa-xmark" aria-hidden="true"></i>

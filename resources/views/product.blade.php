@@ -5,6 +5,10 @@
 @section('canonical', 'https://forestfairyhoney.co.nz/shop/' . $slug)
 @section('og_type', 'product')
 
+@php
+    $defaultOption = $product['options'][$product['default_option']];
+@endphp
+
 @section('schema')
 <script type="application/ld+json">
 {
@@ -18,7 +22,7 @@
   },
   "offers": {
     "@@type": "Offer",
-    "price": "{{ $product['price'] }}",
+    "price": "{{ $defaultOption['price'] }}",
     "priceCurrency": "NZD",
     "availability": "https://schema.org/InStock",
     "url": "https://forestfairyhoney.co.nz/shop/{{ $slug }}",
@@ -83,16 +87,19 @@
                     <span class="product-stars">{!! $starsHtml !!}</span>
                     <span class="product-rating-text">{{ $product['rating'] }} ({{ $product['reviews'] }} reviews)</span>
                 </div>
+                
                 <div class="product-detail-price">
-                    <span class="product-price-lg">${{ $product['price'] }}</span>
-                    <span class="product-weight">/ {{ $product['weight'] }}</span>
+                    <span class="product-price-lg" id="displayPrice">${{ $defaultOption['price'] }}</span>
+                    <span class="product-weight" id="displayWeight">/ {{ $defaultOption['weight'] }}</span>
                 </div>
+
                 <p class="product-detail-desc">{{ $product['description'] }}</p>
                 <ul class="product-benefits">
                     @foreach($product['benefits'] as $benefit)
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ $benefit }}</li>
                     @endforeach
                 </ul>
+                
                 @if(session('cart_flash'))
                 <div class="product-cart-flash" role="alert">
                     <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ session('cart_flash') }}
@@ -102,6 +109,18 @@
                 <!-- Add to Cart -->
                 <form action="/cart/add/{{ $slug }}" method="POST" id="addToCartForm" class="product-atc-form">
                     @csrf
+                    
+                    <div class="product-option-row">
+                        <label for="option" class="product-option-label">Choose Size</label>
+                        <select name="option" id="optionSelector" class="product-option-select">
+                            @foreach($product['options'] as $key => $opt)
+                                <option value="{{ $key }}" data-price="{{ $opt['price'] }}" data-weight="{{ $opt['weight'] }}" {{ $key === $product['default_option'] ? 'selected' : '' }}>
+                                    {{ $opt['weight'] }} — ${{ $opt['price'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="product-qty-row">
                         <label for="qty" class="product-qty-label">Quantity</label>
                         <div class="product-qty-stepper">
@@ -110,6 +129,7 @@
                             <button type="button" class="qty-btn" id="qtyPlus" aria-label="Increase quantity"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </div>
+
                     <button type="submit" class="btn-primary btn-full" id="addToCartBtn">
                         <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
                     </button>
@@ -124,11 +144,21 @@
                 <script>
                 (function(){
                     var input = document.getElementById('qty');
+                    var selector = document.getElementById('optionSelector');
+                    var displayPrice = document.getElementById('displayPrice');
+                    var displayWeight = document.getElementById('displayWeight');
+
                     document.getElementById('qtyMinus').addEventListener('click', function(){
                         if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
                     });
                     document.getElementById('qtyPlus').addEventListener('click', function(){
                         if(parseInt(input.value) < 10) input.value = parseInt(input.value) + 1;
+                    });
+
+                    selector.addEventListener('change', function(){
+                        var selectedOption = selector.options[selector.selectedIndex];
+                        displayPrice.textContent = '$' + selectedOption.getAttribute('data-price');
+                        displayWeight.textContent = '/ ' + selectedOption.getAttribute('data-weight');
                     });
                 })();
                 </script>
@@ -146,23 +176,30 @@
         </div>
         <div class="products-grid products-grid--3">
             @php
-            $all = [
-                ['slug' => 'omanawa-falls-creamed-honey', 'name' => 'Omanawa Falls Creamed', 'type' => 'Creamed', 'price' => '32.90', 'weight' => '900g', 'img' => '/images/Omanawa-falls-creamed-honey.jpg', 'img_alt' => 'Omanawa Falls Creamed Honey'],
-                ['slug' => 'mamaku-creamed-honey', 'name' => 'Mamaku Creamed Honey', 'type' => 'Creamed', 'price' => '34.90', 'weight' => '950g', 'img' => '/images/mamaku-creamed-honey.jpg', 'img_alt' => 'Mamaku Creamed Honey'],
-                ['slug' => 'otumoetai-summer-harvest-creamed-honey', 'name' => 'Ōtumoetai Summer', 'type' => 'Creamed', 'price' => '29.90', 'weight' => '950g', 'img' => '/images/otumoetai-summer-harvest-creamed-honey.jpg', 'img_alt' => 'Ōtumoetai Summer Harvest'],
-                ['slug' => 'rewarewa-honey', 'name' => 'Rewarewa Honey', 'type' => 'Native', 'price' => '36.90', 'weight' => '950g', 'img' => '/images/rewarewa-honey.jpg', 'img_alt' => 'Rewarewa Honey'],
-            ];
-            $related = array_filter($all, fn($p) => $p['slug'] !== $slug);
-            $related = array_slice(array_values($related), 0, 3);
+            $allProducts = config('products');
+            $related = [];
+            foreach($allProducts as $rSlug => $rData) {
+                if ($rSlug !== $slug) {
+                    $defOpt = $rData['options'][$rData['default_option']];
+                    $related[] = [
+                        'slug' => $rSlug,
+                        'name' => $rData['name'],
+                        'price' => $defOpt['price'],
+                        'weight' => $defOpt['weight'],
+                        'img' => $imgMap[$rData['image']] ?? ''
+                    ];
+                }
+            }
+            $related = array_slice($related, 0, 3);
             @endphp
             @foreach($related as $r)
             <article class="product-card animate-on-scroll">
                 <a href="/shop/{{ $r['slug'] }}" class="product-card-link" aria-label="View {{ $r['name'] }}">
                     <div class="product-image">
-                        <img src="{{ $r['img'] }}" alt="{{ $r['img_alt'] }}" loading="lazy">
+                        <img src="{{ $r['img'] }}" alt="{{ $r['name'] }}" loading="lazy">
                     </div>
                     <div class="product-info">
-                        <span class="product-type">{{ $r['type'] }}</span>
+                        <span class="product-type">New Zealand Honey</span>
                         <h3 class="product-name">{{ $r['name'] }}</h3>
                         <div class="product-price-row">
                             <span class="product-price">${{ $r['price'] }} <small>/ {{ $r['weight'] }}</small></span>

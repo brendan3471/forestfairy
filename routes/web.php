@@ -49,8 +49,8 @@ Route::post('/stripe/webhook', [CheckoutController::class, 'webhook'])->name('st
 // ---------------------------------------------------------------------------
 Route::get('/cart',                    [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add/{slug}',        [CartController::class, 'add'])->name('cart.add');
-Route::post('/cart/update/{slug}',     [CartController::class, 'update'])->name('cart.update');
-Route::post('/cart/remove/{slug}',     [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update/{key}',     [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{key}',     [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/checkout',          [CartController::class, 'checkout'])->name('cart.checkout');
 
 // ---------------------------------------------------------------------------

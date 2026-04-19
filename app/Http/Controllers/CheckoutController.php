@@ -35,12 +35,19 @@ class CheckoutController extends Controller
      * Create a Stripe Checkout Session for the given product slug
      * and redirect the customer to Stripe's hosted checkout page.
      */
-    public function createSession(string $slug)
+    public function createSession(Request $request, string $slug)
     {
         $products = config('products');
         $product  = $products[$slug] ?? null;
 
         if (! $product) {
+            abort(404);
+        }
+
+        $optionWeight = $request->input('option', $product['default_option']);
+        $option       = $product['options'][$optionWeight] ?? $product['options'][$product['default_option']] ?? null;
+
+        if (!$option) {
             abort(404);
         }
 
@@ -58,7 +65,7 @@ class CheckoutController extends Controller
 
         // Define shipping options based on product price
         $shippingOptions = [];
-        if ($product['price_cents'] >= 7500) {
+        if ($option['price_cents'] >= 7500) {
             $shippingOptions[] = [
                 'shipping_rate_data' => [
                     'type'         => 'fixed_amount',
@@ -88,11 +95,11 @@ class CheckoutController extends Controller
                     'price_data' => [
                         'currency'     => 'nzd',
                         'product_data' => [
-                            'name'        => $product['name'],
-                            'description' => $product['weight'] . ' — ' . $product['description'],
+                            'name'        => $product['name'] . ' (' . $option['weight'] . ')',
+                            'description' => $option['weight'],
                             'images'      => [$imageUrl],
                         ],
-                        'unit_amount'  => $product['price_cents'],
+                        'unit_amount'  => $option['price_cents'],
                     ],
                     'quantity' => 1,
                 ],
@@ -107,13 +114,14 @@ class CheckoutController extends Controller
             'metadata'             => [
                 'product_slug' => $slug,
                 'product_name' => $product['name'],
+                'option'       => $option['weight'],
             ],
         ];
 
         // Direct Charge: create session ON the connected account with 10% platform fee
         if ($connectAccountId) {
             $sessionParams['payment_intent_data'] = [
-                'application_fee_amount' => (int) round($product['price_cents'] * 0.10),
+                'application_fee_amount' => (int) round($option['price_cents'] * 0.10),
             ];
             $session = $stripe->checkout->sessions->create(
                 $sessionParams,
@@ -198,11 +206,20 @@ class CheckoutController extends Controller
                 );
 
                 Log::info('Stripe Session retrieved', ['session' => $fullSession->toArray()]);
-                file_put_contents(storage_path('logs/stripe_debug.log'), json_encode($fullSession->toArray(), JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
+                file_put_contents('/tmp/stripe_debug.log', json_encode($fullSession->toArray(), JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
 
                 DB::transaction(function () use ($fullSession) {
-                    if (!$fullSession->shipping_details) {
-                        Log::warning('No shipping details found in Stripe session', ['session_id' => $fullSession->id]);
+                    $shippingAddress = $fullSession->shipping_details;
+                    
+                    // Fallback to payment_intent->shipping if shipping_details is empty
+                    // This is common in some Stripe Connect configurations
+                    if (!$shippingAddress && isset($fullSession->payment_intent->shipping)) {
+                        $shippingAddress = $fullSession->payment_intent->shipping;
+                        Log::info('Falling back to shipping details from Payment Intent');
+                    }
+
+                    if (!$shippingAddress) {
+                        Log::warning('No shipping details found in Stripe session or Payment Intent', ['session_id' => $fullSession->id]);
                     }
 
                     $order = Order::create([
@@ -213,7 +230,7 @@ class CheckoutController extends Controller
                         'currency'          => $fullSession->currency,
                         'payment_status'    => $fullSession->payment_status,
                         'shipping_status'   => 'pending',
-                        'shipping_address'  => $fullSession->shipping_details ? json_encode($fullSession->shipping_details) : null,
+                        'shipping_address'  => $shippingAddress ? json_encode($shippingAddress) : null,
                         'shipping_amount'   => $fullSession->total_details->amount_shipping ?? 0,
                     ]);
 

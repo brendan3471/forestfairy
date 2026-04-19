@@ -134,93 +134,60 @@
             <p class="section-subtitle">Every jar is a taste of New Zealand's wildest places — harvested with care and bottled with love.</p>
         </div>
         <div class="products-grid">
-            <!-- Product 1 -->
+            @php
+            $productsConfig = config('products');
+            $imgMap = [
+                'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
+                'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+                'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+                'rewarewa'      => '/images/rewarewa-honey.jpg',
+            ];
+            @endphp
+            
+            @foreach($productsConfig as $slug => $p)
+            @php
+                $defaultOpt = $p['options'][$p['default_option']];
+                $badge = '';
+                $badgeClass = '';
+                if ($slug === 'omanawa-falls-creamed-honey') { $badge = 'Bestseller'; }
+                if ($slug === 'otumoetai-summer-harvest-creamed-honey') { $badge = 'Seasonal'; $badgeClass = 'product-badge--green'; }
+                if ($slug === 'rewarewa-honey') { $badge = 'Premium'; $badgeClass = 'product-badge--brown'; }
+            @endphp
             <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/omanawa-falls-creamed-honey" class="product-card-link" aria-label="View Omanawa Falls Creamed Honey">
+                <a href="/shop/{{ $slug }}" class="product-card-link" aria-label="View {{ $p['name'] }}">
                     <div class="product-image">
-                        <img src="/images/Omanawa-falls-creamed-honey.jpg" alt="Omanawa Falls Creamed Honey 900g jar" loading="lazy" itemprop="image">
-                        <div class="product-badge">Bestseller</div>
+                        <img src="{{ $imgMap[$p['image']] ?? '' }}" alt="{{ $p['name'] }}" loading="lazy" itemprop="image">
+                        @if($badge)
+                        <div class="product-badge {{ $badgeClass }}">{{ $badge }}</div>
+                        @endif
                     </div>
                     <div class="product-info">
-                        <span class="product-type">Creamed</span>
-                        <h3 class="product-name" itemprop="name">Omanawa Falls Creamed Honey</h3>
-                        <div class="product-stars" aria-label="Rated 5 out of 5">
-                            <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                            <span>(42)</span>
+                        <span class="product-type">New Zealand Honey</span>
+                        <h3 class="product-name" itemprop="name">{{ $p['name'] }}</h3>
+                        <div class="product-stars" aria-label="Rated {{ $p['rating'] }} out of 5">
+                            @for($i = 0; $i < 5; $i++)
+                                @if($i < floor((float)$p['rating']))
+                                    <i class="fa-solid fa-star" aria-hidden="true"></i>
+                                @elseif(floor((float)$p['rating']) == $i && fmod((float)$p['rating'], 1) >= 0.5)
+                                    <i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>
+                                @else
+                                    <i class="fa-regular fa-star" aria-hidden="true"></i>
+                                @endif
+                            @endfor
+                            <span>({{ $p['reviews'] }})</span>
                         </div>
                         <div class="product-price-row">
                             <span class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                                <meta itemprop="price" content="32.90">
+                                <meta itemprop="price" content="{{ $defaultOpt['price'] }}">
                                 <meta itemprop="priceCurrency" content="NZD">
-                                $32.90 <small>/ 900g</small>
+                                ${{ $defaultOpt['price'] }} <small>/ {{ $defaultOpt['weight'] }}</small>
                             </span>
                             <span class="product-cta">Shop Now →</span>
                         </div>
                     </div>
                 </a>
             </article>
-            <!-- Product 2 -->
-            <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/mamaku-creamed-honey" class="product-card-link" aria-label="View Mamaku Creamed Honey">
-                    <div class="product-image">
-                        <img src="/images/mamaku-creamed-honey.jpg" alt="Mamaku Creamed Honey 950g jar" loading="lazy" itemprop="image">
-                    </div>
-                    <div class="product-info">
-                        <span class="product-type">Creamed</span>
-                        <h3 class="product-name" itemprop="name">Mamaku Creamed Honey</h3>
-                        <div class="product-stars" aria-label="Rated 4.9 out of 5">
-                            <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>
-                            <span>(56)</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$34.90 <small>/ 950g</small></span>
-                            <span class="product-cta">Shop Now →</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            <!-- Product 3 -->
-            <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/otumoetai-summer-harvest-creamed-honey" class="product-card-link" aria-label="View Ōtumoetai Summer Harvest Creamed Honey">
-                    <div class="product-image">
-                        <img src="/images/otumoetai-summer-harvest-creamed-honey.jpg" alt="Ōtumoetai Summer Harvest Creamed Honey 950g jar" loading="lazy" itemprop="image">
-                        <div class="product-badge product-badge--green">Seasonal</div>
-                    </div>
-                    <div class="product-info">
-                        <span class="product-type">Creamed</span>
-                        <h3 class="product-name" itemprop="name">Ōtumoetai Summer Harvest</h3>
-                        <div class="product-stars" aria-label="Rated 4.8 out of 5">
-                            <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>
-                            <span>(38)</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$29.90 <small>/ 950g</small></span>
-                            <span class="product-cta">Shop Now →</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
-            <!-- Product 4 -->
-            <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/rewarewa-honey" class="product-card-link" aria-label="View Rewarewa Honey">
-                    <div class="product-image">
-                        <img src="/images/rewarewa-honey.jpg" alt="Rewarewa Honey 950g jar" loading="lazy" itemprop="image">
-                        <div class="product-badge product-badge--brown">Premium</div>
-                    </div>
-                    <div class="product-info">
-                        <span class="product-type">Native</span>
-                        <h3 class="product-name" itemprop="name">Rewarewa Honey</h3>
-                        <div class="product-stars" aria-label="Rated 5 out of 5">
-                            <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                            <span>(29)</span>
-                        </div>
-                        <div class="product-price-row">
-                            <span class="product-price">$36.90 <small>/ 950g</small></span>
-                            <span class="product-cta">Shop Now →</span>
-                        </div>
-                    </div>
-                </a>
-            </article>
+            @endforeach
         </div>
         <div class="section-cta animate-on-scroll">
             <a href="/shop" class="btn-secondary" id="viewAllBtn">View All Honey</a>
