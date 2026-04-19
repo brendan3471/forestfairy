@@ -146,27 +146,30 @@ class CartController extends Controller
     // This ensures the stripe_account header is properly scoped
     $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
 
+    $shippingOptions = [];
+    if ($totalAmount >= 7500) {
+        $shippingOptions[] = [
+            'shipping_rate_data' => [
+                'type'         => 'fixed_amount',
+                'fixed_amount' => ['amount' => 0, 'currency' => 'nzd'],
+                'display_name' => 'Free NZ Shipping (orders $75+)',
+            ],
+        ];
+    }
+    $shippingOptions[] = [
+        'shipping_rate_data' => [
+            'type'         => 'fixed_amount',
+            'fixed_amount' => ['amount' => 750, 'currency' => 'nzd'],
+            'display_name' => 'Standard NZ Shipping',
+        ],
+    ];
+
     $sessionParams = [
         'payment_method_types'        => ['card'],
         'line_items'                  => $lineItems,
         'mode'                        => 'payment',
         'shipping_address_collection' => ['allowed_countries' => ['NZ']],
-        'shipping_options'            => [
-            [
-                'shipping_rate_data' => [
-                    'type'         => 'fixed_amount',
-                    'fixed_amount' => ['amount' => 0, 'currency' => 'nzd'],
-                    'display_name' => 'Free NZ Shipping (orders $75+)',
-                ],
-            ],
-            [
-                'shipping_rate_data' => [
-                    'type'         => 'fixed_amount',
-                    'fixed_amount' => ['amount' => 750, 'currency' => 'nzd'],
-                    'display_name' => 'Standard NZ Shipping',
-                ],
-            ],
-        ],
+        'shipping_options'            => $shippingOptions,
         'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
         'cancel_url'  => route('cart.show'),
     ];

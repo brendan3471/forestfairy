@@ -76,28 +76,51 @@ class CheckoutController extends Controller
             'shipping_address_collection' => [
                 'allowed_countries' => ['NZ'],
             ],
-            'shipping_options'     => [
-                [
-                    'shipping_rate_data' => [
-                        'type'         => 'fixed_amount',
-                        'fixed_amount' => [
-                            'amount'   => 0,
-                            'currency' => 'nzd',
-                        ],
-                        'display_name' => 'Free NZ Shipping (orders $75+)',
+        $shippingOptions = [];
+        if ($product['price_cents'] >= 7500) {
+            $shippingOptions[] = [
+                'shipping_rate_data' => [
+                    'type'         => 'fixed_amount',
+                    'fixed_amount' => [
+                        'amount'   => 0,
+                        'currency' => 'nzd',
                     ],
+                    'display_name' => 'Free NZ Shipping (orders $75+)',
                 ],
+            ];
+        }
+        $shippingOptions[] = [
+            'shipping_rate_data' => [
+                'type'         => 'fixed_amount',
+                'fixed_amount' => [
+                    'amount'   => 750,
+                    'currency' => 'nzd',
+                ],
+                'display_name' => 'Standard NZ Shipping',
+            ],
+        ];
+
+        $sessionParams = [
+            'payment_method_types' => ['card'],
+            'line_items'           => [
                 [
-                    'shipping_rate_data' => [
-                        'type'         => 'fixed_amount',
-                        'fixed_amount' => [
-                            'amount'   => 750,
-                            'currency' => 'nzd',
+                    'price_data' => [
+                        'currency'     => 'nzd',
+                        'product_data' => [
+                            'name'        => $product['name'],
+                            'description' => $product['weight'] . ' — ' . $product['description'],
+                            'images'      => [$imageUrl],
                         ],
-                        'display_name' => 'Standard NZ Shipping',
+                        'unit_amount'  => $product['price_cents'],
                     ],
+                    'quantity' => 1,
                 ],
             ],
+            'mode'                 => 'payment',
+            'shipping_address_collection' => [
+                'allowed_countries' => ['NZ'],
+            ],
+            'shipping_options'     => $shippingOptions,
             'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'           => route('checkout.cancel', ['slug' => $slug]),
             'metadata'             => [
@@ -194,6 +217,10 @@ class CheckoutController extends Controller
                 );
 
                 DB::transaction(function () use ($fullSession) {
+                    if (!$fullSession->shipping_details) {
+                        Log::warning('No shipping details found in Stripe session', ['session_id' => $fullSession->id]);
+                    }
+
                     $order = Order::create([
                         'stripe_session_id' => $fullSession->id,
                         'customer_email'    => $fullSession->customer_details->email,
@@ -202,7 +229,7 @@ class CheckoutController extends Controller
                         'currency'          => $fullSession->currency,
                         'payment_status'    => $fullSession->payment_status,
                         'shipping_status'   => 'pending',
-                        'shipping_address'  => json_encode($fullSession->shipping_details),
+                        'shipping_address'  => $fullSession->shipping_details ? json_encode($fullSession->shipping_details) : null,
                         'shipping_amount'   => $fullSession->total_details->amount_shipping ?? 0,
                     ]);
 
