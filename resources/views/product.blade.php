@@ -6,7 +6,12 @@
 @section('og_type', 'product')
 
 @php
-    $defaultOption = $product['options'][$product['default_option']];
+    $selectedOptionKey = request('option', $product['default_option']);
+    // Fallback if the requested option doesn't exist
+    if (!isset($product['options'][$selectedOptionKey])) {
+        $selectedOptionKey = $product['default_option'];
+    }
+    $selectedOption = $product['options'][$selectedOptionKey];
 @endphp
 
 @section('schema')
@@ -22,7 +27,7 @@
   },
   "offers": {
     "@@type": "Offer",
-    "price": "{{ $defaultOption['price'] }}",
+    "price": "{{ $selectedOption['price'] }}",
     "priceCurrency": "NZD",
     "availability": "https://schema.org/InStock",
     "url": "https://forestfairyhoney.co.nz/shop/{{ $slug }}",
@@ -89,8 +94,8 @@
                 </div>
                 
                 <div class="product-detail-price">
-                    <span class="product-price-lg" id="displayPrice">${{ $defaultOption['price'] }}</span>
-                    <span class="product-weight" id="displayWeight">/ {{ $defaultOption['weight'] }}</span>
+                    <span class="product-price-lg" id="displayPrice">${{ $selectedOption['price'] }}</span>
+                    <span class="product-weight" id="displayWeight">/ {{ $selectedOption['weight'] }}</span>
                 </div>
 
                 <p class="product-detail-desc">{{ $product['description'] }}</p>
@@ -110,15 +115,20 @@
                 <form action="/cart/add/{{ $slug }}" method="POST" id="addToCartForm" class="product-atc-form">
                     @csrf
                     
-                    <div class="product-option-row">
-                        <label for="option" class="product-option-label">Choose Size</label>
-                        <select name="option" id="optionSelector" class="product-option-select">
+                    <div class="product-option-row--pills">
+                        <label class="product-option-label--pills">Size</label>
+                        <div class="variant-pills" id="variantPills">
                             @foreach($product['options'] as $key => $opt)
-                                <option value="{{ $key }}" data-price="{{ $opt['price'] }}" data-weight="{{ $opt['weight'] }}" {{ $key === $product['default_option'] ? 'selected' : '' }}>
-                                    {{ $opt['weight'] }} — ${{ $opt['price'] }}
-                                </option>
+                                <button type="button" 
+                                        class="variant-pill {{ $key === $selectedOptionKey ? 'active' : '' }}" 
+                                        data-key="{{ $key }}" 
+                                        data-price="{{ $opt['price'] }}" 
+                                        data-weight="{{ $opt['weight'] }}">
+                                    {{ $opt['weight'] }}
+                                </button>
                             @endforeach
-                        </select>
+                        </div>
+                        <input type="hidden" name="option" id="selectedOption" value="{{ $selectedOptionKey }}">
                     </div>
 
                     <div class="product-qty-row">
@@ -143,22 +153,33 @@
 
                 <script>
                 (function(){
-                    var input = document.getElementById('qty');
-                    var selector = document.getElementById('optionSelector');
+                    var qtyInput = document.getElementById('qty');
+                    var selectedOptionInput = document.getElementById('selectedOption');
                     var displayPrice = document.getElementById('displayPrice');
                     var displayWeight = document.getElementById('displayWeight');
+                    var pills = document.querySelectorAll('.variant-pill');
 
                     document.getElementById('qtyMinus').addEventListener('click', function(){
-                        if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+                        if(parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
                     });
                     document.getElementById('qtyPlus').addEventListener('click', function(){
-                        if(parseInt(input.value) < 10) input.value = parseInt(input.value) + 1;
+                        if(parseInt(qtyInput.value) < 10) qtyInput.value = parseInt(qtyInput.value) + 1;
                     });
 
-                    selector.addEventListener('change', function(){
-                        var selectedOption = selector.options[selector.selectedIndex];
-                        displayPrice.textContent = '$' + selectedOption.getAttribute('data-price');
-                        displayWeight.textContent = '/ ' + selectedOption.getAttribute('data-weight');
+                    pills.forEach(function(pill) {
+                        pill.addEventListener('click', function() {
+                            // Update active state
+                            pills.forEach(p => p.classList.remove('active'));
+                            this.classList.add('active');
+
+                            // Update hidden input
+                            var key = this.getAttribute('data-key');
+                            selectedOptionInput.value = key;
+
+                            // Update display info
+                            displayPrice.textContent = '$' + this.getAttribute('data-price');
+                            displayWeight.textContent = '/ ' + this.getAttribute('data-weight');
+                        });
                     });
                 })();
                 </script>
@@ -201,6 +222,13 @@
                     <div class="product-info">
                         <span class="product-type">New Zealand Honey</span>
                         <h3 class="product-name">{{ $r['name'] }}</h3>
+                        <div class="product-stars" aria-label="Rated 5 out of 5">
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                        </div>
                         <div class="product-price-row">
                             <span class="product-price">${{ $r['price'] }} <small>/ {{ $r['weight'] }}</small></span>
                             <span class="product-cta">View →</span>

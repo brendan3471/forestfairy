@@ -184,6 +184,15 @@
                             </span>
                             <span class="product-cta">Shop Now →</span>
                         </div>
+
+                        <!-- All weights display -->
+                        <div class="product-variant-pills-shop">
+                            @foreach($p['options'] as $oKey => $opt)
+                                <a href="/shop/{{ $slug }}?option={{ $oKey }}" class="variant-pill-shop" aria-label="View {{ $opt['weight'] }} size">
+                                    {{ $opt['weight'] }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
                 </a>
             </article>

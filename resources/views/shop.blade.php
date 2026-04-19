@@ -73,7 +73,7 @@
                 if ($slug === 'rewarewa-honey') { $badge = 'Premium'; $badgeClass = 'product-badge--brown'; }
             @endphp
             <article class="product-card animate-on-scroll" itemscope itemtype="https://schema.org/Product">
-                <a href="/shop/{{ $slug }}" class="product-card-link" aria-label="View {{ $p['name'] }} {{ $defaultOpt['weight'] }}">
+                <a href="/shop/{{ $slug }}" class="product-card-link" aria-label="View {{ $p['name'] }}">
                     <div class="product-image">
                         <img src="{{ $imgMap[$p['image']] ?? '' }}" alt="{{ $p['name'] }}" loading="lazy" itemprop="image">
                         @if($badge)
@@ -100,6 +100,15 @@
                             <meta itemprop="priceCurrency" content="NZD">
                             <meta itemprop="availability" content="https://schema.org/InStock">
                             <span class="product-price">${{ $defaultOpt['price'] }} <small>/ {{ $defaultOpt['weight'] }}</small></span>
+                        </div>
+
+                        <!-- All weights display -->
+                        <div class="product-variant-pills-shop">
+                            @foreach($p['options'] as $oKey => $opt)
+                                <a href="/shop/{{ $slug }}?option={{ $oKey }}" class="variant-pill-shop" aria-label="View {{ $opt['weight'] }} size">
+                                    {{ $opt['weight'] }}
+                                </a>
+                            @endforeach
                         </div>
                     </div>
                 </a>
