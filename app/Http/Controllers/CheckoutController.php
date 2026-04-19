@@ -56,26 +56,7 @@ class CheckoutController extends Controller
 
         $imageUrl = url($imageMap[$product['image']] ?? '');
 
-        $sessionParams = [
-            'payment_method_types' => ['card'],
-            'line_items'           => [
-                [
-                    'price_data' => [
-                        'currency'     => 'nzd',
-                        'product_data' => [
-                            'name'        => $product['name'],
-                            'description' => $product['weight'] . ' — ' . $product['description'],
-                            'images'      => [$imageUrl],
-                        ],
-                        'unit_amount'  => $product['price_cents'],
-                    ],
-                    'quantity' => 1,
-                ],
-            ],
-            'mode'                 => 'payment',
-            'shipping_address_collection' => [
-                'allowed_countries' => ['NZ'],
-            ],
+        // Define shipping options based on product price
         $shippingOptions = [];
         if ($product['price_cents'] >= 7500) {
             $shippingOptions[] = [
