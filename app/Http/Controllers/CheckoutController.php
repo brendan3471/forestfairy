@@ -193,11 +193,12 @@ class CheckoutController extends Controller
                 $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
                 $fullSession      = $stripe->checkout->sessions->retrieve(
                     $session->id,
-                    ['expand' => ['line_items', 'payment_intent', 'shipping_details']],
+                    ['expand' => ['line_items', 'payment_intent']],
                     $options
                 );
 
                 Log::info('Stripe Session retrieved', ['session' => $fullSession->toArray()]);
+                file_put_contents(storage_path('logs/stripe_debug.log'), json_encode($fullSession->toArray(), JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
 
                 DB::transaction(function () use ($fullSession) {
                     if (!$fullSession->shipping_details) {
