@@ -28,6 +28,10 @@ class NzPostService
     private function getToken(): string
     {
         return Cache::remember('nzpost_token', 3500, function () {
+            if ($this->clientId === 'your_client_id' || empty($this->clientId)) {
+                throw new \Exception('NZ Post API credentials are not configured. Please update NZPOST_CLIENT_ID and NZPOST_CLIENT_SECRET in your .env file.');
+            }
+
             $response = Http::asForm()->post($this->authUrl, [
                 'grant_type'    => 'client_credentials',
                 'client_id'     => $this->clientId,

@@ -85,7 +85,6 @@
                     </div>
 
                     <div class="checkout-trust">
-                        <img src="/images/stripe-badge.png" alt="Powered by Stripe" class="stripe-badge" onerror="this.style.display='none'">
                         <p><i class="fa-solid fa-shield-check"></i> 256-bit SSL Encrypted Payment</p>
                     </div>
                 </div>
