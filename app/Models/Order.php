@@ -18,6 +18,7 @@ class Order extends Model
         'shipping_amount',
         'tracking_number',
         'tracking_url',
+        'label_url',
     ];
 
     public function items()

@@ -76,5 +76,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/orders', [AdminController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
+    Route::post('/orders/{order}/generate-label', [AdminController::class, 'generateLabel'])->name('orders.generateLabel');
+    Route::get('/orders/{order}/track', [AdminController::class, 'trackOrder'])->name('orders.track');
 });
 

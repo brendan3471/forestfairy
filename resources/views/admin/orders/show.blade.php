@@ -93,6 +93,37 @@
                 <button type="submit" class="btn btn-primary">Update Status & Tracking</button>
             </form>
         </div>
+
+        <div class="card" style="border: 1px solid var(--gold); background: #fffcf5;">
+            <h3 style="margin-bottom: 20px; color: var(--brown); font-size: 1.1rem;"><i class="fa-solid fa-truck-pickup"></i> NZ Post Integration</h3>
+            
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                @if(!$order->label_url)
+                    <form action="{{ route('admin.orders.generateLabel', $order) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-primary" style="background: var(--gold); border-color: var(--gold); padding: 10px 20px; font-size: 0.9rem;">
+                            <i class="fa-solid fa-file-invoice"></i> Generate Shipping Label
+                        </button>
+                    </form>
+                @else
+                    <a href="{{ $order->label_url }}" target="_blank" class="btn" style="background: #2D6A4F; color: white; padding: 10px 20px; text-decoration: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600;">
+                        <i class="fa-solid fa-print"></i> View/Print Label
+                    </a>
+                @endif
+
+                @if($order->tracking_number)
+                    <a href="{{ route('admin.orders.track', $order) }}" class="btn" style="background: var(--dark); color: white; padding: 10px 20px; text-decoration: none; border-radius: var(--radius); font-size: 0.9rem; font-weight: 600;">
+                        <i class="fa-solid fa-location-crosshairs"></i> Real-time Tracking
+                    </a>
+                @endif
+            </div>
+
+            @if($order->label_url)
+                <div style="margin-top: 15px; font-size: 0.85rem; color: var(--text-muted);">
+                    Consignment ID: <strong>{{ $order->tracking_number }}</strong>
+                </div>
+            @endif
+        </div>
     </div>
 
     <!-- Customer & Shipping Detail -->

@@ -78,4 +78,49 @@ class NzPostService
 
         return $response->json('address') ?? [];
     }
+
+    /**
+     * Create a shipment and generate a label
+     */
+    public function createShipment(array $shipmentData): array
+    {
+        $response = Http::withToken($this->getToken())
+            ->post("{$this->baseUrl}/parcellabel/3.0/domestic/shipments", $shipmentData);
+
+        if (!$response->successful()) {
+            throw new \Exception('NZ Post shipment creation failed: ' . $response->body());
+        }
+
+        return $response->json() ?? [];
+    }
+
+    /**
+     * Get tracking status for a consignment
+     */
+    public function getTrackingStatus(string $trackingNumber): array
+    {
+        $response = Http::withToken($this->getToken())
+            ->get("{$this->baseUrl}/parceltrack/2.0/track/{$trackingNumber}");
+
+        if (!$response->successful()) {
+            throw new \Exception('NZ Post tracking failed: ' . $response->body());
+        }
+
+        return $response->json() ?? [];
+    }
+
+    /**
+     * Get domestic shipping rates
+     */
+    public function getShippingRates(array $rateData): array
+    {
+        $response = Http::withToken($this->getToken())
+            ->post("{$this->baseUrl}/parcelshipping/2.0/domestic/rates", $rateData);
+
+        if (!$response->successful()) {
+            throw new \Exception('NZ Post rates fetch failed: ' . $response->body());
+        }
+
+        return $response->json('rates') ?? [];
+    }
 }
