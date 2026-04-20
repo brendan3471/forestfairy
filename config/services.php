@@ -35,6 +35,13 @@ return [
         ],
     ],
 
+    'nzpost' => [
+        'client_id'     => env('NZPOST_CLIENT_ID'),
+        'client_secret' => env('NZPOST_CLIENT_SECRET'),
+        'env'           => env('NZPOST_ENV', 'uat'),
+    ],
+
+
     'stripe' => [
         'key'                    => env('STRIPE_KEY'),
         'secret'                 => env('STRIPE_SECRET'),

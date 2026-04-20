@@ -119,12 +119,9 @@
                     <span>${{ number_format($subtotal / 100, 2) }} <small>NZD</small></span>
                 </div>
 
-                <form action="/cart/checkout" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-primary btn-full cart-checkout-btn" id="cartCheckoutBtn">
-                        <i class="fa-brands fa-stripe" aria-hidden="true"></i> Secure Checkout
-                    </button>
-                </form>
+                <a href="{{ route('checkout') }}" class="btn-primary btn-full cart-checkout-btn" id="cartCheckoutBtn" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fa-solid fa-lock" aria-hidden="true"></i> Proceed to Checkout
+                </a>
 
                 <a href="/shop" class="cart-continue-link">
                     <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Continue Shopping

@@ -15,6 +15,134 @@ use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     /**
+     * Show the custom checkout page.
+     */
+    public function index()
+    {
+        $cart     = session('cart', []);
+        $products = config('products');
+        $items    = [];
+        $subtotal = 0;
+
+        foreach ($cart as $key => $row) {
+            [$slug, $weight] = explode(':', $key . ':');
+            if (! isset($products[$slug])) continue;
+
+            $product = $products[$slug];
+            $option  = $product['options'][$weight] ?? $product['options'][$product['default_option']] ?? null;
+            if (!$option) continue;
+
+            $qty       = max(1, (int) $row['quantity']);
+            $lineTotal = $option['price_cents'] * $qty;
+            $subtotal += $lineTotal;
+
+            $items[] = [
+                'name'     => $product['name'],
+                'weight'   => $option['weight'],
+                'quantity' => $qty,
+                'price'    => $option['price'],
+                'total'    => number_format($lineTotal / 100, 2),
+            ];
+        }
+
+        if (empty($items)) {
+            return redirect()->route('cart.show');
+        }
+
+        return view('checkout', compact('items', 'subtotal'));
+    }
+
+    /**
+     * Prepare Stripe session with custom shipping from NZ Post.
+     */
+    public function prepare(Request $request)
+    {
+        $request->validate([
+            'address_id'      => 'required|string',
+            'shipping_type'   => 'required|string',
+            'shipping_amount' => 'required|numeric',
+        ]);
+
+        $cart     = session('cart', []);
+        $products = config('products');
+        $lineItems = [];
+        $totalAmount = 0;
+
+        $imgMap = [
+            'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
+            'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+            'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+            'rewarewa'      => '/images/rewarewa-honey.jpg',
+        ];
+
+        foreach ($cart as $key => $row) {
+            [$slug, $weight] = explode(':', $key . ':');
+            if (! isset($products[$slug])) continue;
+
+            $product = $products[$slug];
+            $option  = $product['options'][$weight] ?? null;
+            if (!$option) continue;
+
+            $qty = (int) $row['quantity'];
+            $lineItems[] = [
+                'price_data' => [
+                    'currency'     => 'nzd',
+                    'product_data' => [
+                        'name'        => $product['name'] . ' (' . $option['weight'] . ')',
+                        'images'      => [url($imgMap[$product['image']] ?? '')],
+                        'metadata'    => [
+                            'sku'          => $option['sku'],
+                            'product_slug' => $slug,
+                        ],
+                    ],
+                    'unit_amount'  => $option['price_cents'],
+                ],
+                'quantity' => $qty,
+            ];
+            $totalAmount += $option['price_cents'] * $qty;
+        }
+
+        // Add Shipping as a line item
+        $lineItems[] = [
+            'price_data' => [
+                'currency'     => 'nzd',
+                'product_data' => [
+                    'name'        => 'Shipping (' . ucfirst($request->shipping_type) . ')',
+                    'description' => 'NZ Post Delivery',
+                    'metadata'    => ['shipping' => 'true'],
+                ],
+                'unit_amount'  => (int) ($request->shipping_amount * 100),
+            ],
+            'quantity' => 1,
+        ];
+
+        $stripe = $this->stripeClient();
+        $connectAccountId = $this->connectedAccountId();
+
+        $sessionParams = [
+            'payment_method_types' => ['card'],
+            'line_items'           => $lineItems,
+            'mode'                 => 'payment',
+            'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'           => route('checkout'),
+            'metadata'             => [
+                'address_id' => $request->address_id,
+            ],
+        ];
+
+        if ($connectAccountId) {
+            $sessionParams['payment_intent_data'] = [
+                'application_fee_amount' => (int) round($totalAmount * 0.10),
+            ];
+            $session = $stripe->checkout->sessions->create($sessionParams, ['stripe_account' => $connectAccountId]);
+        } else {
+            $session = $stripe->checkout->sessions->create($sessionParams);
+        }
+
+        return response()->json(['url' => $session->url]);
+    }
+
+    /**
      * Returns the connected account ID if configured, or null.
      */
     private function connectedAccountId(): ?string
@@ -225,6 +353,20 @@ class CheckoutController extends Controller
                         Log::warning('No shipping details found in Stripe session or Payment Intent', ['session_id' => $fullSession->id]);
                     }
 
+                    $shippingAmountFromLineItems = 0;
+                    $lineItemsProcessed = [];
+
+                    foreach ($fullSession->line_items->data as $item) {
+                        $isShipping = isset($item->price->product->metadata->shipping) && $item->price->product->metadata->shipping === 'true';
+                        
+                        if ($isShipping) {
+                            $shippingAmountFromLineItems += $item->amount_total;
+                            continue;
+                        }
+
+                        $lineItemsProcessed[] = $item;
+                    }
+
                     $order = Order::create([
                         'stripe_session_id' => $fullSession->id,
                         'customer_email'    => $fullSession->customer_details->email,
@@ -234,10 +376,10 @@ class CheckoutController extends Controller
                         'payment_status'    => $fullSession->payment_status,
                         'shipping_status'   => 'pending',
                         'shipping_address'  => $shippingAddress ? json_encode($shippingAddress) : null,
-                        'shipping_amount'   => $fullSession->total_details->amount_shipping ?? 0,
+                        'shipping_amount'   => $shippingAmountFromLineItems > 0 ? $shippingAmountFromLineItems : ($fullSession->total_details->amount_shipping ?? 0),
                     ]);
 
-                    foreach ($fullSession->line_items->data as $item) {
+                    foreach ($lineItemsProcessed as $item) {
                         OrderItem::create([
                             'order_id'     => $order->id,
                             'product_slug' => $item->price->product->metadata->product_slug ?? 'unknown',

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Api\AddressController;
 
 Route::get('/', function () {
     return view('home');
@@ -34,6 +35,9 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+Route::post('/checkout/prepare', [CheckoutController::class, 'prepare'])->name('checkout.prepare');
+
 // ---------------------------------------------------------------------------
 // Stripe Checkout
 // ---------------------------------------------------------------------------
@@ -52,6 +56,14 @@ Route::post('/cart/add/{slug}',        [CartController::class, 'add'])->name('ca
 Route::post('/cart/update/{key}',     [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{key}',     [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/checkout',          [CartController::class, 'checkout'])->name('cart.checkout');
+
+// ---------------------------------------------------------------------------
+// Address
+// ---------------------------------------------------------------------------
+Route::prefix('address')->group(function () {
+    Route::get('/search', [AddressController::class, 'search']);
+    Route::get('/details/{addressId}', [AddressController::class, 'details']);
+});
 
 // ---------------------------------------------------------------------------
 // Admin Panel
