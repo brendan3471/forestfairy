@@ -108,13 +108,13 @@ class NzPostService
     {
         $response = Http::withToken($this->getToken())
             ->timeout(15)
-            ->post("{$this->baseUrl}/parcellabel/3.0/domestic/shipments", $shipmentData);
+            ->post("{$this->baseUrl}/labels", $shipmentData);
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
                 ->timeout(15)
-                ->post("{$this->baseUrl}/parcellabel/3.0/domestic/shipments", $shipmentData);
+                ->post("{$this->baseUrl}/labels", $shipmentData);
         }
 
         if (!$response->successful()) {
@@ -127,17 +127,17 @@ class NzPostService
     /**
      * Get tracking status for a consignment
      */
-    public function getTrackingStatus(string $trackingNumber): array
+    public function getTrackingStatus(string $consignmentId): array
     {
         $response = Http::withToken($this->getToken())
             ->timeout(15)
-            ->get("{$this->baseUrl}/parceltrack/2.0/track/{$trackingNumber}");
+            ->get("{$this->baseUrl}/labels/{$consignmentId}/status");
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
                 ->timeout(15)
-                ->get("{$this->baseUrl}/parceltrack/2.0/track/{$trackingNumber}");
+                ->get("{$this->baseUrl}/labels/{$consignmentId}/status");
         }
         
         if (!$response->successful()) {

@@ -105,7 +105,8 @@ class AdminController extends Controller
             $shipment = $nzPost->createShipment($shipmentData);
             
             $order->update([
-                'tracking_number' => $shipment['tracking_number'] ?? null,
+                'consignment_id'  => $shipment['consignment_id'] ?? null,
+                'tracking_number' => $shipment['tracking_number'] ?? $shipment['consignment_id'] ?? null,
                 'label_url'       => $shipment['label_url'] ?? null,
                 'shipping_status' => 'shipped',
             ]);

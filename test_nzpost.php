@@ -39,6 +39,7 @@ try {
     $shipment = $nzPost->createShipment($shipmentData);
     
     echo "SUCCESS!\n";
+    echo "Consignment ID: " . ($shipment['consignment_id'] ?? 'N/A') . "\n";
     echo "Tracking Number: " . ($shipment['tracking_number'] ?? 'N/A') . "\n";
     echo "Label URL: " . ($shipment['label_url'] ?? 'N/A') . "\n";
 
