@@ -17,6 +17,7 @@ class NzPostService
         $this->clientId = config('services.nzpost.client_id');
         $this->clientSecret = config('services.nzpost.client_secret');
         $this->baseUrl = match(config('services.nzpost.env')) {
+            'dev'  => 'https://api.dev.nzpost.co.nz/parcellabel/v3',
             'uat'  => 'https://api.uat.nzpost.co.nz/parcellabel/v3',
             default => 'https://api.nzpost.co.nz/parcellabel/v3',
         };
