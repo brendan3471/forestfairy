@@ -16,9 +16,11 @@ class NzPostService
     {
         $this->clientId = config('services.nzpost.client_id');
         $this->clientSecret = config('services.nzpost.client_secret');
-        $this->baseUrl = config('services.nzpost.env') === 'uat'
-            ? 'https://api.uat.nzpost.co.nz'
-            : 'https://api.nzpost.co.nz';
+        $this->baseUrl = match(config('services.nzpost.env')) {
+            'uat'   => 'https://api.uat.nzpost.co.nz',
+            'dev'   => 'https://api.dev.nzpost.co.nz',
+            default => 'https://api.nzpost.co.nz',
+        };
         $this->authUrl = config('services.nzpost.auth_url', 'https://oauth.nzpost.co.nz/as/token.oauth2');
     }
 
