@@ -19,14 +19,15 @@ class NzPostService
         $this->baseUrl = config('services.nzpost.env') === 'uat'
             ? 'https://api.uat.nzpost.co.nz'
             : 'https://api.nzpost.co.nz';
-        $this->authUrl = 'https://oauth.nzpost.co.nz/as/token.oauth2';
+        $this->authUrl = config('services.nzpost.auth_url', 'https://oauth.nzpost.co.nz/as/token.oauth2');
     }
 
     /**
      * Get OAuth token, cached for 1 hour
      */
-    private function getToken(): string
+    private function getToken(bool $forceRefresh = false): string
     {
+        if ($forceRefresh) Cache::forget('nzpost_token');
         return Cache::remember('nzpost_token', 3500, function () {
             if ($this->clientId === 'your_client_id' || empty($this->clientId)) {
                 throw new \Exception('NZ Post API credentials are not configured. Please update NZPOST_CLIENT_ID and NZPOST_CLIENT_SECRET in your .env file.');
@@ -52,10 +53,21 @@ class NzPostService
     public function searchAddress(string $query, int $count = 10): array
     {
         $response = Http::withToken($this->getToken())
+            ->timeout(15)
             ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses", [
                 'q'       => $query,
                 'count'   => $count,
             ]);
+
+        // If 401, refresh token and retry once
+        if ($response->status() === 401) {
+            $response = Http::withToken($this->getToken(true))
+                ->timeout(15)
+                ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses", [
+                    'q'       => $query,
+                    'count'   => $count,
+                ]);
+        }
 
         if (!$response->successful()) {
             throw new \Exception('NZ Post address search failed: ' . $response->body());
@@ -70,7 +82,15 @@ class NzPostService
     public function getAddressDetails(string $addressId): array
     {
         $response = Http::withToken($this->getToken())
+            ->timeout(15)
             ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses/{$addressId}");
+
+        // If 401, refresh token and retry once
+        if ($response->status() === 401) {
+            $response = Http::withToken($this->getToken(true))
+                ->timeout(15)
+                ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses/{$addressId}");
+        }
 
         if (!$response->successful()) {
             throw new \Exception('NZ Post address details failed: ' . $response->body());
@@ -85,7 +105,15 @@ class NzPostService
     public function createShipment(array $shipmentData): array
     {
         $response = Http::withToken($this->getToken())
+            ->timeout(15)
             ->post("{$this->baseUrl}/parcellabel/3.0/domestic/shipments", $shipmentData);
+
+        // If 401, refresh token and retry once
+        if ($response->status() === 401) {
+            $response = Http::withToken($this->getToken(true))
+                ->timeout(15)
+                ->post("{$this->baseUrl}/parcellabel/3.0/domestic/shipments", $shipmentData);
+        }
 
         if (!$response->successful()) {
             throw new \Exception('NZ Post shipment creation failed: ' . $response->body());
@@ -100,8 +128,16 @@ class NzPostService
     public function getTrackingStatus(string $trackingNumber): array
     {
         $response = Http::withToken($this->getToken())
+            ->timeout(15)
             ->get("{$this->baseUrl}/parceltrack/2.0/track/{$trackingNumber}");
 
+        // If 401, refresh token and retry once
+        if ($response->status() === 401) {
+            $response = Http::withToken($this->getToken(true))
+                ->timeout(15)
+                ->get("{$this->baseUrl}/parceltrack/2.0/track/{$trackingNumber}");
+        }
+        
         if (!$response->successful()) {
             throw new \Exception('NZ Post tracking failed: ' . $response->body());
         }
@@ -115,7 +151,15 @@ class NzPostService
     public function getShippingRates(array $rateData): array
     {
         $response = Http::withToken($this->getToken())
+            ->timeout(15)
             ->post("{$this->baseUrl}/parcelshipping/2.0/domestic/rates", $rateData);
+
+        // If 401, refresh token and retry once
+        if ($response->status() === 401) {
+            $response = Http::withToken($this->getToken(true))
+                ->timeout(15)
+                ->post("{$this->baseUrl}/parcelshipping/2.0/domestic/rates", $rateData);
+        }
 
         if (!$response->successful()) {
             throw new \Exception('NZ Post rates fetch failed: ' . $response->body());

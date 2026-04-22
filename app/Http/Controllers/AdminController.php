@@ -84,9 +84,23 @@ class AdminController extends Controller
                 ],
                 'sender' => config('services.nzpost.sender_details'), // Need to configure this
                 'parcel' => [
-                    'weight' => 1.0, // placeholder
+                    'weight' => $order->items->reduce(function ($total, $item) {
+                        $weightKg = 0;
+                        // Extract weight (300, 500, 950) from SKU or product_name
+                        if (preg_match('/(300|500|950)/', $item->sku . $item->product_name, $matches)) {
+                            $weightKg = (float)$matches[1] / 1000;
+                        }
+                        return $total + ($weightKg * $item->quantity);
+                    }, 0) ?: 1.0, // Fallback to 1.0 if no weights found
+                    'length' => 20, // placeholder or from product
+                    'width'  => 15,
+                    'height' => 10,
                 ],
             ];
+
+            if (empty($shipment['tracking_number'])) {
+                throw new \Exception('No tracking number returned from NZ Post.');
+            }
 
             $shipment = $nzPost->createShipment($shipmentData);
             

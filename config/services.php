@@ -39,6 +39,13 @@ return [
         'client_id'     => env('NZPOST_CLIENT_ID'),
         'client_secret' => env('NZPOST_CLIENT_SECRET'),
         'env'           => env('NZPOST_ENV', 'uat'),
+        'sender_details' => [
+            'name'     => env('NZPOST_SENDER_NAME'),
+            'street'   => env('NZPOST_SENDER_STREET'),
+            'city'     => env('NZPOST_SENDER_CITY'),
+            'postcode' => env('NZPOST_SENDER_POSTCODE'),
+        ],
+        'auth_url' => env('NZPOST_AUTH_URL'),
     ],
 
 
