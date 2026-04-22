@@ -17,9 +17,8 @@ class NzPostService
         $this->clientId = config('services.nzpost.client_id');
         $this->clientSecret = config('services.nzpost.client_secret');
         $this->baseUrl = match(config('services.nzpost.env')) {
-            'uat'  => 'https://parcellabel-3-0-uat.au.cloudhub.io/api',
-            'dev'  => 'https://parcellabel-3-0-dev.au.cloudhub.io/api',
-            default => 'https://parcellabel-3-0-prod.au.cloudhub.io/api',
+            'uat'  => 'https://api.uat.nzpost.co.nz/parcellabel/v3',
+            default => 'https://api.nzpost.co.nz/parcellabel/v3',
         };
         $this->authUrl = config('services.nzpost.auth_url', 'https://oauth.nzpost.co.nz/as/token.oauth2');
     }
