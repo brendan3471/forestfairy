@@ -71,38 +71,76 @@ class AdminController extends Controller
         try {
             $address = json_decode($order->shipping_address, true);
             
-            // Simplified shipment data — would need real weight/dims from products
+            // Calculate dynamic weight
+            $totalWeight = $order->items->reduce(function ($total, $item) {
+                $weightKg = 0;
+                if (preg_match('/(300|500|950)/', $item->sku . $item->product_name, $matches)) {
+                    $weightKg = (float)$matches[1] / 1000;
+                }
+                return $total + ($weightKg * $item->quantity);
+            }, 0) ?: 1.0;
+
+            // Simple extraction of street number from line1
+            $streetNumber = '';
+            $street = $address['line1'] ?? '';
+            if (preg_match('/^(\d+[a-zA-Z]?)\s+(.+)$/', $street, $matches)) {
+                $streetNumber = $matches[1];
+                $street = $matches[2];
+            }
+
             $shipmentData = [
-                'recipient' => [
-                    'name'         => $order->customer_name,
-                    'email'        => $order->customer_email,
-                    'address_id'   => $order->address_id ?? null, // if we stored it
-                    'street'       => $address['line1'] ?? '',
-                    'suburb'       => $address['line2'] ?? '',
-                    'city'         => $address['city'] ?? '',
-                    'postcode'     => $address['postal_code'] ?? '',
+                'carrier'             => 'PACE',
+                'orientation'         => 'LANDSCAPE',
+                'format'              => 'PDF',
+                'sender_reference_1'  => (string) $order->id,
+                'sender_reference_2'  => $order->customer_name,
+
+                'sender_details' => [
+                    'name'         => config('services.nzpost.sender_details.name'),
+                    'phone'        => config('services.nzpost.sender_details.phone'),
+                    'email'        => config('services.nzpost.sender_details.email'),
+                    'company_name' => config('services.nzpost.sender_details.company'),
                 ],
-                'sender' => config('services.nzpost.sender_details'), // Need to configure this
-                'parcel' => [
-                    'weight' => $order->items->reduce(function ($total, $item) {
-                        $weightKg = 0;
-                        // Extract weight (300, 500, 950) from SKU or product_name
-                        if (preg_match('/(300|500|950)/', $item->sku . $item->product_name, $matches)) {
-                            $weightKg = (float)$matches[1] / 1000;
-                        }
-                        return $total + ($weightKg * $item->quantity);
-                    }, 0) ?: 1.0, // Fallback to 1.0 if no weights found
-                    'length' => 20, // placeholder or from product
-                    'width'  => 15,
-                    'height' => 10,
+
+                'pickup_address' => config('services.nzpost.pickup_address'),
+
+                'receiver_details' => [
+                    'name'  => $order->customer_name,
+                    'email' => $order->customer_email,
+                    'phone' => $order->customer_phone ?? '',
+                ],
+
+                'delivery_address' => [
+                    'is_collection'  => false,
+                    'street_number'  => $streetNumber ?: ($address['street_number'] ?? ''),
+                    'street'         => $street,
+                    'suburb'         => $address['line2'] ?? '',
+                    'city'           => $address['city'] ?? '',
+                    'country_code'   => 'NZ',
+                    'postcode'       => $address['postal_code'] ?? '',
+                    'instructions'   => $address['instructions'] ?? '',
+                ],
+
+                'parcel_details' => [
+                    [
+                        'service_code'     => 'CPOLE', // confirm correct service code with NZ Post
+                        'return_indicator' => 'OUTBOUND',
+                        'description'      => 'Honey Order',
+                        'dimensions'       => [
+                            'weight_kg' => (float) $totalWeight,
+                            'length_cm' => 20,
+                            'width_cm'  => 15,
+                            'height_cm' => 10,
+                        ],
+                    ]
                 ],
             ];
+
+            $shipment = $nzPost->createShipment($shipmentData);
 
             if (empty($shipment['tracking_number'])) {
                 throw new \Exception('No tracking number returned from NZ Post.');
             }
-
-            $shipment = $nzPost->createShipment($shipmentData);
             
             $order->update([
                 'consignment_id'  => $shipment['consignment_id'] ?? null,

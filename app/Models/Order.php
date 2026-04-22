@@ -9,6 +9,7 @@ class Order extends Model
     protected $fillable = [
         'stripe_session_id',
         'customer_email',
+        'customer_phone',
         'customer_name',
         'total_amount',
         'currency',

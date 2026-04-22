@@ -370,6 +370,7 @@ class CheckoutController extends Controller
                     $order = Order::create([
                         'stripe_session_id' => $fullSession->id,
                         'customer_email'    => $fullSession->customer_details->email,
+                        'customer_phone'    => $fullSession->customer_details->phone ?? null,
                         'customer_name'     => $fullSession->customer_details->name,
                         'total_amount'      => $fullSession->amount_total,
                         'currency'          => $fullSession->currency,
