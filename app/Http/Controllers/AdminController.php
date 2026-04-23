@@ -136,6 +136,8 @@ class AdminController extends Controller
                 ],
             ];
 
+            
+
             $shipment = $nzPost->createShipment($shipmentData);
 
             if (empty($shipment['tracking_number'])) {

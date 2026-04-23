@@ -70,6 +70,16 @@ try {
 ];
 
     echo "Sending request to NZ Post (" . config('services.nzpost.env') . ")...\n";
+    // Temporary debug - remove after testing
+    $response = \Illuminate\Support\Facades\Http::asForm()->post('https://oauth.nzpost.co.nz/as/token.oauth2', [
+        'grant_type'    => 'client_credentials',
+        'client_id'     => config('services.nzpost.client_id'),
+        'client_secret' => config('services.nzpost.client_secret'),
+    ]);
+
+    echo "Auth Status: " . $response->status() . "\n";
+    echo "Auth Response: " . $response->body() . "\n";
+    echo "Client ID being used: " . config('services.nzpost.client_id') . "\n";
     
     $shipment = $nzPost->createShipment($shipmentData);
     
