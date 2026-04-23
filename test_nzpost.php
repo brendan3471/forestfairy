@@ -17,22 +17,57 @@ try {
     
     // Create a mock shipment data
     $shipmentData = [
-        'recipient' => [
-            'name'         => 'Test Customer',
-            'email'        => 'test@example.com',
-            'street'       => '100 Queen Street',
-            'suburb'       => 'Auckland Central',
-            'city'         => 'Auckland',
-            'postcode'     => '1010',
-        ],
-        'sender' => config('services.nzpost.sender_details'),
-        'parcel' => [
-            'weight' => 0.95, // 950g
-            'length' => 20,
-            'width'  => 15,
-            'height' => 10,
-        ],
-    ];
+    'carrier'            => 'PACE',
+    'orientation'        => 'LANDSCAPE',
+    'format'             => 'PDF',
+    'sender_reference_1' => 'TestOrder001',
+
+    'sender_details' => [
+        'name'         => 'Forest Fairy Honey',
+        'phone'        => '6421996820', // your real phone
+        'email'        => 'accounts@forestfairyhoney.co.nz', // your real email
+        'company_name' => 'Forest Fairy Honey',
+    ],
+
+    'pickup_address' => [
+        'street_number' => '1',
+        'street'        => 'Your Street',
+        'suburb'        => 'Your Suburb',
+        'city'          => 'Your City',
+        'country_code'  => 'NZ',
+        'postcode'      => '0000',
+    ],
+
+    'receiver_details' => [
+        'name'  => 'Test Customer',
+        'email' => 'test@example.com',
+        'phone' => '6490000002',
+    ],
+
+    'delivery_address' => [
+        'is_collection' => false,
+        'street_number' => '100',
+        'street'        => 'Queen Street',
+        'suburb'        => 'Auckland Central',
+        'city'          => 'Auckland',
+        'country_code'  => 'NZ',
+        'postcode'      => '1010',
+    ],
+
+    'parcel_details' => [
+        [
+            'service_code'     => 'CPOLE',
+            'return_indicator' => 'OUTBOUND',
+            'description'      => 'Honey Order',
+            'dimensions'       => [
+                'weight_kg' => 0.95,
+                'length_cm' => 20,
+                'width_cm'  => 15,
+                'height_cm' => 10,
+            ],
+        ]
+    ],
+];
 
     echo "Sending request to NZ Post (" . config('services.nzpost.env') . ")...\n";
     
