@@ -55,6 +55,9 @@ class NzPostService
     public function searchAddress(string $query, int $count = 10): array
     {
         $response = Http::withToken($this->getToken())
+            ->withHeaders([
+                'client_id' => $this->clientId,
+            ])
             ->timeout(15)
             ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses", [
                 'q'       => $query,
@@ -64,6 +67,9 @@ class NzPostService
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
+                ->withHeaders([
+                    'client_id' => $this->clientId,
+                ])
                 ->timeout(15)
                 ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses", [
                     'q'       => $query,
@@ -84,12 +90,18 @@ class NzPostService
     public function getAddressDetails(string $addressId): array
     {
         $response = Http::withToken($this->getToken())
+            ->withHeaders([
+                'client_id' => $this->clientId,
+            ])
             ->timeout(15)
             ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses/{$addressId}");
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
+                ->withHeaders([
+                    'client_id' => $this->clientId,
+                ])
                 ->timeout(15)
                 ->get("{$this->baseUrl}/parceladdress/2.0/domestic/addresses/{$addressId}");
         }
@@ -107,12 +119,18 @@ class NzPostService
     public function createShipment(array $shipmentData): array
     {
         $response = Http::withToken($this->getToken())
+            ->withHeaders([
+                'client_id' => $this->clientId,
+            ])
             ->timeout(15)
             ->post("{$this->baseUrl}/labels", $shipmentData);
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
+                ->withHeaders([
+                    'client_id' => $this->clientId,
+                ])
                 ->timeout(15)
                 ->post("{$this->baseUrl}/labels", $shipmentData);
         }
@@ -124,18 +142,35 @@ class NzPostService
         return $response->json() ?? [];
     }
 
+    public function getLabel(string $consignmentId): array
+    {
+        $response = $this->makeRequest('get', "{$this->baseUrl}/labels/{$consignmentId}");
+
+        if (!$response->successful()) {
+            throw new \Exception('NZ Post get label failed: ' . $response->body());
+        }
+
+        return $response->json() ?? [];
+    }
+
     /**
      * Get tracking status for a consignment
      */
     public function getTrackingStatus(string $consignmentId): array
     {
         $response = Http::withToken($this->getToken())
+            ->withHeaders([
+                'client_id' => $this->clientId,
+            ])
             ->timeout(15)
             ->get("{$this->baseUrl}/labels/{$consignmentId}/status");
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
+                ->withHeaders([
+                    'client_id' => $this->clientId,
+                ])
                 ->timeout(15)
                 ->get("{$this->baseUrl}/labels/{$consignmentId}/status");
         }
@@ -153,12 +188,18 @@ class NzPostService
     public function getShippingRates(array $rateData): array
     {
         $response = Http::withToken($this->getToken())
+            ->withHeaders([
+                'client_id' => $this->clientId,
+            ])
             ->timeout(15)
             ->post("{$this->baseUrl}/parcelshipping/2.0/domestic/rates", $rateData);
 
         // If 401, refresh token and retry once
         if ($response->status() === 401) {
             $response = Http::withToken($this->getToken(true))
+                ->withHeaders([
+                    'client_id' => $this->clientId,
+                ])
                 ->timeout(15)
                 ->post("{$this->baseUrl}/parcelshipping/2.0/domestic/rates", $rateData);
         }
