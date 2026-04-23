@@ -140,14 +140,16 @@ class AdminController extends Controller
 
             $shipment = $nzPost->createShipment($shipmentData);
 
-            if (empty($shipment['tracking_number'])) {
-                throw new \Exception('No tracking number returned from NZ Post.');
+            if (empty($shipment['consignment_id'])) {
+                throw new \Exception('No consignment id returned from NZ Post.');
             }
-            
+
+            // Fetch the actual label
+            $label = $nzPost->getLabel($shipment['consignment_id']);
+
             $order->update([
-                'consignment_id'  => $shipment['consignment_id'] ?? null,
-                'tracking_number' => $shipment['tracking_number'] ?? $shipment['consignment_id'] ?? null,
-                'label_url'       => $shipment['label_url'] ?? null,
+                'consignment_id'  => $shipment['consignment_id'],
+                'label_url'       => $label['label_url'] ?? null,
                 'shipping_status' => 'shipped',
             ]);
 
