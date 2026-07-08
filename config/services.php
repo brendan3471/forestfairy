@@ -68,4 +68,9 @@ return [
         'client_account_id'      => env('CLIENT_STRIPE_ACCOUNT_ID'),
     ],
 
+    'google' => [
+        'places_api_key' => env('GOOGLE_PLACES_API_KEY'),
+    ],
+
 ];
+

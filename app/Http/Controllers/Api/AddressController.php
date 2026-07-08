@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Services\NzPostService;
+use App\Services\GooglePlacesService;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    public function __construct(private NzPostService $nzPost) {}
+    public function __construct(private GooglePlacesService $googlePlaces) {}
 
     /**
      * Search addresses for autocomplete
@@ -18,7 +18,7 @@ class AddressController extends Controller
         $request->validate(['q' => 'required|string|min:3']);
 
         try {
-            $addresses = $this->nzPost->searchAddress($request->q);
+            $addresses = $this->googlePlaces->searchAddress($request->q);
             return response()->json($addresses);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -31,7 +31,7 @@ class AddressController extends Controller
     public function details(string $addressId)
     {
         try {
-            $address = $this->nzPost->getAddressDetails($addressId);
+            $address = $this->googlePlaces->getAddressDetails($addressId);
             return response()->json($address);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
