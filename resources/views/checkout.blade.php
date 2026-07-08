@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 price: 0
             });
         } else {
-            const basePrice = isRural ? 12.50 : 7.50;
+            const basePrice = isRural ? 18.00 : 12.00;
             const typeName = isRural ? 'Rural NZ Delivery' : 'Standard NZ Delivery';
             
             options.push({
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        options.forEach(opt => {
+        options.forEach((opt, index) => {
             const div = document.createElement('div');
             div.className = 'shipping-option';
             div.innerHTML = `
@@ -346,14 +346,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <span class="shipping-price">${opt.price === 0 ? 'FREE' : '$' + opt.price.toFixed(2)}</span>
             `;
-            div.addEventListener('click', () => {
+            
+            const selectOption = () => {
                 document.querySelectorAll('.shipping-option').forEach(el => el.classList.remove('active'));
                 div.classList.add('active');
                 selectedShipping = opt;
                 proceedBtn.disabled = false;
                 updateTotals(opt.price);
-            });
+            };
+
+            div.addEventListener('click', selectOption);
             shippingGrid.appendChild(div);
+
+            // Select the first option automatically
+            if (index === 0) {
+                selectOption();
+            }
         });
 
         shippingOptionsContainer.classList.remove('hidden');

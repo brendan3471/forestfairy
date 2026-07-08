@@ -19,29 +19,31 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        $cart     = session('cart', []);
+        $cart = session('cart', []);
         $products = config('products');
-        $items    = [];
+        $items = [];
         $subtotal = 0;
 
         foreach ($cart as $key => $row) {
             [$slug, $weight] = explode(':', $key . ':');
-            if (! isset($products[$slug])) continue;
+            if (!isset($products[$slug]))
+                continue;
 
             $product = $products[$slug];
-            $option  = $product['options'][$weight] ?? $product['options'][$product['default_option']] ?? null;
-            if (!$option) continue;
+            $option = $product['options'][$weight] ?? $product['options'][$product['default_option']] ?? null;
+            if (!$option)
+                continue;
 
-            $qty       = max(1, (int) $row['quantity']);
+            $qty = max(1, (int) $row['quantity']);
             $lineTotal = $option['price_cents'] * $qty;
             $subtotal += $lineTotal;
 
             $items[] = [
-                'name'     => $product['name'],
-                'weight'   => $option['weight'],
+                'name' => $product['name'],
+                'weight' => $option['weight'],
                 'quantity' => $qty,
-                'price'    => $option['price'],
-                'total'    => number_format($lineTotal / 100, 2),
+                'price' => $option['price'],
+                'total' => number_format($lineTotal / 100, 2),
             ];
         }
 
@@ -58,44 +60,46 @@ class CheckoutController extends Controller
     public function prepare(Request $request)
     {
         $request->validate([
-            'address_id'      => 'required|string',
-            'shipping_type'   => 'required|string',
+            'address_id' => 'required|string',
+            'shipping_type' => 'required|string',
             'shipping_amount' => 'required|numeric',
         ]);
 
-        $cart     = session('cart', []);
+        $cart = session('cart', []);
         $products = config('products');
         $lineItems = [];
         $totalAmount = 0;
 
         $imgMap = [
             'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
-            'mamaku'        => '/images/mamaku-creamed-honey.jpg',
-            'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
-            'rewarewa'      => '/images/rewarewa-honey.jpg',
+            'mamaku' => '/images/mamaku-creamed-honey.jpg',
+            'otumoetai' => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+            'rewarewa' => '/images/rewarewa-honey.jpg',
         ];
 
         foreach ($cart as $key => $row) {
             [$slug, $weight] = explode(':', $key . ':');
-            if (! isset($products[$slug])) continue;
+            if (!isset($products[$slug]))
+                continue;
 
             $product = $products[$slug];
-            $option  = $product['options'][$weight] ?? null;
-            if (!$option) continue;
+            $option = $product['options'][$weight] ?? null;
+            if (!$option)
+                continue;
 
             $qty = (int) $row['quantity'];
             $lineItems[] = [
                 'price_data' => [
-                    'currency'     => 'nzd',
+                    'currency' => 'nzd',
                     'product_data' => [
-                        'name'        => $product['name'] . ' (' . $option['weight'] . ')',
-                        'images'      => [url($imgMap[$product['image']] ?? '')],
-                        'metadata'    => [
-                            'sku'          => $option['sku'],
+                        'name' => $product['name'] . ' (' . $option['weight'] . ')',
+                        'images' => [url($imgMap[$product['image']] ?? '')],
+                        'metadata' => [
+                            'sku' => $option['sku'],
                             'product_slug' => $slug,
                         ],
                     ],
-                    'unit_amount'  => $option['price_cents'],
+                    'unit_amount' => $option['price_cents'],
                 ],
                 'quantity' => $qty,
             ];
@@ -105,13 +109,13 @@ class CheckoutController extends Controller
         // Add Shipping as a line item
         $lineItems[] = [
             'price_data' => [
-                'currency'     => 'nzd',
+                'currency' => 'nzd',
                 'product_data' => [
-                    'name'        => 'Shipping (' . ucfirst($request->shipping_type) . ')',
+                    'name' => 'Shipping (' . ucfirst($request->shipping_type) . ')',
                     'description' => 'NZ Post Delivery',
-                    'metadata'    => ['shipping' => 'true'],
+                    'metadata' => ['shipping' => 'true'],
                 ],
-                'unit_amount'  => (int) ($request->shipping_amount * 100),
+                'unit_amount' => (int) ($request->shipping_amount * 100),
             ],
             'quantity' => 1,
         ];
@@ -121,11 +125,11 @@ class CheckoutController extends Controller
 
         $sessionParams = [
             'payment_method_types' => ['card'],
-            'line_items'           => $lineItems,
-            'mode'                 => 'payment',
-            'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url'           => route('checkout'),
-            'metadata'             => [
+            'line_items' => $lineItems,
+            'mode' => 'payment',
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout'),
+            'metadata' => [
                 'address_id' => $request->address_id,
             ],
         ];
@@ -166,27 +170,27 @@ class CheckoutController extends Controller
     public function createSession(Request $request, string $slug)
     {
         $products = config('products');
-        $product  = $products[$slug] ?? null;
+        $product = $products[$slug] ?? null;
 
-        if (! $product) {
+        if (!$product) {
             abort(404);
         }
 
         $optionWeight = $request->input('option', $product['default_option']);
-        $option       = $product['options'][$optionWeight] ?? $product['options'][$product['default_option']] ?? null;
+        $option = $product['options'][$optionWeight] ?? $product['options'][$product['default_option']] ?? null;
 
         if (!$option) {
             abort(404);
         }
 
-        $stripe           = $this->stripeClient();
+        $stripe = $this->stripeClient();
         $connectAccountId = $this->connectedAccountId();
 
         $imageMap = [
             'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
-            'mamaku'        => '/images/mamaku-creamed-honey.jpg',
-            'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
-            'rewarewa'      => '/images/rewarewa-honey.jpg',
+            'mamaku' => '/images/mamaku-creamed-honey.jpg',
+            'otumoetai' => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+            'rewarewa' => '/images/rewarewa-honey.jpg',
         ];
 
         $imageUrl = url($imageMap[$product['image']] ?? '');
@@ -196,9 +200,9 @@ class CheckoutController extends Controller
         if ($option['price_cents'] >= 7500) {
             $shippingOptions[] = [
                 'shipping_rate_data' => [
-                    'type'         => 'fixed_amount',
+                    'type' => 'fixed_amount',
                     'fixed_amount' => [
-                        'amount'   => 0,
+                        'amount' => 0,
                         'currency' => 'nzd',
                     ],
                     'display_name' => 'Free NZ Shipping (orders $75+)',
@@ -207,9 +211,9 @@ class CheckoutController extends Controller
         }
         $shippingOptions[] = [
             'shipping_rate_data' => [
-                'type'         => 'fixed_amount',
+                'type' => 'fixed_amount',
                 'fixed_amount' => [
-                    'amount'   => 750,
+                    'amount' => 1199,
                     'currency' => 'nzd',
                 ],
                 'display_name' => 'Standard NZ Shipping',
@@ -218,35 +222,35 @@ class CheckoutController extends Controller
 
         $sessionParams = [
             'payment_method_types' => ['card'],
-            'line_items'           => [
+            'line_items' => [
                 [
                     'price_data' => [
-                        'currency'     => 'nzd',
+                        'currency' => 'nzd',
                         'product_data' => [
-                            'name'        => $product['name'] . ' (' . $option['weight'] . ')',
+                            'name' => $product['name'] . ' (' . $option['weight'] . ')',
                             'description' => $option['weight'],
-                            'images'      => [$imageUrl],
-                            'metadata'    => [
-                                'sku'          => $option['sku'],
+                            'images' => [$imageUrl],
+                            'metadata' => [
+                                'sku' => $option['sku'],
                                 'product_slug' => $slug,
                             ],
                         ],
-                        'unit_amount'  => $option['price_cents'],
+                        'unit_amount' => $option['price_cents'],
                     ],
                     'quantity' => 1,
                 ],
             ],
-            'mode'                 => 'payment',
+            'mode' => 'payment',
             'shipping_address_collection' => [
                 'allowed_countries' => ['NZ'],
             ],
-            'shipping_options'     => $shippingOptions,
-            'success_url'          => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url'           => route('checkout.cancel', ['slug' => $slug]),
-            'metadata'             => [
+            'shipping_options' => $shippingOptions,
+            'success_url' => route('checkout.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel', ['slug' => $slug]),
+            'metadata' => [
                 'product_slug' => $slug,
                 'product_name' => $product['name'],
-                'option'       => $option['weight'],
+                'option' => $option['weight'],
             ],
         ];
 
@@ -272,14 +276,14 @@ class CheckoutController extends Controller
     public function success(Request $request)
     {
         $sessionId = $request->query('session_id');
-        $session   = null;
+        $session = null;
 
         if ($sessionId && config('services.stripe.secret')) {
             try {
-                $stripe           = $this->stripeClient();
+                $stripe = $this->stripeClient();
                 $connectAccountId = $this->connectedAccountId();
-                $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
-                $session          = $stripe->checkout->sessions->retrieve($sessionId, [], $options);
+                $options = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
+                $session = $stripe->checkout->sessions->retrieve($sessionId, [], $options);
             } catch (\Exception $e) {
                 // Non-fatal — page still renders without order details
                 Log::warning('Could not retrieve Stripe session: ' . $e->getMessage());
@@ -304,11 +308,11 @@ class CheckoutController extends Controller
      */
     public function webhook(Request $request)
     {
-        $payload   = $request->getContent();
+        $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
-        $secret    = config('services.stripe.webhook_secret');
+        $secret = config('services.stripe.webhook_secret');
 
-        if (! $secret) {
+        if (!$secret) {
             Log::warning('Stripe webhook secret not configured.');
             return response('Webhook secret not configured', 500);
         }
@@ -326,12 +330,12 @@ class CheckoutController extends Controller
         switch ($event->type) {
             case 'checkout.session.completed':
                 $session = $event->data->object;
-                
+
                 // Retrieve the session with line items expanded
-                $stripe           = $this->stripeClient();
+                $stripe = $this->stripeClient();
                 $connectAccountId = $this->connectedAccountId();
-                $options          = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
-                $fullSession      = $stripe->checkout->sessions->retrieve(
+                $options = $connectAccountId ? ['stripe_account' => $connectAccountId] : [];
+                $fullSession = $stripe->checkout->sessions->retrieve(
                     $session->id,
                     ['expand' => ['line_items.data.price.product', 'payment_intent']],
                     $options
@@ -341,7 +345,7 @@ class CheckoutController extends Controller
 
                 DB::transaction(function () use ($fullSession) {
                     $shippingAddress = $fullSession->shipping_details;
-                    
+
                     // Fallback to payment_intent->shipping if shipping_details is empty
                     // This is common in some Stripe Connect configurations
                     if (!$shippingAddress && isset($fullSession->payment_intent->shipping)) {
@@ -358,7 +362,7 @@ class CheckoutController extends Controller
 
                     foreach ($fullSession->line_items->data as $item) {
                         $isShipping = isset($item->price->product->metadata->shipping) && $item->price->product->metadata->shipping === 'true';
-                        
+
                         if ($isShipping) {
                             $shippingAmountFromLineItems += $item->amount_total;
                             continue;
@@ -369,25 +373,25 @@ class CheckoutController extends Controller
 
                     $order = Order::create([
                         'stripe_session_id' => $fullSession->id,
-                        'customer_email'    => $fullSession->customer_details->email,
-                        'customer_phone'    => $fullSession->customer_details->phone ?? null,
-                        'customer_name'     => $fullSession->customer_details->name,
-                        'total_amount'      => $fullSession->amount_total,
-                        'currency'          => $fullSession->currency,
-                        'payment_status'    => $fullSession->payment_status,
-                        'shipping_status'   => 'pending',
-                        'shipping_address'  => $shippingAddress ? json_encode($shippingAddress) : null,
-                        'shipping_amount'   => $shippingAmountFromLineItems > 0 ? $shippingAmountFromLineItems : ($fullSession->total_details->amount_shipping ?? 0),
+                        'customer_email' => $fullSession->customer_details->email,
+                        'customer_phone' => $fullSession->customer_details->phone ?? null,
+                        'customer_name' => $fullSession->customer_details->name,
+                        'total_amount' => $fullSession->amount_total,
+                        'currency' => $fullSession->currency,
+                        'payment_status' => $fullSession->payment_status,
+                        'shipping_status' => 'pending',
+                        'shipping_address' => $shippingAddress ? json_encode($shippingAddress) : null,
+                        'shipping_amount' => $shippingAmountFromLineItems > 0 ? $shippingAmountFromLineItems : ($fullSession->total_details->amount_shipping ?? 0),
                     ]);
 
                     foreach ($lineItemsProcessed as $item) {
                         OrderItem::create([
-                            'order_id'     => $order->id,
+                            'order_id' => $order->id,
                             'product_slug' => $item->price->product->metadata->product_slug ?? 'unknown',
-                            'sku'          => $item->price->product->metadata->sku ?? null,
+                            'sku' => $item->price->product->metadata->sku ?? null,
                             'product_name' => $item->description,
-                            'quantity'     => $item->quantity,
-                            'unit_price'   => $item->price->unit_amount,
+                            'quantity' => $item->quantity,
+                            'unit_price' => $item->price->unit_amount,
                         ]);
                     }
                 });
