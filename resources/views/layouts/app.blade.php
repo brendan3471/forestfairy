@@ -152,6 +152,7 @@
                         <ul class="footer-links">
                             <li><a href="/about"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Our Story</a></li>
                             <li><a href="/blog"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey Blog</a></li>
+                            <li><a href="/honey-questions"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey FAQ</a></li>
                             <li><a href="/contact"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Contact Us</a></li>
                         </ul>
                     </div>

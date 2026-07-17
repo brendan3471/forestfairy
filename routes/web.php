@@ -31,6 +31,10 @@ Route::get('/blog', function () {
     return view('blog');
 });
 
+Route::get('/honey-questions', function () {
+    return view('honey-questions');
+});
+
 Route::get('/contact', function () {
     return view('contact');
 });
