@@ -16,7 +16,7 @@
   "url": "https://www.forestfairyhoney.co.nz/shop",
   "itemListElement": [
     {"@type":"ListItem","position":1,"url":"https://www.forestfairyhoney.co.nz/shop/omanawa-falls-creamed-honey","name":"Omanawa Falls Creamed Honey"},
-    {"@type":"ListItem","position":2,"url":"https://www.forestfairyhoney.co.nz/shop/mamaku-creamed-honey","name":"Mamaku Creamed Honey"},
+    {"@type":"ListItem","position":2,"url":"https://www.forestfairyhoney.co.nz/shop/mamaku-creamed-honey","name":"Mamaku Creamed Honey MGO 100+"},
     {"@type":"ListItem","position":3,"url":"https://www.forestfairyhoney.co.nz/shop/otumoetai-summer-harvest-creamed-honey","name":"Ōtumoetai Summer Harvest Creamed Honey"},
     {"@type":"ListItem","position":4,"url":"https://www.forestfairyhoney.co.nz/shop/rewarewa-honey","name":"Rewarewa Honey"}
   ]

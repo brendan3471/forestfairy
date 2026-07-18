@@ -154,6 +154,7 @@
                             <li><a href="/blog"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey Blog</a></li>
                             <li><a href="/honey-questions"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey FAQ</a></li>
                             <li><a href="/our-testing"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Lab Testing</a></li>
+                            <li><a href="/review-policy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Review Policy</a></li>
                             <li><a href="/contact"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Contact Us</a></li>
                         </ul>
                     </div>

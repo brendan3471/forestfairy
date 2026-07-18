@@ -43,6 +43,10 @@ Route::get('/our-testing', function () {
     return view('our-testing');
 });
 
+Route::get('/review-policy', function () {
+    return view('review-policy');
+});
+
 Route::get('/contact', function () {
     return view('contact');
 });

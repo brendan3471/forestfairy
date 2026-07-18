@@ -328,7 +328,7 @@
                 <span class="rating-stars">
                     <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
                 </span>
-                <span class="rating-text">5.0 - Based on <strong>220+</strong> verified reviews</span>
+                <span class="rating-text">5.0 - Based on <strong>220+</strong> verified reviews (<a href="/review-policy" style="text-decoration: underline; color: var(--gold-dark); font-weight: 500;">Review Policy</a>)</span>
             </div>
         </div>
         <div class="testimonials-grid">

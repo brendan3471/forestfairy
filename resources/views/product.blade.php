@@ -91,6 +91,7 @@
                     @endphp
                     <span class="product-stars">{!! $starsHtml !!}</span>
                     <span class="product-rating-text">{{ $product['rating'] }} ({{ $product['reviews'] }} reviews)</span>
+                    <a href="/review-policy" style="font-size: 0.8rem; margin-left: 10px; color: var(--gold-dark); text-decoration: underline; font-weight: 500;" id="review-policy-link">Review Policy</a>
                 </div>
                 
                 <div class="product-detail-price">

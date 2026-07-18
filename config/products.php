@@ -16,7 +16,7 @@ return [
         'default_option' => '950g',
     ],
     'mamaku-creamed-honey' => [
-        'name'        => 'Mamaku Creamed Honey',
+        'name'        => 'Mamaku Creamed Honey MGO 100+',
         'rating'      => '4.9',
         'reviews'     => 56,
         'description' => 'Sourced from the lush Mamaku ranges, this creamed honey offers a rich, velvety consistency and a complex sweetness that reflects the native forest flora of the region.',
