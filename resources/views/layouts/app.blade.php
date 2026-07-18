@@ -129,7 +129,7 @@
                         </div>
                         <p class="footer-about">Pure, raw honey harvested from New Zealand's pristine forests and meadows. From our hives to your home — nothing added, nothing taken away.</p>
                         <div class="footer-socials">
-                            <a href="#" class="social-link" aria-label="Follow Forest Fairy Honey on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                            <a href="https://www.instagram.com/forestfairyhoney/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow Forest Fairy Honey on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
                             <a href="#" class="social-link" aria-label="Like Forest Fairy Honey on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
                         </div>
                     </div>

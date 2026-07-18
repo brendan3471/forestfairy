@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Raw NZ Honey Online Store | Forest Fairy Honey New Zealand')
-@section('meta_description', 'Shop pure, raw New Zealand honey online. Manuka, bush, clover & honeydew honey — cold-harvested from NZ\'s pristine forests. Free shipping on orders over $75.')
+@section('meta_description', 'Shop pure, raw New Zealand honey online. Manuka, bush, clover & honeydew honey - cold-harvested from NZ\'s pristine forests. Free shipping on orders over $75.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/')
 
 @section('schema')
@@ -23,7 +23,7 @@
         "addressCountry": "NZ"
       },
       "email": "hello@forestfairyhoney.co.nz",
-      "sameAs": ["https://instagram.com/forestfairyhoney", "https://facebook.com/forestfairyhoney"]
+      "sameAs": ["https://www.instagram.com/forestfairyhoney/", "https://facebook.com/forestfairyhoney"]
     },
     {
       "@type": "WebSite",
@@ -131,7 +131,7 @@
             <span class="section-eyebrow">From Our Hives</span>
             <h2 class="section-title" id="products-heading">Our Bestselling Honeys</h2>
             <div class="section-divider"></div>
-            <p class="section-subtitle">Every jar is a taste of New Zealand's wildest places — harvested with care and bottled with love.</p>
+            <p class="section-subtitle">Every jar is a taste of New Zealand's wildest places - harvested with care and bottled with love.</p>
         </div>
         <div class="products-grid">
             @php
@@ -212,7 +212,7 @@
         <div class="container">
             <span class="section-eyebrow section-eyebrow--light">Our Story</span>
             <h2 class="about-banner-title">Rooted in the<br><em>Heart of New Zealand</em></h2>
-            <p class="about-banner-text">We're passionate NZ beekeepers who believe honey should be as nature made it. Our hives live among native bush, wildflower meadows and pristine forests — giving each jar its extraordinary depth of flavour.</p>
+            <p class="about-banner-text">We're passionate NZ beekeepers who believe honey should be as nature made it. Our hives live among native bush, wildflower meadows and pristine forests - giving each jar its extraordinary depth of flavour.</p>
             <a href="/about" class="btn-outline-light" id="learnMoreBtn">Learn Our Story</a>
         </div>
     </div>
@@ -232,7 +232,7 @@
                     <i class="fa-solid fa-tree" aria-hidden="true"></i>
                 </div>
                 <h3>Native Hive Placement</h3>
-                <p>Our hives are carefully positioned in remote NZ forest locations — far from pesticides and pollution, close to native flowering trees.</p>
+                <p>Our hives are carefully positioned in remote NZ forest locations - far from pesticides and pollution, close to native flowering trees.</p>
             </div>
             <div class="process-connector" aria-hidden="true"></div>
             <div class="process-step animate-on-scroll">
@@ -240,7 +240,7 @@
                     <i class="fa-solid fa-circle-nodes" aria-hidden="true"></i>
                 </div>
                 <h3>Natural Ripening</h3>
-                <p>We wait until each frame of comb is fully capped — meaning the honey has naturally ripened to below 20% moisture content.</p>
+                <p>We wait until each frame of comb is fully capped - meaning the honey has naturally ripened to below 20% moisture content.</p>
             </div>
             <div class="process-connector" aria-hidden="true"></div>
             <div class="process-step animate-on-scroll">
@@ -248,7 +248,7 @@
                     <i class="fa-solid fa-temperature-low" aria-hidden="true"></i>
                 </div>
                 <h3>Cold Extraction</h3>
-                <p>Honey is extracted at ambient temperature — never heated above 40°C — preserving natural enzymes, pollen, and antioxidants.</p>
+                <p>Honey is extracted at ambient temperature - never heated above 40°C - preserving natural enzymes, pollen, and antioxidants.</p>
             </div>
             <div class="process-connector" aria-hidden="true"></div>
             <div class="process-step animate-on-scroll">
@@ -328,7 +328,7 @@
                 <span class="rating-stars">
                     <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
                 </span>
-                <span class="rating-text">5.0 — Based on <strong>220+</strong> verified reviews</span>
+                <span class="rating-text">5.0 - Based on <strong>220+</strong> verified reviews</span>
             </div>
         </div>
         <div class="testimonials-grid">
@@ -337,7 +337,7 @@
                     <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
                 </div>
                 <blockquote>
-                    <p>"The best honey I've ever tasted. The Manuka is absolutely incredible — rich and dark with a depth I've never found in supermarket brands. Worth every cent."</p>
+                    <p>"The best honey I've ever tasted. The Manuka is absolutely incredible - rich and dark with a depth I've never found in supermarket brands. Worth every cent."</p>
                 </blockquote>
                 <footer class="testimonial-author">
                     <div class="testimonial-avatar" aria-hidden="true">S</div>
@@ -367,7 +367,7 @@
                     <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
                 </div>
                 <blockquote>
-                    <p>"I bought the Honeydew as a gift and my mother cried — in the best way! She said it reminded her of the honey her grandmother used to make. Extraordinary product."</p>
+                    <p>"I bought the Honeydew as a gift and my mother cried - in the best way! She said it reminded her of the honey her grandmother used to make. Extraordinary product."</p>
                 </blockquote>
                 <footer class="testimonial-author">
                     <div class="testimonial-avatar" aria-hidden="true">K</div>

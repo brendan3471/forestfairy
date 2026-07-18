@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Our Story — NZ Beekeepers | Forest Fairy Honey New Zealand')
-@section('meta_description', 'Meet the passionate NZ beekeepers behind Forest Fairy Honey. Learn how we harvest raw, pure honey from New Zealand\'s pristine forests and meadows — sustainably and with love.')
+@section('title', 'Our Story - NZ Beekeepers | Forest Fairy Honey New Zealand')
+@section('meta_description', 'Meet the passionate NZ beekeepers behind Forest Fairy Honey. Learn how we harvest raw, pure honey from New Zealand\'s pristine forests and meadows - sustainably and with love.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/about')
 
 @section('content')
@@ -29,8 +29,8 @@
                 <h2 class="section-title" id="story-heading">Honey the Way<br>Nature Intended</h2>
                 <div class="section-divider"></div>
                 <p>Forest Fairy Honey was born out of a simple belief: that New Zealand's extraordinary natural landscapes produce something truly special, and that people deserve to taste it in its most honest form.</p>
-                <p>Our founders began keeping bees in the Waitākere Ranges with just two hives and a curious love for New Zealand's native flora. Word spread quickly — friends, then family, then strangers would seek out our jars at local markets. The honey spoke for itself.</p>
-                <p>Today we tend hives across several pristine New Zealand locations — from the mossy beech forests of the South Island to the rolling wildflower meadows of the North — but our approach hasn't changed: <strong>patience, respect for the bees, and zero compromise on quality.</strong></p>
+                <p>Our founders began keeping bees in the Waitākere Ranges with just two hives and a curious love for New Zealand's native flora. Word spread quickly - friends, then family, then strangers would seek out our jars at local markets. The honey spoke for itself.</p>
+                <p>Today we tend hives across several pristine New Zealand locations - from the mossy beech forests of the South Island to the rolling wildflower meadows of the North - but our approach hasn't changed: <strong>patience, respect for the bees, and zero compromise on quality.</strong></p>
             </div>
         </div>
     </div>
@@ -71,7 +71,7 @@
     <div class="beekeeper-content animate-on-scroll">
         <div class="container">
             <h2>Proud NZ Beekeepers</h2>
-            <p>Our small team of dedicated beekeepers work across multiple locations in New Zealand — monitoring hive health, managing natural foraging, and harvesting only when the time is right.</p>
+            <p>Our small team of dedicated beekeepers work across multiple locations in New Zealand - monitoring hive health, managing natural foraging, and harvesting only when the time is right.</p>
             <a href="/shop" class="btn-primary" id="aboutShopBtn">Shop Our Honey</a>
         </div>
     </div>

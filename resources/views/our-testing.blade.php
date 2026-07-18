@@ -128,7 +128,7 @@
                             </table>
                             
                             <div style="margin-top: 20px;">
-                                <a href="/Diastase-3in1-NPA.pdf" target="_blank" class="btn-primary">
+                                <a href="/Diastase-3in1-NPA.pdf" target="_blank" class="btn-primary" style="color: var(--dark) !important; text-decoration: none !important;">
                                     <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Download full lab certificate (PDF)
                                 </a>
                             </div>

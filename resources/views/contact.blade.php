@@ -21,7 +21,7 @@
   "description": "Pure, raw New Zealand honey harvested from pristine NZ forests and meadows. Online honey store shipping across New Zealand.",
   "priceRange": "$$",
   "areaServed": "New Zealand",
-  "sameAs": ["https://instagram.com/forestfairyhoney", "https://facebook.com/forestfairyhoney"]
+  "sameAs": ["https://www.instagram.com/forestfairyhoney/", "https://facebook.com/forestfairyhoney"]
 }
 @endverbatim
 </script>
@@ -74,7 +74,7 @@
                 <div class="contact-socials">
                     <p>Find us on social media:</p>
                     <div class="social-links">
-                        <a href="#" class="social-link social-link--lg" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a>
+                        <a href="https://www.instagram.com/forestfairyhoney/" target="_blank" rel="noopener noreferrer" class="social-link social-link--lg" aria-label="Follow on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram</a>
                         <a href="#" class="social-link social-link--lg" aria-label="Like on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i> Facebook</a>
                     </div>
                 </div>
