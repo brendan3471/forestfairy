@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Secure Checkout | Forest Fairy Honey')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/checkout')
 
 @section('content')
 <div class="breadcrumb-bar">

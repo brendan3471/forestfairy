@@ -35,6 +35,14 @@ Route::get('/honey-questions', function () {
     return view('honey-questions');
 });
 
+Route::get('/honey-purity-pricing-faq', function () {
+    return view('honey-purity-pricing-faq');
+});
+
+Route::get('/our-testing', function () {
+    return view('our-testing');
+});
+
 Route::get('/contact', function () {
     return view('contact');
 });

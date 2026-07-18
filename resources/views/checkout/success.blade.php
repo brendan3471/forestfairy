@@ -2,7 +2,7 @@
 
 @section('title', 'Order Confirmed | Forest Fairy Honey')
 @section('meta_description', 'Thank you for your order from Forest Fairy Honey. Your raw NZ honey is on its way!')
-@section('canonical', 'https://forestfairyhoney.co.nz/checkout/success')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/checkout/success')
 
 @section('content')
 <!-- Breadcrumb -->

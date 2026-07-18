@@ -2,7 +2,7 @@
 
 @section('title', $product['name'] . ' | Buy NZ Honey Online | Forest Fairy Honey')
 @section('meta_description', 'Buy ' . $product['name'] . ' from Forest Fairy Honey NZ. Pure, raw, cold-harvested New Zealand honey. ' . $product['description'])
-@section('canonical', 'https://forestfairyhoney.co.nz/shop/' . $slug)
+@section('canonical', 'https://www.forestfairyhoney.co.nz/shop/' . $slug)
 @section('og_type', 'product')
 
 @php
@@ -30,7 +30,7 @@
     "price": "{{ $selectedOption['price'] }}",
     "priceCurrency": "NZD",
     "availability": "https://schema.org/InStock",
-    "url": "https://forestfairyhoney.co.nz/shop/{{ $slug }}",
+    "url": "https://www.forestfairyhoney.co.nz/shop/{{ $slug }}",
     "seller": {
       "@@type": "Organization",
       "name": "Forest Fairy Honey"
@@ -148,6 +148,25 @@
                 <a href="/cart" class="btn-secondary btn-full" id="viewCartBtn" style="margin-top:10px; text-align:center;">
                     View Cart &amp; Checkout
                 </a>
+
+                <!-- Product Trust Block -->
+                <div class="product-trust-card" style="margin: 20px 0; padding: 15px; border: 1px solid #e2d9c8; border-radius: var(--radius); background-color: #fbf9f6; font-size: 0.9rem;">
+                    <div style="display: flex; gap: 10px; align-items: start;">
+                        <i class="fa-solid fa-shield-halved" style="color: var(--gold); margin-top: 3px; font-size: 1.1rem;"></i>
+                        <div>
+                            @if($slug === 'mamaku-creamed-honey')
+                                <strong style="display: block; color: var(--text-dark); margin-bottom: 4px;">Independently lab tested</strong>
+                                <span style="display: block; color: var(--text-muted); line-height: 1.4;">Tested by Hill Labs, Hamilton. MGO 125.</span>
+                                <span style="display: block; color: var(--text-muted); line-height: 1.4;">Raw, small batch, comb to jar. Nothing added, never heated.</span>
+                            @else
+                                <strong style="display: block; color: var(--text-dark); margin-bottom: 4px;">Raw and small batch</strong>
+                                <span style="display: block; color: var(--text-muted); line-height: 1.4;">Comb to jar. Nothing added, never heated.</span>
+                                <span style="display: block; color: var(--text-muted); line-height: 1.4;">Independently lab tested by Hill Labs, Hamilton.</span>
+                            @endif
+                            <a href="/our-testing" style="display: inline-block; margin-top: 6px; color: var(--gold); font-weight: 600; text-decoration: underline;">See our test results</a>
+                        </div>
+                    </div>
+                </div>
 
                 <p class="product-note"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Free NZ shipping on orders over $75</p>
 

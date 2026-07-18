@@ -2,7 +2,7 @@
 
 @section('title', 'Your Cart | Forest Fairy Honey')
 @section('meta_description', 'Review your Forest Fairy Honey order before checkout.')
-@section('canonical', 'https://forestfairyhoney.co.nz/cart')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/cart')
 
 @section('content')
 <!-- Breadcrumb -->

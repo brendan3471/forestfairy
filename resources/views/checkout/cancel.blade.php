@@ -2,7 +2,7 @@
 
 @section('title', 'Payment Cancelled | Forest Fairy Honey')
 @section('meta_description', 'Your payment was not completed. Return to the shop to try again.')
-@section('canonical', 'https://forestfairyhoney.co.nz/checkout/cancel')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/checkout/cancel')
 
 @section('content')
 <!-- Breadcrumb -->

@@ -1,61 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://forestfairyhoney.co.nz/</loc>
+        <loc>https://www.forestfairyhoney.co.nz/</loc>
         <lastmod>2026-03-27</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/shop</loc>
+        <loc>https://www.forestfairyhoney.co.nz/shop</loc>
         <lastmod>2026-03-27</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/shop/raw-manuka-honey-250g</loc>
-        <lastmod>2026-03-27</lastmod>
+        <loc>https://www.forestfairyhoney.co.nz/shop/omanawa-falls-creamed-honey</loc>
+        <lastmod>2026-07-19</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/shop/forest-clover-honey-500g</loc>
-        <lastmod>2026-03-27</lastmod>
+        <loc>https://www.forestfairyhoney.co.nz/shop/mamaku-creamed-honey</loc>
+        <lastmod>2026-07-19</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/shop/bush-honey-500g</loc>
-        <lastmod>2026-03-27</lastmod>
+        <loc>https://www.forestfairyhoney.co.nz/shop/otumoetai-summer-harvest-creamed-honey</loc>
+        <lastmod>2026-07-19</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/shop/honeydew-honey-250g</loc>
-        <lastmod>2026-03-27</lastmod>
+        <loc>https://www.forestfairyhoney.co.nz/shop/rewarewa-honey</loc>
+        <lastmod>2026-07-19</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.85</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/about</loc>
+        <loc>https://www.forestfairyhoney.co.nz/about</loc>
         <lastmod>2026-03-27</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/blog</loc>
+        <loc>https://www.forestfairyhoney.co.nz/blog</loc>
         <lastmod>2026-03-27</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/honey-questions</loc>
+        <loc>https://www.forestfairyhoney.co.nz/honey-questions</loc>
         <lastmod>2026-07-17</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://forestfairyhoney.co.nz/contact</loc>
+        <loc>https://www.forestfairyhoney.co.nz/honey-purity-pricing-faq</loc>
+        <lastmod>2026-07-19</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://www.forestfairyhoney.co.nz/our-testing</loc>
+        <lastmod>2026-07-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://www.forestfairyhoney.co.nz/contact</loc>
         <lastmod>2026-03-27</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.6</priority>

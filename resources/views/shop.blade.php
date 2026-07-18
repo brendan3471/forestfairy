@@ -2,7 +2,7 @@
 
 @section('title', 'Shop Raw NZ Honey Online | Manuka, Bush & Clover | Forest Fairy Honey')
 @section('meta_description', 'Shop Forest Fairy Honey\'s full range of pure NZ honey online. Raw Manuka, Bush, Clover and rare Honeydew honey — all cold-harvested in New Zealand. Free shipping $75+.')
-@section('canonical', 'https://forestfairyhoney.co.nz/shop')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/shop')
 @section('og_type', 'website')
 
 @section('schema')
@@ -10,15 +10,15 @@
 @verbatim
 {
   "@context": "https://schema.org",
-  "@id": "https://forestfairyhoney.co.nz/shop#itemList",
+  "@id": "https://www.forestfairyhoney.co.nz/shop#itemList",
   "@type": "ItemList",
   "name": "Forest Fairy Honey — NZ Honey Products",
-  "url": "https://forestfairyhoney.co.nz/shop",
+  "url": "https://www.forestfairyhoney.co.nz/shop",
   "itemListElement": [
-    {"@type":"ListItem","position":1,"url":"https://forestfairyhoney.co.nz/shop/omanawa-falls-creamed-honey","name":"Omanawa Falls Creamed Honey"},
-    {"@type":"ListItem","position":2,"url":"https://forestfairyhoney.co.nz/shop/mamaku-creamed-honey","name":"Mamaku Creamed Honey"},
-    {"@type":"ListItem","position":3,"url":"https://forestfairyhoney.co.nz/shop/otumoetai-summer-harvest-creamed-honey","name":"Ōtumoetai Summer Harvest Creamed Honey"},
-    {"@type":"ListItem","position":4,"url":"https://forestfairyhoney.co.nz/shop/rewarewa-honey","name":"Rewarewa Honey"}
+    {"@type":"ListItem","position":1,"url":"https://www.forestfairyhoney.co.nz/shop/omanawa-falls-creamed-honey","name":"Omanawa Falls Creamed Honey"},
+    {"@type":"ListItem","position":2,"url":"https://www.forestfairyhoney.co.nz/shop/mamaku-creamed-honey","name":"Mamaku Creamed Honey"},
+    {"@type":"ListItem","position":3,"url":"https://www.forestfairyhoney.co.nz/shop/otumoetai-summer-harvest-creamed-honey","name":"Ōtumoetai Summer Harvest Creamed Honey"},
+    {"@type":"ListItem","position":4,"url":"https://www.forestfairyhoney.co.nz/shop/rewarewa-honey","name":"Rewarewa Honey"}
   ]
 }
 @endverbatim

@@ -2,7 +2,7 @@
 
 @section('title', 'Our Story — NZ Beekeepers | Forest Fairy Honey New Zealand')
 @section('meta_description', 'Meet the passionate NZ beekeepers behind Forest Fairy Honey. Learn how we harvest raw, pure honey from New Zealand\'s pristine forests and meadows — sustainably and with love.')
-@section('canonical', 'https://forestfairyhoney.co.nz/about')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/about')
 
 @section('content')
 <!-- Page Hero -->

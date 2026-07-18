@@ -2,7 +2,7 @@
 
 @section('title', 'Contact Forest Fairy Honey | Buy NZ Honey Online | Enquiries')
 @section('meta_description', 'Get in touch with Forest Fairy Honey NZ. Order raw NZ honey, ask about our products, wholesale enquiries, or just say hello. We\'d love to hear from you.')
-@section('canonical', 'https://forestfairyhoney.co.nz/contact')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/contact')
 
 @section('schema')
 <script type="application/ld+json">
@@ -11,7 +11,7 @@
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   "name": "Forest Fairy Honey",
-  "url": "https://forestfairyhoney.co.nz",
+  "url": "https://www.forestfairyhoney.co.nz",
   "email": "hello@forestfairyhoney.co.nz",
   "address": {
     "@type": "PostalAddress",

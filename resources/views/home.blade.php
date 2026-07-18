@@ -2,7 +2,7 @@
 
 @section('title', 'Raw NZ Honey Online Store | Forest Fairy Honey New Zealand')
 @section('meta_description', 'Shop pure, raw New Zealand honey online. Manuka, bush, clover & honeydew honey — cold-harvested from NZ\'s pristine forests. Free shipping on orders over $75.')
-@section('canonical', 'https://forestfairyhoney.co.nz')
+@section('canonical', 'https://www.forestfairyhoney.co.nz/')
 
 @section('schema')
 <script type="application/ld+json">
@@ -12,10 +12,10 @@
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://forestfairyhoney.co.nz/#organization",
+      "@id": "https://www.forestfairyhoney.co.nz/#organization",
       "name": "Forest Fairy Honey",
-      "url": "https://forestfairyhoney.co.nz",
-      "logo": "https://forestfairyhoney.co.nz/images/logo.svg",
+      "url": "https://www.forestfairyhoney.co.nz",
+      "logo": "https://www.forestfairyhoney.co.nz/images/logo.svg",
       "description": "Pure, raw New Zealand honey harvested from pristine NZ forests and meadows.",
       "address": {
         "@type": "PostalAddress",
@@ -27,13 +27,13 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://forestfairyhoney.co.nz/#website",
-      "url": "https://forestfairyhoney.co.nz",
+      "@id": "https://www.forestfairyhoney.co.nz/#website",
+      "url": "https://www.forestfairyhoney.co.nz",
       "name": "Forest Fairy Honey",
-      "publisher": {"@id": "https://forestfairyhoney.co.nz/#organization"},
+      "publisher": {"@id": "https://www.forestfairyhoney.co.nz/#organization"},
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://forestfairyhoney.co.nz/shop?q={search_term_string}",
+        "target": "https://www.forestfairyhoney.co.nz/shop?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     }

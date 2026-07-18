@@ -7,16 +7,16 @@
     <meta name="description" content="@yield('meta_description', 'Forest Fairy Honey — pure, raw New Zealand honey harvested from pristine NZ forests and pastures. Shop manuka, bush, clover & honeydew honey online. Free NZ shipping over $75.')">
     <meta name="keywords" content="@yield('meta_keywords', 'honey NZ, buy honey online New Zealand, raw honey New Zealand, manuka honey NZ, NZ honey online store, forest honey New Zealand, natural honey NZ')">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="@yield('canonical', 'https://forestfairyhoney.co.nz')">
+    <link rel="canonical" href="@yield('canonical', 'https://www.forestfairyhoney.co.nz/')">
 
     <!-- Open Graph -->
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:title" content="@yield('og_title', 'Forest Fairy Honey NZ — Raw New Zealand Honey')">
     <meta property="og:description" content="@yield('og_description', 'Pure, raw New Zealand honey harvested from pristine NZ forests. Shop online – free NZ shipping over $75.')">
-    <meta property="og:url" content="@yield('canonical', 'https://forestfairyhoney.co.nz')">
+    <meta property="og:url" content="@yield('canonical', 'https://www.forestfairyhoney.co.nz/')">
     <meta property="og:site_name" content="Forest Fairy Honey">
     <meta property="og:locale" content="en_NZ">
-    <meta property="og:image" content="https://forestfairyhoney.co.nz/images/og-image.jpg">
+    <meta property="og:image" content="https://www.forestfairyhoney.co.nz/images/og-image.jpg">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
@@ -153,6 +153,7 @@
                             <li><a href="/about"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Our Story</a></li>
                             <li><a href="/blog"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey Blog</a></li>
                             <li><a href="/honey-questions"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Honey FAQ</a></li>
+                            <li><a href="/our-testing"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Lab Testing</a></li>
                             <li><a href="/contact"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Contact Us</a></li>
                         </ul>
                     </div>
