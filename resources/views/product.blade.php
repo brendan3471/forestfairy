@@ -19,6 +19,13 @@
         'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
         'rewarewa'      => '/images/rewarewa-honey.jpg',
     ];
+
+    $img300Map = [
+        'omanawa-falls' => '/images/omanawa-300g.webp',
+        'mamaku'        => '/images/mamaku-300g.webp',
+        'otumoetai'     => '/images/otumoetai-300g.webp',
+        'rewarewa'      => '/images/rewarewa-300g.webp',
+    ];
 @endphp
 
 @section('schema')
@@ -128,10 +135,13 @@
                     <img id="mainProductImg" src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} — New Zealand Raw Honey" loading="eager" class="product-detail-img">
                 </div>
                 <div class="product-thumbnails" aria-label="Product Image Gallery">
-                    <button type="button" class="thumb-btn active" onclick="switchProductImg('{{ $imgMap[$product['image']] }}', this)" aria-label="View Product Jar">
-                        <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} thumbnail">
+                    <button type="button" class="thumb-btn active" id="thumbMain" onclick="switchProductImg('{{ $imgMap[$product['image']] }}', this)" aria-label="View Main Jar">
+                        <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} main jar thumbnail">
                     </button>
-                    <button type="button" class="thumb-btn" onclick="switchProductImg('/images/nutrition-information.jpg', this)" aria-label="View Nutrition Information">
+                    <button type="button" class="thumb-btn" id="thumb300g" onclick="switchProductImg('{{ $img300Map[$product['image']] }}', this)" aria-label="View 300g Jar">
+                        <img src="{{ $img300Map[$product['image']] }}" alt="{{ $product['name'] }} 300g jar thumbnail">
+                    </button>
+                    <button type="button" class="thumb-btn" id="thumbNutrition" onclick="switchProductImg('/images/nutrition-information.jpg', this)" aria-label="View Nutrition Information">
                         <img src="/images/nutrition-information.jpg" alt="Nutrition Information panel thumbnail">
                     </button>
                 </div>
@@ -281,6 +291,15 @@
                             // Update display info
                             displayPrice.textContent = '$' + this.getAttribute('data-price');
                             displayWeight.textContent = '/ ' + this.getAttribute('data-weight');
+
+                            // Switch gallery image if 300g or main jar size is chosen
+                            if (key.includes('300')) {
+                                var thumb300 = document.getElementById('thumb300g');
+                                if (thumb300) switchProductImg('{{ $img300Map[$product['image']] }}', thumb300);
+                            } else {
+                                var thumbMain = document.getElementById('thumbMain');
+                                if (thumbMain) switchProductImg('{{ $imgMap[$product['image']] }}', thumbMain);
+                            }
                         });
                     });
                 })();
