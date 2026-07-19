@@ -60,6 +60,14 @@ Route::get('/review-policy', function () {
     return view('review-policy');
 });
 
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});
+
+Route::get('/sitemap', function () {
+    return view('sitemap');
+});
+
 Route::get('/contact', function () {
     return view('contact');
 });

@@ -12,6 +12,13 @@
         $selectedOptionKey = $product['default_option'];
     }
     $selectedOption = $product['options'][$selectedOptionKey];
+
+    $imgMap = [
+        'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
+        'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+        'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+        'rewarewa'      => '/images/rewarewa-honey.jpg',
+    ];
 @endphp
 
 @section('schema')
@@ -21,6 +28,7 @@
   "@@type": "Product",
   "name": "{{ $product['name'] }}",
   "description": "{{ $product['description'] }}",
+  "image": "https://www.forestfairyhoney.co.nz{{ $imgMap[$product['image']] }}",
   "brand": {
     "@@type": "Brand",
     "name": "Forest Fairy Honey"
@@ -67,14 +75,6 @@
         <div class="product-detail-grid">
             <!-- Image -->
             <div class="product-detail-image animate-on-scroll">
-                @php
-                $imgMap = [
-                    'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
-                    'mamaku' => '/images/mamaku-creamed-honey.jpg',
-                    'otumoetai'   => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
-                    'rewarewa' => '/images/rewarewa-honey.jpg',
-                ];
-                @endphp
                 <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} — New Zealand Raw Honey" loading="eager" class="product-detail-img">
             </div>
             <!-- Info -->
