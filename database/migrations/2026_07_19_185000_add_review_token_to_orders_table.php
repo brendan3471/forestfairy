@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function run(): void
+    public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->string('review_token', 64)->nullable()->unique()->after('id');
