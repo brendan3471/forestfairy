@@ -21,18 +21,28 @@
                 <input type="hidden" name="token" value="{{ $token }}">
 
                 @php
+                $productsConfig = config('products');
                 $imgMap = [
                     'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
-                    'mamaku' => '/images/mamaku-creamed-honey.jpg',
-                    'otumoetai' => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
-                    'rewarewa' => '/images/rewarewa-honey.jpg',
+                    'mamaku'        => '/images/mamaku-creamed-honey.jpg',
+                    'otumoetai'     => '/images/otumoetai-summer-harvest-creamed-honey.jpg',
+                    'rewarewa'      => '/images/rewarewa-honey.jpg',
                 ];
                 @endphp
 
                 @foreach($order->items as $index => $item)
                 @php
-                    $cleanSlug = str_replace('-creamed-honey', '', str_replace('-honey', '', $item->product_slug));
-                    $imgUrl = $imgMap[$cleanSlug] ?? '/images/rewarewa-honey.jpg';
+                    $slug = $item->product_slug;
+                    $imgKey = $productsConfig[$slug]['image'] ?? null;
+                    
+                    if (!$imgKey) {
+                        if (str_contains($slug, 'omanawa')) $imgKey = 'omanawa-falls';
+                        elseif (str_contains($slug, 'mamaku')) $imgKey = 'mamaku';
+                        elseif (str_contains($slug, 'otumoetai') || str_contains($slug, 'otūmoetai')) $imgKey = 'otumoetai';
+                        elseif (str_contains($slug, 'rewarewa')) $imgKey = 'rewarewa';
+                    }
+
+                    $imgUrl = $imgMap[$imgKey] ?? '/images/rewarewa-honey.jpg';
                 @endphp
 
                 <div class="review-item" style="margin-bottom: 35px; padding-bottom: 30px; border-bottom: 1px solid #F3EDE1;">
