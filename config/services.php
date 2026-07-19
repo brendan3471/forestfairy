@@ -72,5 +72,10 @@ return [
         'places_api_key' => env('GOOGLE_PLACES_API_KEY'),
     ],
 
+    'admin' => [
+        'email' => env('ADMIN_EMAIL', 'admin@forestfairyhoney.co.nz'),
+        'password' => env('ADMIN_PASSWORD', 'password'),
+    ],
+
 ];
 

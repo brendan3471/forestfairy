@@ -22,7 +22,7 @@ class ContactController extends Controller
         ]);
 
         try {
-            $adminEmail = env('ADMIN_EMAIL', 'hello@forestfairyhoney.co.nz');
+            $adminEmail = config('services.admin.email');
             
             Mail::to($adminEmail)->send(new ContactMessageMail(
                 $request->name,
