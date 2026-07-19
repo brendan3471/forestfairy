@@ -290,6 +290,9 @@ class CheckoutController extends Controller
             }
         }
 
+        // Clear the cart from the session upon successful checkout
+        session()->forget('cart');
+
         return view('checkout.success', compact('session'));
     }
 
@@ -341,7 +344,6 @@ class CheckoutController extends Controller
                     $options
                 );
                 Log::info('Stripe Session retrieved', ['session' => $fullSession->toArray()]);
-                file_put_contents('/tmp/stripe_debug.log', json_encode($fullSession->toArray(), JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
 
                 DB::transaction(function () use ($fullSession) {
                     $shippingAddress = $fullSession->shipping_details;
