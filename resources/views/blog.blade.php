@@ -21,6 +21,7 @@
         <h2 class="sr-only" id="blog-heading">All Blog Articles</h2>
         @php
         $articles = [
+            ['slug' => 'the-art-of-gifting-nz-honey-collections', 'tag' => 'Gifting', 'title' => 'The Art of Gifting: Pure NZ Honey Collections', 'excerpt' => 'Looking for a gift that feels thoughtful without being fussy? Here is how to put together a New Zealand honey gift, and which of our jars to pick for foodies, family, and friends.', 'img' => '/images/honey-collection.jpg', 'img_alt' => 'Our honey jars beautifully presented and ready for gifting', 'date' => 'April 2026'],
             ['slug' => 'regional-honey-profiles', 'tag' => 'Education', 'title' => 'Regional Profiles: From Omanawa to Mamaku', 'excerpt' => 'Discover how the unique soil and climate of New Zealand\'s regions — from the Omanawa Falls to the Mamaku ranges — shape the flavor of every jar.', 'img' => '/images/behives-shot.jpg', 'img_alt' => 'Our colorful beehives in the NZ bush', 'date' => 'March 2026'],
             ['slug' => 'the-art-of-labeling', 'tag' => 'Brand', 'title' => 'Honest Labels: What Goes Into Every Jar', 'excerpt' => 'We believe transparency is key. Learn how we meticulously harvest, bottle, and label our honey to ensure you know exactly what you\'re eating.', 'img' => '/images/honey-collection.jpg', 'img_alt' => 'Forest Fairy Honey jars display', 'date' => 'February 2026'],
             ['slug' => 'the-customer-experience', 'tag' => 'Community', 'title' => 'Taste the Difference: Real Feedback from Real People', 'excerpt' => 'Join us as we share stories from our customers — from those who discovered us at markets to those who order their monthly staples online.', 'img' => '/images/customer-trying-honey.jpg', 'img_alt' => 'Customer trying honey', 'date' => 'January 2026'],
@@ -31,7 +32,7 @@
         <div class="blog-grid blog-grid--full">
             @foreach($articles as $a)
             <article class="blog-card animate-on-scroll" itemscope itemtype="https://schema.org/Article">
-                <a href="/blog" class="blog-card-link" aria-label="Read: {{ $a['title'] }}">
+                <a href="/blog/{{ $a['slug'] }}" class="blog-card-link" aria-label="Read: {{ $a['title'] }}">
                     <div class="blog-card-image">
                         <img src="{{ $a['img'] }}" alt="{{ $a['img_alt'] }}" loading="lazy" itemprop="image">
                     </div>

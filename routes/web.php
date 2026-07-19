@@ -44,6 +44,13 @@ Route::get('/blog', function () {
     return view('blog');
 });
 
+Route::get('/blog/{slug}', function ($slug) {
+    if ($slug === 'the-art-of-gifting-nz-honey-collections') {
+        return view('blog.the-art-of-gifting-nz-honey-collections');
+    }
+    return redirect('/blog');
+});
+
 Route::get('/honey-questions', function () {
     return view('honey-questions');
 });
@@ -66,6 +73,10 @@ Route::get('/privacy-policy', function () {
 
 Route::get('/sitemap', function () {
     return view('sitemap');
+});
+
+Route::get('/terms-conditions', function () {
+    return view('terms-conditions');
 });
 
 Route::get('/contact', function () {
@@ -125,5 +136,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews.index');
     Route::post('/reviews/{review}/approve', [AdminController::class, 'approveReview'])->name('reviews.approve');
     Route::post('/reviews/{review}/reject', [AdminController::class, 'rejectReview'])->name('reviews.reject');
+    Route::post('/reviews/{review}/toggle-feature', [AdminController::class, 'toggleFeature'])->name('reviews.toggle-feature');
 });
 

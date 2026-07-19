@@ -203,6 +203,16 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Review rejected successfully!');
     }
 
+    /**
+     * Toggle the featured status of an approved review on the homepage.
+     */
+    public function toggleFeature(\App\Models\Review $review)
+    {
+        $review->update(['featured' => !$review->featured]);
+        $status = $review->featured ? 'featured' : 'unfeatured';
+        return redirect()->back()->with('success', "Review successfully {$status} on the homepage!");
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

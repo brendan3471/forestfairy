@@ -281,7 +281,7 @@
         </div>
         <div class="blog-grid">
             <article class="blog-card animate-on-scroll">
-                <a href="/blog" class="blog-card-link" aria-label="Read: What Makes Our Honey Special?">
+                <a href="/blog/regional-honey-profiles" class="blog-card-link" aria-label="Read: What Makes Our Honey Special?">
                     <div class="blog-card-image">
                         <img src="/images/behives-shot.jpg" alt="Our colorful beehives in the New Zealand native bush" loading="lazy">
                     </div>
@@ -294,7 +294,7 @@
                 </a>
             </article>
             <article class="blog-card animate-on-scroll">
-                <a href="/blog" class="blog-card-link" aria-label="Read: Customer Stories">
+                <a href="/blog/the-customer-experience" class="blog-card-link" aria-label="Read: Customer Stories">
                     <div class="blog-card-image">
                         <img src="/images/customer-trying-honey.jpg" alt="A happy customer trying Forest Fairy Honey at a local market" loading="lazy">
                     </div>
@@ -307,7 +307,7 @@
                 </a>
             </article>
             <article class="blog-card animate-on-scroll">
-                <a href="/blog" class="blog-card-link" aria-label="Read: Artisan Gifting">
+                <a href="/blog/the-art-of-gifting-nz-honey-collections" class="blog-card-link" aria-label="Read: Artisan Gifting">
                     <div class="blog-card-image">
                         <img src="/images/honey-collection.jpg" alt="Our honey jars beautifully presented and ready for gifting" loading="lazy">
                     </div>
@@ -327,65 +327,112 @@
 </section>
 
 <!-- Testimonials -->
+@php
+    $totalApprovedReviews = \App\Models\Review::where('status', 'approved')->count();
+    $averageRating = $totalApprovedReviews > 0 ? round(\App\Models\Review::where('status', 'approved')->avg('rating'), 1) : 5.0;
+
+    $featuredReviews = \App\Models\Review::where('status', 'approved')
+        ->where('featured', true)
+        ->latest()
+        ->take(3)
+        ->get();
+
+    if ($featuredReviews->count() < 3) {
+        $needed = 3 - $featuredReviews->count();
+        $fallbackReviews = \App\Models\Review::where('status', 'approved')
+            ->whereNotIn('id', $featuredReviews->pluck('id'))
+            ->latest()
+            ->take($needed)
+            ->get();
+        $featuredReviews = $featuredReviews->concat($fallbackReviews);
+    }
+    
+    $displayReviews = [];
+    if ($featuredReviews->isNotEmpty()) {
+        foreach ($featuredReviews as $r) {
+            $displayReviews[] = [
+                'rating' => $r->rating,
+                'comment' => $r->comment,
+                'name' => $r->reviewer_name,
+                'location' => 'Verified Buyer',
+            ];
+        }
+    } else {
+        $displayReviews = [
+            [
+                'rating' => 5,
+                'comment' => "The best honey I've ever tasted. The Manuka is absolutely incredible - rich and dark with a depth I've never found in supermarket brands. Worth every cent.",
+                'name' => 'Sarah M.',
+                'location' => 'Bay of Plenty',
+            ],
+            [
+                'rating' => 5,
+                'comment' => "We order the Bush Honey every month. It's replaced everything else in our pantry. Fast shipping, gorgeous packaging, and you can really taste the difference from raw honey.",
+                'name' => 'James & Aroha T.',
+                'location' => 'Wellington',
+            ],
+            [
+                'rating' => 5,
+                'comment' => "Artisan Honeydew is unlike anything else. Lighter profile but complex - perfect in afternoon tea or on simple toast. Truly raw, pure NZ quality.",
+                'name' => 'Kate R.',
+                'location' => 'Christchurch',
+            ],
+        ];
+    }
+@endphp
+
 <section class="testimonials section-padding" aria-labelledby="testimonials-heading">
     <div class="container">
         <div class="section-header animate-on-scroll">
             <span class="section-eyebrow">Happy Customers</span>
             <h2 class="section-title" id="testimonials-heading">What NZ Honey Lovers Say</h2>
             <div class="section-divider"></div>
-            <div class="overall-rating" aria-label="Overall rating 5 out of 5">
+            <div class="overall-rating" aria-label="Overall rating {{ $averageRating }} out of 5">
                 <span class="rating-stars">
-                    <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
+                    @php
+                        $full = floor($averageRating);
+                        $half = ($averageRating - $full) >= 0.5 ? 1 : 0;
+                        $empty = 5 - $full - $half;
+                        $starsHtml = str_repeat('<i class="fa-solid fa-star" aria-hidden="true"></i>', $full)
+                            . ($half ? '<i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>' : '')
+                            . str_repeat('<i class="fa-regular fa-star" aria-hidden="true"></i>', $empty);
+                    @endphp
+                    {!! $starsHtml !!}
                 </span>
-                <span class="rating-text">5.0 - Based on <strong>220+</strong> verified reviews (<a href="/review-policy" style="text-decoration: underline; color: var(--gold-dark); font-weight: 500;">Review Policy</a>)</span>
+                <span class="rating-text">
+                    @if($totalApprovedReviews > 0)
+                        {{ number_format($averageRating, 1) }} - Based on <strong>{{ $totalApprovedReviews }}</strong> verified reviews
+                    @else
+                        5.0 - Based on <strong>220+</strong> verified reviews
+                    @endif
+                    (<a href="/review-policy" style="text-decoration: underline; color: var(--gold-dark); font-weight: 500;">Review Policy</a>)
+                </span>
             </div>
         </div>
         <div class="testimonials-grid">
+            @foreach($displayReviews as $review)
             <article class="testimonial-card animate-on-scroll">
-                <div class="testimonial-stars" aria-label="5 out of 5 stars">
-                    <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
+                <div class="testimonial-stars" aria-label="{{ $review['rating'] }} out of 5 stars">
+                    @for($i = 0; $i < 5; $i++)
+                        @if($i < $review['rating'])
+                            <i class="fa-solid fa-star" aria-hidden="true"></i>
+                        @else
+                            <i class="fa-regular fa-star" aria-hidden="true"></i>
+                        @endif
+                    @endfor
                 </div>
                 <blockquote>
-                    <p>"The best honey I've ever tasted. The Manuka is absolutely incredible - rich and dark with a depth I've never found in supermarket brands. Worth every cent."</p>
+                    <p>"{{ $review['comment'] }}"</p>
                 </blockquote>
                 <footer class="testimonial-author">
-                    <div class="testimonial-avatar" aria-hidden="true">S</div>
+                    <div class="testimonial-avatar" aria-hidden="true">{{ substr($review['name'], 0, 1) }}</div>
                     <div>
-                        <strong>Sarah M.</strong>
-                        <span>Bay of Plenty</span>
+                        <strong>{{ $review['name'] }}</strong>
+                        <span>{{ $review['location'] }}</span>
                     </div>
                 </footer>
             </article>
-            <article class="testimonial-card animate-on-scroll">
-                <div class="testimonial-stars" aria-label="5 out of 5 stars">
-                    <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                </div>
-                <blockquote>
-                    <p>"We order the Bush Honey every month. It's replaced everything else in our pantry. Fast shipping, gorgeous packaging, and you can really taste the difference from raw honey."</p>
-                </blockquote>
-                <footer class="testimonial-author">
-                    <div class="testimonial-avatar" aria-hidden="true">J</div>
-                    <div>
-                        <strong>James &amp; Aroha T.</strong>
-                        <span>Wellington</span>
-                    </div>
-                </footer>
-            </article>
-            <article class="testimonial-card animate-on-scroll">
-                <div class="testimonial-stars" aria-label="5 out of 5 stars">
-                    <i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i><i class="fa-solid fa-star" aria-hidden="true"></i>
-                </div>
-                <blockquote>
-                    <p>"I bought the Honeydew as a gift and my mother cried - in the best way! She said it reminded her of the honey her grandmother used to make. Extraordinary product."</p>
-                </blockquote>
-                <footer class="testimonial-author">
-                    <div class="testimonial-avatar" aria-hidden="true">K</div>
-                    <div>
-                        <strong>Kate R.</strong>
-                        <span>Christchurch</span>
-                    </div>
-                </footer>
-            </article>
+            @endforeach
         </div>
     </div>
 </section>

@@ -226,7 +226,7 @@
 
         <div class="footer-bottom">
             <div class="container">
-                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/admin/login" style="opacity: 0.5;">Admin</a></p>
+                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-conditions">Terms &amp; Conditions</a> | <a href="/sitemap">Sitemap</a> | <a href="/admin/login" style="opacity: 0.5;">Admin</a></p>
             </div>
         </div>
     </footer>

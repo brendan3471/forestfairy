@@ -138,6 +138,58 @@
     </div>
 </section>
 
+@php
+    $latestReviews = \App\Models\Review::where('status', 'approved')
+        ->latest()
+        ->take(3)
+        ->get();
+@endphp
+
+@if($latestReviews->isNotEmpty())
+<!-- Latest Reviews Section -->
+<section class="reviews-section section-padding" style="background-color: #fbf9f6; border-top: 1px solid var(--border-light);" aria-labelledby="reviews-heading">
+    <div class="container">
+        <div class="section-header animate-on-scroll">
+            <span class="section-eyebrow">Customer Feedback</span>
+            <h2 class="section-title" id="reviews-heading">What Our Customers Say</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="reviews-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+            @foreach($latestReviews as $review)
+            @php
+                $pName = $productsConfig[$review->product_slug]['name'] ?? 'Raw NZ Honey';
+            @endphp
+            <div class="review-card animate-on-scroll" style="background: var(--white); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow); border: 1px solid var(--border-light); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div class="review-card-stars" style="color: var(--gold); margin-bottom: 12px; font-size: 0.95rem;">
+                        @for($i = 0; $i < 5; $i++)
+                            @if($i < $review->rating)
+                                <i class="fa-solid fa-star" aria-hidden="true"></i>
+                            @else
+                                <i class="fa-regular fa-star" aria-hidden="true"></i>
+                            @endif
+                        @endfor
+                    </div>
+                    <p class="review-card-text" style="color: var(--text-dark); font-size: 0.95rem; font-style: italic; line-height: 1.6; margin-bottom: 20px;">
+                        "{{ $review->comment }}"
+                    </p>
+                </div>
+                <div class="review-card-author" style="border-top: 1px solid var(--border-light); padding-top: 15px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
+                    <div>
+                        <strong style="color: var(--text-dark); display: block; margin-bottom: 2px;">{{ $review->reviewer_name }}</strong>
+                        <span style="color: var(--text-muted);">Verified Buyer</span>
+                    </div>
+                    <a href="/shop/{{ $review->product_slug }}" style="color: var(--gold-dark); text-decoration: underline; font-weight: 600;" class="review-product-link">
+                        {{ $pName }}
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- Why Choose Us Banner -->
 <section class="why-section section-padding section-padding--alt" aria-labelledby="why-heading">
     <div class="container">

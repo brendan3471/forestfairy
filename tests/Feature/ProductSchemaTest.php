@@ -50,5 +50,34 @@ class ProductSchemaTest extends TestCase
         $response->assertSee('Omanawa Falls Creamed Honey');
         $response->assertSee('Mamaku Creamed Honey MGO 100+');
         $response->assertSee('Privacy Policy');
+        $response->assertSee('Terms & Conditions');
+        $response->assertSee('Blog: The Art of Gifting NZ Honey');
+    }
+
+    public function test_terms_conditions_page_returns_successful_response(): void
+    {
+        $response = $this->get('/terms-conditions');
+        $response->assertStatus(200);
+        $response->assertSee('Terms & Conditions');
+        $response->assertSee('Effective date:');
+        $response->assertSee('20 July 2026');
+        $response->assertSee('Consumer Guarantees Act');
+    }
+
+    public function test_blog_hub_returns_successful_response(): void
+    {
+        $response = $this->get('/blog');
+        $response->assertStatus(200);
+        $response->assertSee('From the Hive');
+        $response->assertSee('The Art of Gifting: Pure NZ Honey Collections');
+    }
+
+    public function test_blog_post_page_returns_successful_response(): void
+    {
+        $response = $this->get('/blog/the-art-of-gifting-nz-honey-collections');
+        $response->assertStatus(200);
+        $response->assertSee('The Art of Gifting:');
+        $response->assertSee('Pure NZ Honey Collections');
+        $response->assertSee('Omanawa Falls Creamed Honey');
     }
 }

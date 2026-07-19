@@ -13,6 +13,11 @@ class Review extends Model
         'reviewer_name',
         'comment',
         'status',
+        'featured',
+    ];
+
+    protected $casts = [
+        'featured' => 'boolean',
     ];
 
     /**

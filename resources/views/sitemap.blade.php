@@ -120,6 +120,12 @@
                         </a>
                     </li>
                     <li class="sitemap-link-item">
+                        <a href="/blog/the-art-of-gifting-nz-honey-collections">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Blog: The Art of Gifting NZ Honey</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
                         <a href="/contact">
                             <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                             <span>Contact Us</span>
@@ -197,6 +203,12 @@
                         <a href="/privacy-policy">
                             <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                             <span>Privacy Policy</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
+                        <a href="/terms-conditions">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Terms &amp; Conditions</span>
                         </a>
                     </li>
                 </ul>

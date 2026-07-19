@@ -91,6 +91,12 @@
                                 </button>
                             </form>
                         @elseif($review->status === 'approved')
+                            <form action="{{ route('admin.reviews.toggle-feature', $review) }}" method="POST" style="display: inline-block; margin-right: 4px;">
+                                @csrf
+                                <button type="submit" class="btn" style="padding: 6px 12px; font-size: 0.78rem; background: {{ $review->featured ? '#D4A843' : '#FAF7F2' }}; border: 1px solid var(--border); color: {{ $review->featured ? 'white' : 'var(--text-dark)' }};">
+                                    <i class="fa-{{ $review->featured ? 'solid' : 'regular' }} fa-star"></i> {{ $review->featured ? 'Featured' : 'Feature' }}
+                                </button>
+                            </form>
                             <form action="{{ route('admin.reviews.reject', $review) }}" method="POST" style="display: inline-block;">
                                 @csrf
                                 <button type="submit" class="btn" style="padding: 6px 12px; font-size: 0.78rem; background: #E53E3E; color: white;">
