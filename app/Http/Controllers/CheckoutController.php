@@ -396,6 +396,20 @@ class CheckoutController extends Controller
                     }
                 });
 
+                // Send the review request email immediately for testing
+                try {
+                    $order = Order::where('stripe_session_id', $session->id)->first();
+                    if ($order) {
+                        $order->load('items');
+                        \Illuminate\Support\Facades\Mail::to($order->customer_email)->send(new \App\Mail\ReviewRequestMail($order));
+                        $order->review_requested_at = now();
+                        $order->save();
+                        Log::info('Immediate test review request sent', ['order_id' => $order->id]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Failed to send immediate test review request: " . $e->getMessage());
+                }
+
                 Log::info('Order stored successfully', ['session_id' => $session->id]);
                 break;
 
