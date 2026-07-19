@@ -176,7 +176,7 @@
                         <ul class="footer-contact">
                             <li>
                                 <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-                                <span>17 Fairmont Terrace, Otumoetai, Tauranga 3110</span>
+                                <span>Otumoetai, Tauranga 3110</span>
                             </li>
                             <li>
                                 <a href="mailto:hello@forestfairyhoney.co.nz">

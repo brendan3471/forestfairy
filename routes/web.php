@@ -51,6 +51,9 @@ Route::get('/blog/{slug}', function ($slug) {
     if ($slug === 'regional-honey-profiles') {
         return view('blog.regional-honey-profiles');
     }
+    if ($slug === 'raw-vs-commercial') {
+        return view('blog.raw-vs-commercial');
+    }
     return redirect('/blog');
 });
 

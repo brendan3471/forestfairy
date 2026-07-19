@@ -90,4 +90,14 @@ class ProductSchemaTest extends TestCase
         $response->assertSee('Omanawa Falls');
         $response->assertSee('Otumoetai');
     }
+
+    public function test_raw_vs_commercial_blog_post_returns_successful_response(): void
+    {
+        $response = $this->get('/blog/raw-vs-commercial');
+        $response->assertStatus(200);
+        $response->assertSee('Raw vs Processed Honey:');
+        $response->assertSee('Why Real Truly Matters');
+        $response->assertSee('HMF');
+        $response->assertSee('Diastase');
+    }
 }
