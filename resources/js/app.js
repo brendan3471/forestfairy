@@ -93,16 +93,51 @@
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        // Simulate submission
+        
         const btn = document.getElementById('contactSubmit');
         btn.textContent = 'Sending…';
         btn.disabled = true;
-        setTimeout(() => {
-            success?.classList.remove('hidden');
-            form.reset();
+
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        const formData = {
+            name: document.getElementById('contactName').value,
+            email: document.getElementById('contactEmail').value,
+            subject: document.getElementById('contactSubject').value,
+            message: document.getElementById('contactMessage').value
+        };
+
+        fetch('/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken || '',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to send message.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                success?.classList.remove('hidden');
+                form.reset();
+            } else {
+                alert('Something went wrong. Please try again.');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Unable to send message. Please check your connection and try again.');
+        })
+        .finally(() => {
             btn.innerHTML = '<i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send Message';
             btn.disabled = false;
-        }, 1200);
+        });
     });
 })();
 

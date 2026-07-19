@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Raw NZ Honey Online | Forest Fairy Honey New Zealand')</title>
     <meta name="description" content="@yield('meta_description', 'Forest Fairy Honey — pure, raw New Zealand honey harvested from pristine NZ forests and pastures. Shop manuka, bush, clover & honeydew honey online. Free NZ shipping over $75.')">
     <meta name="keywords" content="@yield('meta_keywords', 'honey NZ, buy honey online New Zealand, raw honey New Zealand, manuka honey NZ, NZ honey online store, forest honey New Zealand, natural honey NZ')">
