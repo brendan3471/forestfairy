@@ -80,4 +80,14 @@ class ProductSchemaTest extends TestCase
         $response->assertSee('Pure NZ Honey Collections');
         $response->assertSee('Omanawa Falls Creamed Honey');
     }
+
+    public function test_regional_profiles_blog_post_returns_successful_response(): void
+    {
+        $response = $this->get('/blog/regional-honey-profiles');
+        $response->assertStatus(200);
+        $response->assertSee('Regional Profiles:');
+        $response->assertSee('From Omanawa to Mamaku');
+        $response->assertSee('Omanawa Falls');
+        $response->assertSee('Otumoetai');
+    }
 }

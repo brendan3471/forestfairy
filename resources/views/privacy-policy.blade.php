@@ -315,7 +315,7 @@
                             <ul class="faq-list" style="margin-bottom: 15px;">
                                 <li><i class="fa-solid fa-user-shield" aria-hidden="true"></i> Privacy Officer: Benő Bodó</li>
                                 <li><i class="fa-solid fa-phone" aria-hidden="true"></i> Phone: 021 996 820</li>
-                                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Address: Bay of Plenty, New Zealand</li>
+                                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Address: 17 Fairmont Terrace, Otumoetai, Tauranga 3110, New Zealand</li>
                             </ul>
 
                             <p>If you are not satisfied with our response, you can complain to the <strong>Office of the Privacy Commissioner</strong> at <a href="https://www.privacy.org.nz" target="_blank" rel="noopener">www.privacy.org.nz</a> or by calling 0800 803 909.</p>

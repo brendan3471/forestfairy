@@ -59,7 +59,7 @@
                         <div class="contact-icon"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
                         <div>
                             <strong>Location</strong>
-                            <span>Bay of Plenty, New Zealand</span>
+                            <span>17 Fairmont Terrace, Otumoetai, Tauranga 3110</span>
                         </div>
                     </li>
                     <li>

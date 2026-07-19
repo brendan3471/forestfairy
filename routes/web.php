@@ -48,6 +48,9 @@ Route::get('/blog/{slug}', function ($slug) {
     if ($slug === 'the-art-of-gifting-nz-honey-collections') {
         return view('blog.the-art-of-gifting-nz-honey-collections');
     }
+    if ($slug === 'regional-honey-profiles') {
+        return view('blog.regional-honey-profiles');
+    }
     return redirect('/blog');
 });
 

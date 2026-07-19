@@ -73,9 +73,84 @@
 <section class="product-detail section-padding" aria-labelledby="product-title">
     <div class="container">
         <div class="product-detail-grid">
-            <!-- Image -->
-            <div class="product-detail-image animate-on-scroll">
-                <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} — New Zealand Raw Honey" loading="eager" class="product-detail-img">
+            <!-- Image & Gallery -->
+            <div class="product-gallery animate-on-scroll">
+                <style>
+                    .product-gallery {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 15px;
+                    }
+                    .product-main-image-wrapper {
+                        position: relative;
+                        background: var(--white);
+                        border-radius: var(--radius-lg);
+                        overflow: hidden;
+                        border: 1px solid var(--border-light);
+                        box-shadow: var(--shadow);
+                    }
+                    .product-main-image-wrapper img {
+                        width: 100%;
+                        height: auto;
+                        display: block;
+                        transition: opacity 0.2s ease-in-out;
+                    }
+                    .product-thumbnails {
+                        display: flex;
+                        gap: 12px;
+                    }
+                    .thumb-btn {
+                        width: 75px;
+                        height: 75px;
+                        border-radius: var(--radius);
+                        border: 2px solid var(--border-light);
+                        background: var(--white);
+                        padding: 4px;
+                        cursor: pointer;
+                        transition: all var(--transition);
+                        overflow: hidden;
+                    }
+                    .thumb-btn:hover {
+                        border-color: var(--gold);
+                    }
+                    .thumb-btn.active {
+                        border-color: var(--gold);
+                        box-shadow: 0 0 0 2px rgba(212, 168, 67, 0.3);
+                    }
+                    .thumb-btn img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        border-radius: calc(var(--radius) - 2px);
+                    }
+                </style>
+                <div class="product-main-image-wrapper">
+                    <img id="mainProductImg" src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} — New Zealand Raw Honey" loading="eager" class="product-detail-img">
+                </div>
+                <div class="product-thumbnails" aria-label="Product Image Gallery">
+                    <button type="button" class="thumb-btn active" onclick="switchProductImg('{{ $imgMap[$product['image']] }}', this)" aria-label="View Product Jar">
+                        <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} thumbnail">
+                    </button>
+                    <button type="button" class="thumb-btn" onclick="switchProductImg('/images/nutrition-information.jpg', this)" aria-label="View Nutrition Information">
+                        <img src="/images/nutrition-information.jpg" alt="Nutrition Information panel thumbnail">
+                    </button>
+                </div>
+                <script>
+                    function switchProductImg(src, btn) {
+                        const mainImg = document.getElementById('mainProductImg');
+                        if (mainImg) {
+                            mainImg.style.opacity = '0';
+                            setTimeout(() => {
+                                mainImg.src = src;
+                                mainImg.style.opacity = '1';
+                            }, 150);
+                        }
+                        document.querySelectorAll('.thumb-btn').forEach(b => b.classList.remove('active'));
+                        if (btn) {
+                            btn.classList.add('active');
+                        }
+                    }
+                </script>
             </div>
             <!-- Info -->
             <div class="product-detail-info animate-on-scroll">

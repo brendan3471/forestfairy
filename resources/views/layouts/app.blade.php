@@ -176,7 +176,7 @@
                         <ul class="footer-contact">
                             <li>
                                 <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
-                                <span>Bay of Plenty, New Zealand</span>
+                                <span>17 Fairmont Terrace, Otumoetai, Tauranga 3110</span>
                             </li>
                             <li>
                                 <a href="mailto:hello@forestfairyhoney.co.nz">
@@ -185,7 +185,8 @@
                                 </a>
                             </li>
                         </ul>
-                        <!-- Newsletter -->
+                        <!-- Newsletter (Hidden for now) -->
+                        {{--
                         <div class="footer-newsletter">
                             <p class="newsletter-label">Get honey news &amp; offers</p>
                             <form class="newsletter-form" id="newsletterForm" aria-label="Newsletter signup">
@@ -195,6 +196,7 @@
                                 </button>
                             </form>
                         </div>
+                        --}}
                     </div>
                 </div>
             </div>

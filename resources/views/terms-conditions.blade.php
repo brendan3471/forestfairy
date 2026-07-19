@@ -209,7 +209,7 @@
                                 <li><i class="fa-solid fa-user" aria-hidden="true"></i> Proprietor: Benő Bodó</li>
                                 <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email: <a href="mailto:accounts@forestfairyhoney.co.nz">accounts@forestfairyhoney.co.nz</a></li>
                                 <li><i class="fa-solid fa-phone" aria-hidden="true"></i> Phone: 021 996 820</li>
-                                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Address: Bay of Plenty, New Zealand</li>
+                                <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Address: 17 Fairmont Terrace, Otumoetai, Tauranga 3110, New Zealand</li>
                             </ul>
                         </div>
                     </article>
