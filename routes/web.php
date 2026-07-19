@@ -6,6 +6,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ReviewController;
+use App\Models\Review;
 
 Route::get('/', function () {
     return view('home');
@@ -21,7 +23,17 @@ Route::get('/shop/{slug}', function ($slug) {
     if (! $product) {
         abort(404);
     }
-    return view('product', compact('product', 'slug'));
+    
+    // Query approved reviews from database (starting from scratch)
+    $dbReviews = Review::where('product_slug', $slug)
+        ->where('status', 'approved')
+        ->latest()
+        ->get();
+        
+    $reviewsCount = $dbReviews->count();
+    $averageRating = $reviewsCount > 0 ? round($dbReviews->avg('rating'), 1) : 0;
+    
+    return view('product', compact('product', 'slug', 'dbReviews', 'reviewsCount', 'averageRating'));
 });
 
 Route::get('/about', function () {
@@ -53,6 +65,9 @@ Route::get('/contact', function () {
 });
 
 Route::post('/contact', [ContactController::class, 'send']);
+
+Route::get('/reviews/write', [ReviewController::class, 'write'])->name('reviews.write');
+Route::post('/reviews/submit', [ReviewController::class, 'submit'])->name('reviews.submit');
 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::post('/checkout/prepare', [CheckoutController::class, 'prepare'])->name('checkout.prepare');
@@ -97,5 +112,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/orders/{order}/status', [AdminController::class, 'updateStatus'])->name('orders.updateStatus');
     Route::post('/orders/{order}/generate-label', [AdminController::class, 'generateLabel'])->name('orders.generateLabel');
     Route::get('/orders/{order}/track', [AdminController::class, 'trackOrder'])->name('orders.track');
+
+    // Reviews moderation
+    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews.index');
+    Route::post('/reviews/{review}/approve', [AdminController::class, 'approveReview'])->name('reviews.approve');
+    Route::post('/reviews/{review}/reject', [AdminController::class, 'rejectReview'])->name('reviews.reject');
 });
 

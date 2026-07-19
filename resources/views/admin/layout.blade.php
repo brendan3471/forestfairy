@@ -213,6 +213,10 @@
                 <i class="fa-solid fa-shopping-bag"></i>
                 <span>Orders</span>
             </a>
+            <a href="{{ route('admin.reviews.index') }}" class="nav-item {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-comment-dots"></i>
+                <span>Reviews</span>
+            </a>
             <!-- Link to site -->
             <a href="/" class="nav-item">
                 <i class="fa-solid fa-eye"></i>

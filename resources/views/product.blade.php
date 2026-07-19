@@ -35,14 +35,16 @@
       "@@type": "Organization",
       "name": "Forest Fairy Honey"
     }
-  },
-  "aggregateRating": {
+  }
+  @if($reviewsCount > 0)
+  ,"aggregateRating": {
     "@@type": "AggregateRating",
-    "ratingValue": "{{ $product['rating'] }}",
-    "reviewCount": "{{ $product['reviews'] }}",
+    "ratingValue": "{{ $averageRating }}",
+    "reviewCount": "{{ $reviewsCount }}",
     "bestRating": "5",
     "worstRating": "1"
   }
+  @endif
 }
 </script>
 @endsection
@@ -79,18 +81,23 @@
             <div class="product-detail-info animate-on-scroll">
                 <span class="product-type product-type--lg">New Zealand Raw Honey</span>
                 <h1 class="product-detail-title" id="product-title">{{ $product['name'] }}</h1>
-                <div class="product-detail-stars" aria-label="Rated {{ $product['rating'] }} out of 5">
+                <div class="product-detail-stars" aria-label="Rated {{ $averageRating }} out of 5">
                     @php
-                        $rating = (float)$product['rating'];
-                        $full = floor($rating);
-                        $half = ($rating - $full) >= 0.5 ? 1 : 0;
+                        $full = floor($averageRating);
+                        $half = ($averageRating - $full) >= 0.5 ? 1 : 0;
                         $empty = 5 - $full - $half;
                         $starsHtml = str_repeat('<i class="fa-solid fa-star" aria-hidden="true"></i>', $full)
                             . ($half ? '<i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>' : '')
                             . str_repeat('<i class="fa-regular fa-star" aria-hidden="true"></i>', $empty);
                     @endphp
                     <span class="product-stars">{!! $starsHtml !!}</span>
-                    <span class="product-rating-text">{{ $product['rating'] }} ({{ $product['reviews'] }} reviews)</span>
+                    <span class="product-rating-text">
+                        @if($reviewsCount > 0)
+                            {{ $averageRating }} ({{ $reviewsCount }} {{ Str::plural('review', $reviewsCount) }})
+                        @else
+                            No reviews yet
+                        @endif
+                    </span>
                     <a href="/review-policy" style="font-size: 0.8rem; margin-left: 10px; color: var(--gold-dark); text-decoration: underline; font-weight: 500;" id="review-policy-link">Review Policy</a>
                 </div>
                 
@@ -204,6 +211,66 @@
                 })();
                 </script>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Reviews -->
+<section class="reviews-section section-padding" style="background-color: #ffffff; border-top: 1px solid #F3EDE1;" id="customer-reviews">
+    <div class="container" style="max-width: 900px;">
+        <div class="section-header animate-on-scroll" style="text-align: center; margin-bottom: 40px;">
+            <h2 class="section-title" style="font-family: 'Playfair Display', Georgia, serif; font-size: 2.2rem; color: var(--text-dark);">Customer Reviews</h2>
+            <div class="section-divider" style="background-color: var(--gold); width: 60px; height: 3px; margin: 15px auto;"></div>
+            
+            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-top: 15px;">
+                <div style="font-size: 2.5rem; font-weight: bold; color: var(--text-dark);">{{ $averageRating ?: '0.0' }}</div>
+                <div>
+                    <div style="font-size: 1.2rem; color: var(--gold-dark);">
+                        @php
+                            $full = floor($averageRating);
+                            $half = ($averageRating - $full) >= 0.5 ? 1 : 0;
+                            $empty = 5 - $full - $half;
+                            $starsHtml = str_repeat('<i class="fa-solid fa-star"></i>', $full)
+                                . ($half ? '<i class="fa-solid fa-star-half-stroke"></i>' : '')
+                                . str_repeat('<i class="fa-regular fa-star"></i>', $empty);
+                        @endphp
+                        {!! $starsHtml !!}
+                    </div>
+                    <span style="font-size: 0.9rem; color: var(--text-muted);">Based on {{ $reviewsCount }} {{ Str::plural('review', $reviewsCount) }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="reviews-list animate-on-scroll">
+            @forelse($dbReviews as $review)
+            <div class="review-card" style="padding: 25px 0; border-bottom: 1px solid #F3EDE1; display: flex; flex-direction: column; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 5px;">
+                    <div>
+                        <strong style="font-size: 1.05rem; color: var(--text-dark); display: inline-flex; align-items: center; gap: 8px;">
+                            {{ $review->reviewer_name }}
+                            <span style="display: inline-flex; align-items: center; gap: 3px; font-size: 0.75rem; background-color: #E2ECD8; color: #43692A; padding: 3px 8px; border-radius: 50px; font-weight: 600;">
+                                <i class="fa-solid fa-circle-check" style="font-size: 0.8rem;"></i> Verified Buyer
+                            </span>
+                        </strong>
+                        <div style="color: var(--gold-dark); font-size: 0.9rem; margin-top: 4px;">
+                            {!! str_repeat('<i class="fa-solid fa-star"></i>', $review->rating) . str_repeat('<i class="fa-regular fa-star"></i>', 5 - $review->rating) !!}
+                        </div>
+                    </div>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);">{{ $review->created_at->format('d M Y') }}</span>
+                </div>
+                
+                @if($review->comment)
+                <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-dark); margin: 0; white-space: pre-line;">
+                    {{ $review->comment }}
+                </p>
+                @endif
+            </div>
+            @empty
+            <div style="text-align: center; padding: 40px 20px; border: 1px dashed #e2d9c8; border-radius: var(--radius); background-color: #FAF7F2;">
+                <p style="font-size: 1rem; color: var(--text-muted); margin: 0;">No reviews yet for this honey.</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;">Only verified buyers who purchased this product can submit a review.</p>
+            </div>
+            @endforelse
         </div>
     </div>
 </section>

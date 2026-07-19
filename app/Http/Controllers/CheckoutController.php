@@ -345,19 +345,59 @@ class CheckoutController extends Controller
                 );
                 Log::info('Stripe Session retrieved', ['session' => $fullSession->toArray()]);
 
-                DB::transaction(function () use ($fullSession) {
-                    $shippingAddress = $fullSession->shipping_details;
+                $shippingAddress = $fullSession->shipping_details;
 
-                    // Fallback to payment_intent->shipping if shipping_details is empty
-                    // This is common in some Stripe Connect configurations
-                    if (!$shippingAddress && isset($fullSession->payment_intent->shipping)) {
-                        $shippingAddress = $fullSession->payment_intent->shipping;
-                        Log::info('Falling back to shipping details from Payment Intent');
-                    }
+                // Fallback to payment_intent->shipping if shipping_details is empty
+                if (!$shippingAddress && isset($fullSession->payment_intent->shipping)) {
+                    $shippingAddress = $fullSession->payment_intent->shipping;
+                    Log::info('Falling back to shipping details from Payment Intent');
+                }
 
-                    if (!$shippingAddress) {
-                        Log::warning('No shipping details found in Stripe session or Payment Intent', ['session_id' => $fullSession->id]);
+                // Fallback to resolving via Google Places address_id in metadata (for cart checkouts)
+                if (!$shippingAddress && !empty($fullSession->metadata->address_id)) {
+                    try {
+                        $googlePlaces = new \App\Services\GooglePlacesService();
+                        $details = $googlePlaces->getAddressDetails($fullSession->metadata->address_id);
+                        
+                        $formatted = $details['formatted_address'] ?? '';
+                        $parts = array_map('trim', explode(',', $formatted));
+                        
+                        $line1 = $parts[0] ?? '';
+                        $line2 = $parts[1] ?? '';
+                        
+                        $cityPart = $parts[2] ?? '';
+                        $city = $cityPart;
+                        $postalCode = '';
+                        if (preg_match('/^(.*?)\s*(\d{4})$/', $cityPart, $matches)) {
+                            $city = trim($matches[1]);
+                            $postalCode = $matches[2];
+                        }
+                        
+                        $shippingAddress = [
+                            'name' => $fullSession->customer_details->name ?? '',
+                            'address' => [
+                                'line1' => $line1,
+                                'line2' => $line2,
+                                'city' => $city,
+                                'postal_code' => $postalCode,
+                                'state' => '',
+                                'country' => 'NZ'
+                            ]
+                        ];
+                        
+                        Log::info('Successfully resolved shipping address from metadata address_id', [
+                            'address' => $shippingAddress
+                        ]);
+                    } catch (\Exception $e) {
+                        Log::error('Failed to resolve shipping address from metadata address_id: ' . $e->getMessage());
                     }
+                }
+
+                if (!$shippingAddress) {
+                    Log::warning('No shipping details found in Stripe session, Payment Intent, or metadata', ['session_id' => $fullSession->id]);
+                }
+
+                DB::transaction(function () use ($fullSession, $shippingAddress) {
 
                     $shippingAmountFromLineItems = 0;
                     $lineItemsProcessed = [];

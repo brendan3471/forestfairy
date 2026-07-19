@@ -25,9 +25,16 @@ class OrderConfirmationMail extends Mailable
     {
         $this->order = $order;
         
-        // Extract first name
-        $nameParts = explode(' ', trim($order->customer_name));
-        $this->firstName = $nameParts[0] ?? 'there';
+        // Extract first name (skipping single-character initials like "J" or "J.")
+        $nameParts = array_values(array_filter(explode(' ', trim($order->customer_name))));
+        $firstName = 'there';
+        if (count($nameParts) > 0) {
+            $firstName = $nameParts[0];
+            if (strlen(preg_replace('/[^a-zA-Z]/', '', $firstName)) <= 1 && isset($nameParts[1])) {
+                $firstName = $nameParts[1];
+            }
+        }
+        $this->firstName = ucfirst($firstName);
 
         // Load items
         $this->items = $order->items;

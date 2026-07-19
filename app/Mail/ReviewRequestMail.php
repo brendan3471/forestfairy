@@ -24,19 +24,19 @@ class ReviewRequestMail extends Mailable
     {
         $this->order = $order;
         
-        // Extract first name from customer_name
-        $nameParts = explode(' ', trim($order->customer_name));
-        $this->firstName = $nameParts[0] ?? 'there';
-
-        // Find the first purchased product slug to link the review button
-        $firstItem = $order->items()->first();
-        $productSlug = $firstItem ? $firstItem->product_slug : '';
-
-        if ($productSlug && $productSlug !== 'unknown') {
-            $this->reviewUrl = url("/shop/{$productSlug}#review-policy-link");
-        } else {
-            $this->reviewUrl = url("/shop");
+        // Extract first name (skipping single-character initials like "J" or "J.")
+        $nameParts = array_values(array_filter(explode(' ', trim($order->customer_name))));
+        $firstName = 'there';
+        if (count($nameParts) > 0) {
+            $firstName = $nameParts[0];
+            if (strlen(preg_replace('/[^a-zA-Z]/', '', $firstName)) <= 1 && isset($nameParts[1])) {
+                $firstName = $nameParts[1];
+            }
         }
+        $this->firstName = ucfirst($firstName);
+
+        // Set the tokenized review link
+        $this->reviewUrl = route('reviews.write', ['token' => $order->review_token]);
     }
 
     /**

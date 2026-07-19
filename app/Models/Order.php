@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Str;
+
 class Order extends Model
 {
     protected $fillable = [
@@ -22,10 +24,26 @@ class Order extends Model
         'label_url',
         'consignment_id',
         'review_requested_at',
+        'review_token',
     ];
+
+    /**
+     * Boot the model.
+     */
+    protected static function booted()
+    {
+        static::creating(function ($order) {
+            $order->review_token = Str::random(32);
+        });
+    }
 
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

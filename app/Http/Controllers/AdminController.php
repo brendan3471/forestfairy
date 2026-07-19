@@ -176,6 +176,33 @@ class AdminController extends Controller
         }
     }
 
+    /**
+     * Display all reviews for moderation.
+     */
+    public function reviews()
+    {
+        $reviews = \App\Models\Review::orderByRaw("status = 'pending' DESC")->latest()->paginate(30);
+        return view('admin.reviews.index', compact('reviews'));
+    }
+
+    /**
+     * Approve a review.
+     */
+    public function approveReview(\App\Models\Review $review)
+    {
+        $review->update(['status' => 'approved']);
+        return redirect()->back()->with('success', 'Review approved successfully!');
+    }
+
+    /**
+     * Reject a review.
+     */
+    public function rejectReview(\App\Models\Review $review)
+    {
+        $review->update(['status' => 'rejected']);
+        return redirect()->back()->with('success', 'Review rejected successfully!');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

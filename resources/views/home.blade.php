@@ -136,6 +136,11 @@
         <div class="products-grid">
             @php
             $productsConfig = config('products');
+            $reviewStats = \App\Models\Review::where('status', 'approved')
+                ->selectRaw('product_slug, COUNT(*) as count, AVG(rating) as average')
+                ->groupBy('product_slug')
+                ->get()
+                ->keyBy('product_slug');
             $imgMap = [
                 'omanawa-falls' => '/images/Omanawa-falls-creamed-honey.jpg',
                 'mamaku'        => '/images/mamaku-creamed-honey.jpg',
@@ -146,6 +151,10 @@
             
             @foreach($productsConfig as $slug => $p)
             @php
+                $stat = $reviewStats->get($slug);
+                $reviewsCount = $stat ? $stat->count : 0;
+                $avgRating = $stat ? round($stat->average, 1) : 0;
+
                 $defaultOpt = $p['options'][$p['default_option']];
                 $badge = '';
                 $badgeClass = '';
@@ -164,17 +173,17 @@
                     <div class="product-info">
                         <span class="product-type">New Zealand Honey</span>
                         <h3 class="product-name" itemprop="name">{{ $p['name'] }}</h3>
-                        <div class="product-stars" aria-label="Rated {{ $p['rating'] }} out of 5">
+                        <div class="product-stars" aria-label="Rated {{ $avgRating }} out of 5">
                             @for($i = 0; $i < 5; $i++)
-                                @if($i < floor((float)$p['rating']))
+                                @if($i < floor($avgRating))
                                     <i class="fa-solid fa-star" aria-hidden="true"></i>
-                                @elseif(floor((float)$p['rating']) == $i && fmod((float)$p['rating'], 1) >= 0.5)
+                                @elseif(floor($avgRating) == $i && fmod($avgRating, 1) >= 0.5)
                                     <i class="fa-solid fa-star-half-stroke" aria-hidden="true"></i>
                                 @else
                                     <i class="fa-regular fa-star" aria-hidden="true"></i>
                                 @endif
                             @endfor
-                            <span>({{ $p['reviews'] }})</span>
+                            <span>({{ $reviewsCount }})</span>
                         </div>
                         <div class="product-price-row">
                             <span class="product-price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
