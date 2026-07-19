@@ -100,4 +100,13 @@ class ProductSchemaTest extends TestCase
         $response->assertSee('HMF');
         $response->assertSee('Diastase');
     }
+
+    public function test_the_art_of_labeling_blog_post_returns_successful_response(): void
+    {
+        $response = $this->get('/blog/the-art-of-labeling');
+        $response->assertStatus(200);
+        $response->assertSee('Honest Labels:');
+        $response->assertSee('What Goes Into Every Jar');
+        $response->assertSee('Food Standards Code');
+    }
 }

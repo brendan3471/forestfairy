@@ -54,6 +54,9 @@ Route::get('/blog/{slug}', function ($slug) {
     if ($slug === 'raw-vs-commercial') {
         return view('blog.raw-vs-commercial');
     }
+    if ($slug === 'the-art-of-labeling') {
+        return view('blog.the-art-of-labeling');
+    }
     return redirect('/blog');
 });
 
