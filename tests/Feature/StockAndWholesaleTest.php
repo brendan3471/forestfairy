@@ -18,6 +18,13 @@ class StockAndWholesaleTest extends TestCase
         $response->assertSee('Wholesale New Zealand Honey');
     }
 
+    public function test_return_policy_page_renders_successfully(): void
+    {
+        $response = $this->get('/return-policy');
+        $response->assertStatus(200);
+        $response->assertSee('Refund &amp; Damaged', false);
+    }
+
     public function test_wholesale_inquiry_submission(): void
     {
         $response = $this->post('/wholesale', [

@@ -80,6 +80,10 @@ Route::get('/review-policy', function () {
     return view('review-policy');
 });
 
+Route::get('/return-policy', function () {
+    return view('return-policy');
+});
+
 Route::get('/privacy-policy', function () {
     return view('privacy-policy');
 });
