@@ -45,6 +45,11 @@
                         <a href="/shop/{{ $item['slug'] }}" class="cart-item-name">{{ $item['name'] }}</a>
                         <span class="cart-item-weight">{{ $item['weight'] }}</span>
                         <span class="cart-item-unit-price">${{ $item['price'] }} each</span>
+                        @if($item['stock'] < 10)
+                            <span style="font-size: 0.78rem; color: #B45309; display: block; margin-top: 2px; font-weight: 500;">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Only {{ $item['stock'] }} left in stock
+                            </span>
+                        @endif
                     </div>
                     <div class="cart-item-qty">
                         <!-- Decrease -->
@@ -62,7 +67,7 @@
                         <form action="/cart/update/{{ $item['key'] }}" method="POST" style="display:inline">
                             @csrf
                             <input type="hidden" name="quantity" value="{{ $item['quantity'] + 1 }}">
-                            <button type="submit" class="qty-btn" aria-label="Increase quantity">
+                            <button type="submit" class="qty-btn" aria-label="Increase quantity" {{ $item['quantity'] >= $item['max_qty'] ? 'disabled' : '' }}>
                                 <i class="fa-solid fa-plus" aria-hidden="true"></i>
                             </button>
                         </form>
@@ -79,6 +84,15 @@
                     </form>
                 </article>
                 @endforeach
+
+                <!-- Bulk Orders Callout Banner -->
+                <div style="margin-top: 20px; padding: 16px; background: #FAF7F2; border: 1px solid #E5E1DA; border-radius: var(--radius); display: flex; align-items: center; justify-content: space-between; gap: 15px; flex-wrap: wrap;">
+                    <div>
+                        <strong style="color: var(--text-dark); display: block;"><i class="fa-solid fa-boxes-stacked" style="color: var(--gold); margin-right: 6px;"></i> Wholesale &amp; Bulk Orders</strong>
+                        <span style="font-size: 0.88rem; color: var(--text-muted);">Maximum 10 jars per honey item. Ordering for retail, events, or catering?</span>
+                    </div>
+                    <a href="/wholesale" class="btn-secondary" style="font-size: 0.85rem; padding: 8px 16px; text-decoration: none;">View Wholesale &rarr;</a>
+                </div>
             </div>
 
             <!-- Order Summary -->

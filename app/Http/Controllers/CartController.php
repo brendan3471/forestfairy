@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Log;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
+use App\Models\ProductStock;
+
 class CartController extends Controller
 {
     // -----------------------------------------------------------------------
@@ -16,6 +18,7 @@ class CartController extends Controller
     {
         $cart     = session('cart', []);
         $products = config('products');
+        $stocks   = ProductStock::getAllKeyedBySku();
         $items    = [];
         $subtotal = 0;
 
@@ -30,7 +33,18 @@ class CartController extends Controller
 
             if (!$option) continue;
 
+            $sku       = $option['sku'] ?? '';
+            $stockQty  = isset($stocks[$sku]) ? (int)$stocks[$sku]['stock'] : 50;
             $qty       = max(1, (int) $row['quantity']);
+            
+            // Auto adjust if qty in cart currently exceeds remaining stock or 10 limit
+            $maxAllowed = min(10, $stockQty);
+            if ($qty > $maxAllowed && $maxAllowed > 0) {
+                $qty = $maxAllowed;
+                $cart[$key]['quantity'] = $qty;
+                session(['cart' => $cart]);
+            }
+
             $lineTotal = $option['price_cents'] * $qty;
             $subtotal += $lineTotal;
 
@@ -44,6 +58,9 @@ class CartController extends Controller
             $items[] = [
                 'key'        => $key,
                 'slug'       => $slug,
+                'sku'        => $sku,
+                'stock'      => $stockQty,
+                'max_qty'    => $maxAllowed,
                 'name'       => $product['name'],
                 'price'      => $option['price'],
                 'price_cents'=> $option['price_cents'],
@@ -72,11 +89,29 @@ class CartController extends Controller
             $option = $product['default_option'];
         }
 
-        $key  = "$slug:$option";
-        $qty  = max(1, (int) $request->input('quantity', 1));
-        $cart = session('cart', []);
+        $optData  = $product['options'][$option];
+        $sku      = $optData['sku'] ?? '';
+        $availableStock = ProductStock::getStockForSku($sku);
 
-        $cart[$key]['quantity'] = ($cart[$key]['quantity'] ?? 0) + $qty;
+        if ($availableStock <= 0) {
+            return redirect()->back()->with('cart_error', 'Sorry, this honey variant is currently sold out.');
+        }
+
+        $key  = "$slug:$option";
+        $requestedQty = max(1, (int) $request->input('quantity', 1));
+        $cart = session('cart', []);
+        $currentQty = $cart[$key]['quantity'] ?? 0;
+        $targetQty  = $currentQty + $requestedQty;
+
+        if ($targetQty > 10) {
+            return redirect()->back()->with('cart_error', 'Maximum order limit is 10 jars per honey. For larger orders, please visit our Wholesale page.');
+        }
+
+        if ($targetQty > $availableStock) {
+            return redirect()->back()->with('cart_error', "Only {$availableStock} jars available in stock for {$product['name']} ({$optData['weight']}).");
+        }
+
+        $cart[$key]['quantity'] = $targetQty;
         session(['cart' => $cart]);
 
         return redirect()->back()->with('cart_flash', 'Added to cart!');
@@ -87,16 +122,31 @@ class CartController extends Controller
     // -----------------------------------------------------------------------
     public function update(Request $request, string $key)
     {
-        $qty  = (int) $request->input('quantity', 1);
-        $cart = session('cart', []);
+        $qty      = (int) $request->input('quantity', 1);
+        $cart     = session('cart', []);
+        $products = config('products');
 
         if ($qty <= 0) {
             unset($cart[$key]);
-        } else {
-            $cart[$key]['quantity'] = $qty;
+            session(['cart' => $cart]);
+            return redirect()->route('cart.show');
         }
 
+        [$slug, $weight] = explode(':', $key . ':');
+        if (isset($products[$slug]['options'][$weight])) {
+            $sku = $products[$slug]['options'][$weight]['sku'] ?? '';
+            $availableStock = ProductStock::getStockForSku($sku);
+            $maxAllowed = min(10, $availableStock);
+
+            if ($qty > $maxAllowed) {
+                $qty = $maxAllowed;
+                session()->flash('cart_error', "Maximum {$maxAllowed} items allowed based on available stock and order limits.");
+            }
+        }
+
+        $cart[$key]['quantity'] = $qty;
         session(['cart' => $cart]);
+
         return redirect()->route('cart.show');
     }
 
@@ -123,6 +173,28 @@ class CartController extends Controller
 
         if (empty($cart)) {
             return redirect()->route('cart.show')->with('cart_error', 'Your cart is empty.');
+        }
+
+        // Validate stock & limits for all items before checkout
+        foreach ($cart as $key => $row) {
+            [$slug, $weight] = explode(':', $key . ':');
+            if (! isset($products[$slug])) continue;
+
+            $product = $products[$slug];
+            $option  = $product['options'][$weight] ?? null;
+            if (!$option) continue;
+
+            $sku = $option['sku'] ?? '';
+            $availableStock = ProductStock::getStockForSku($sku);
+            $qty = max(1, (int) $row['quantity']);
+
+            if ($qty > 10) {
+                return redirect()->route('cart.show')->with('cart_error', "Maximum order limit is 10 jars for {$product['name']}. Please visit our Wholesale page for bulk orders.");
+            }
+
+            if ($qty > $availableStock) {
+                return redirect()->route('cart.show')->with('cart_error', "Sorry, only {$availableStock} jars of {$product['name']} ({$option['weight']}) are available in stock.");
+            }
         }
 
         $imgMap = [

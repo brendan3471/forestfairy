@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WholesaleController;
 use App\Models\Review;
 
 Route::get('/', function () {
@@ -14,7 +15,8 @@ Route::get('/', function () {
 });
 
 Route::get('/shop', function () {
-    return view('shop');
+    $stocks = \App\Models\ProductStock::getAllKeyedBySku();
+    return view('shop', compact('stocks'));
 });
 
 Route::get('/shop/{slug}', function ($slug) {
@@ -33,7 +35,9 @@ Route::get('/shop/{slug}', function ($slug) {
     $reviewsCount = $dbReviews->count();
     $averageRating = $reviewsCount > 0 ? round($dbReviews->avg('rating'), 1) : 0;
     
-    return view('product', compact('product', 'slug', 'dbReviews', 'reviewsCount', 'averageRating'));
+    $stocks = \App\Models\ProductStock::getAllKeyedBySku();
+
+    return view('product', compact('product', 'slug', 'dbReviews', 'reviewsCount', 'averageRating', 'stocks'));
 });
 
 Route::get('/about', function () {
@@ -94,6 +98,9 @@ Route::get('/contact', function () {
 
 Route::post('/contact', [ContactController::class, 'send']);
 
+Route::get('/wholesale', [WholesaleController::class, 'index'])->name('wholesale.index');
+Route::post('/wholesale', [WholesaleController::class, 'submit'])->name('wholesale.submit');
+
 Route::get('/reviews/write', [ReviewController::class, 'write'])->name('reviews.write');
 Route::post('/reviews/submit', [ReviewController::class, 'submit'])->name('reviews.submit');
 
@@ -130,6 +137,7 @@ Route::prefix('address')->group(function () {
 // ---------------------------------------------------------------------------
 // Admin Panel
 // ---------------------------------------------------------------------------
+Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'authenticate'])->name('admin.authenticate');
 Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
@@ -146,5 +154,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/reviews/{review}/approve', [AdminController::class, 'approveReview'])->name('reviews.approve');
     Route::post('/reviews/{review}/reject', [AdminController::class, 'rejectReview'])->name('reviews.reject');
     Route::post('/reviews/{review}/toggle-feature', [AdminController::class, 'toggleFeature'])->name('reviews.toggle-feature');
+
+    // Stock management
+    Route::get('/stock', [AdminController::class, 'stockIndex'])->name('stock.index');
+    Route::post('/stock', [AdminController::class, 'updateStock'])->name('stock.update');
 });
 

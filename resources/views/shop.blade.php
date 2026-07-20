@@ -111,18 +111,46 @@
                             <span class="product-price">${{ $defaultOpt['price'] }} <small>/ {{ $defaultOpt['weight'] }}</small></span>
                         </div>
 
-                        <!-- All weights display -->
-                        <div class="product-variant-pills-shop">
+                        @php
+                            $defSku = $defaultOpt['sku'] ?? '';
+                            $defStock = isset($stocks[$defSku]) ? $stocks[$defSku]['stock'] : 50;
+                        @endphp
+
+                        <!-- All weights display with stock info -->
+                        <div class="product-variant-pills-shop" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px;">
                             @foreach($p['options'] as $oKey => $opt)
-                                <a href="/shop/{{ $slug }}?option={{ $oKey }}" class="variant-pill-shop" aria-label="View {{ $opt['weight'] }} size">
+                                @php
+                                    $optStock = isset($stocks[$opt['sku']]) ? $stocks[$opt['sku']]['stock'] : 50;
+                                @endphp
+                                <a href="/shop/{{ $slug }}?option={{ $oKey }}" class="variant-pill-shop" aria-label="View {{ $opt['weight'] }} size" style="position: relative;">
                                     {{ $opt['weight'] }}
+                                    @if($optStock == 0)
+                                        <small style="color: #DC2626; font-size: 0.75rem;">(Sold Out)</small>
+                                    @elseif($optStock < 10)
+                                        <small style="color: #B45309; font-size: 0.75rem;">({{ $optStock }} left)</small>
+                                    @endif
                                 </a>
                             @endforeach
                         </div>
+
+                        @if($defStock == 0)
+                            <div style="margin-top: 8px;">
+                                <span style="display: inline-block; padding: 2px 8px; background: #FEE2E2; color: #DC2626; border-radius: 4px; font-size: 0.78rem; font-weight: 600;">
+                                    <i class="fa-solid fa-circle-xmark"></i> Default Size Sold Out
+                                </span>
+                            </div>
+                        @elseif($defStock < 10)
+                            <div style="margin-top: 8px;">
+                                <span style="display: inline-block; padding: 2px 8px; background: #FEF3C7; color: #B45309; border-radius: 4px; font-size: 0.78rem; font-weight: 600;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Only {{ $defStock }} left!
+                                </span>
+                            </div>
+                        @endif
                     </div>
                 </a>
                 <!-- Add to Cart -->
                 <div class="product-card-atc">
+                    @if($defStock > 0)
                     <form action="/cart/add/{{ $slug }}" method="POST">
                         @csrf
                         <input type="hidden" name="quantity" value="1">
@@ -131,6 +159,11 @@
                             <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
                         </button>
                     </form>
+                    @else
+                    <a href="/shop/{{ $slug }}" class="btn-primary product-atc-btn" style="background: #9CA3AF; cursor: pointer; text-decoration: none; text-align: center;">
+                        <i class="fa-solid fa-eye" aria-hidden="true"></i> Select Options
+                    </a>
+                    @endif
                 </div>
             </article>
             @endforeach

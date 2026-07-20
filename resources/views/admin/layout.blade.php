@@ -217,6 +217,10 @@
                 <i class="fa-solid fa-comment-dots"></i>
                 <span>Reviews</span>
             </a>
+            <a href="{{ route('admin.stock.index') }}" class="nav-item {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-boxes-stacked"></i>
+                <span>Stock Management</span>
+            </a>
             <!-- Link to site -->
             <a href="/" class="nav-item">
                 <i class="fa-solid fa-eye"></i>

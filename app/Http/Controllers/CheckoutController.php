@@ -183,6 +183,12 @@ class CheckoutController extends Controller
             abort(404);
         }
 
+        $sku = $option['sku'] ?? '';
+        $availableStock = \App\Models\ProductStock::getStockForSku($sku);
+        if ($availableStock <= 0) {
+            return redirect()->back()->with('cart_error', 'Sorry, this item is currently sold out.');
+        }
+
         $stripe = $this->stripeClient();
         $connectAccountId = $this->connectedAccountId();
 
@@ -427,14 +433,21 @@ class CheckoutController extends Controller
                     ]);
 
                     foreach ($lineItemsProcessed as $item) {
+                        $sku = $item->price->product->metadata->sku ?? null;
+                        $qty = $item->quantity;
+
                         OrderItem::create([
                             'order_id' => $order->id,
                             'product_slug' => $item->price->product->metadata->product_slug ?? 'unknown',
-                            'sku' => $item->price->product->metadata->sku ?? null,
+                            'sku' => $sku,
                             'product_name' => $item->description,
-                            'quantity' => $item->quantity,
+                            'quantity' => $qty,
                             'unit_price' => $item->price->unit_amount,
                         ]);
+
+                        if ($sku) {
+                            \App\Models\ProductStock::decrementStock($sku, $qty);
+                        }
                     }
                 });
 

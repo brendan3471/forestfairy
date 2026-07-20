@@ -213,6 +213,36 @@ class AdminController extends Controller
         return redirect()->back()->with('success', "Review successfully {$status} on the homepage!");
     }
 
+    /**
+     * Display stock management page.
+     */
+    public function stockIndex()
+    {
+        \App\Models\ProductStock::ensureSeeded();
+
+        $products = config('products');
+        $stocks = \App\Models\ProductStock::all()->keyBy('sku');
+
+        return view('admin.stock.index', compact('products', 'stocks'));
+    }
+
+    /**
+     * Update stock quantities for product SKUs.
+     */
+    public function updateStock(Request $request)
+    {
+        $validated = $request->validate([
+            'stocks' => 'required|array',
+            'stocks.*' => 'required|integer|min:0',
+        ]);
+
+        foreach ($validated['stocks'] as $sku => $stockQty) {
+            \App\Models\ProductStock::where('sku', $sku)->update(['stock' => (int) $stockQty]);
+        }
+
+        return redirect()->back()->with('success', 'Stock quantities updated successfully!');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

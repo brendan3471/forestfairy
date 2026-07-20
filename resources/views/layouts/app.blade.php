@@ -167,6 +167,7 @@
                             <li><a href="/our-testing"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Lab Testing</a></li>
                             <li><a href="/review-policy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Review Policy</a></li>
                             <li><a href="/contact"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Contact Us</a></li>
+                            <li><a href="/wholesale"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Wholesale &amp; Bulk</a></li>
                         </ul>
                     </div>
 

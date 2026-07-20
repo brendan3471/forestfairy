@@ -191,6 +191,25 @@
                     <span class="product-weight" id="displayWeight">/ {{ $selectedOption['weight'] }}</span>
                 </div>
 
+                @php
+                    $initialStock = isset($stocks[$selectedOption['sku']]) ? $stocks[$selectedOption['sku']]['stock'] : 50;
+                @endphp
+                <div class="product-stock-notice" id="stockNotice" style="margin-top: 6px; margin-bottom: 12px;">
+                    @if($initialStock == 0)
+                        <span class="stock-badge stock-sold-out" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #FEE2E2; color: #DC2626; border-radius: 50px; font-weight: 600; font-size: 0.85rem;">
+                            <i class="fa-solid fa-circle-xmark"></i> Sold Out
+                        </span>
+                    @elseif($initialStock < 10)
+                        <span class="stock-badge stock-low" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #FEF3C7; color: #B45309; border-radius: 50px; font-weight: 600; font-size: 0.85rem;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Only {{ $initialStock }} left in stock!
+                        </span>
+                    @else
+                        <span class="stock-badge stock-available" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #E6F7ED; color: #7EB87A; border-radius: 50px; font-weight: 500; font-size: 0.85rem;">
+                            <i class="fa-solid fa-check"></i> In Stock
+                        </span>
+                    @endif
+                </div>
+
                 <p class="product-detail-desc">{{ $product['description'] }}</p>
                 <ul class="product-benefits">
                     @foreach($product['benefits'] as $benefit)
@@ -203,6 +222,11 @@
                     <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ session('cart_flash') }}
                 </div>
                 @endif
+                @if(session('cart_error'))
+                <div class="product-cart-flash" role="alert" style="background: #FEE2E2; color: #DC2626; border-color: #F87171;">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{ session('cart_error') }}
+                </div>
+                @endif
 
                 <!-- Add to Cart -->
                 <form action="/cart/add/{{ $slug }}" method="POST" id="addToCartForm" class="product-atc-form">
@@ -212,12 +236,22 @@
                         <label class="product-option-label--pills">Size</label>
                         <div class="variant-pills" id="variantPills">
                             @foreach($product['options'] as $key => $opt)
+                                @php
+                                    $optStock = isset($stocks[$opt['sku']]) ? $stocks[$opt['sku']]['stock'] : 50;
+                                @endphp
                                 <button type="button" 
                                         class="variant-pill {{ $key === $selectedOptionKey ? 'active' : '' }}" 
                                         data-key="{{ $key }}" 
                                         data-price="{{ $opt['price'] }}" 
-                                        data-weight="{{ $opt['weight'] }}">
+                                        data-weight="{{ $opt['weight'] }}"
+                                        data-sku="{{ $opt['sku'] }}"
+                                        data-stock="{{ $optStock }}">
                                     {{ $opt['weight'] }}
+                                    @if($optStock == 0)
+                                        <small style="color: #DC2626; margin-left: 2px;">(Sold Out)</small>
+                                    @elseif($optStock < 10)
+                                        <small style="color: #B45309; margin-left: 2px;">({{ $optStock }} left)</small>
+                                    @endif
                                 </button>
                             @endforeach
                         </div>
@@ -228,15 +262,25 @@
                         <label for="qty" class="product-qty-label">Quantity</label>
                         <div class="product-qty-stepper">
                             <button type="button" class="qty-btn" id="qtyMinus" aria-label="Decrease quantity"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
-                            <input type="number" id="qty" name="quantity" value="1" min="1" max="10" class="qty-input" aria-label="Quantity">
+                            <input type="number" id="qty" name="quantity" value="1" min="1" max="{{ min(10, $initialStock) }}" class="qty-input" aria-label="Quantity" {{ $initialStock == 0 ? 'disabled' : '' }}>
                             <button type="button" class="qty-btn" id="qtyPlus" aria-label="Increase quantity"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn-primary btn-full" id="addToCartBtn">
-                        <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
+                    <button type="submit" class="btn-primary btn-full" id="addToCartBtn" {{ $initialStock == 0 ? 'disabled' : '' }} style="{{ $initialStock == 0 ? 'opacity:0.6; cursor:not-allowed;' : '' }}">
+                        @if($initialStock == 0)
+                            <i class="fa-solid fa-ban" aria-hidden="true"></i> Sold Out
+                        @else
+                            <i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart
+                        @endif
                     </button>
                 </form>
+
+                <!-- Bulk Orders Callout -->
+                <div style="margin-top: 14px; padding: 12px 15px; background: #FAF7F2; border: 1px solid #E5E1DA; border-radius: var(--radius); font-size: 0.88rem; color: var(--text-dark); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                    <span><i class="fa-solid fa-boxes-stacked" style="color: var(--gold); margin-right: 6px;"></i> Max 10 per order. Need bulk supply?</span>
+                    <a href="/wholesale" style="color: var(--gold-dark); font-weight: 600; text-decoration: underline; white-space: nowrap;">Wholesale &rarr;</a>
+                </div>
 
                 <a href="/cart" class="btn-secondary btn-full" id="viewCartBtn" style="margin-top:10px; text-align:center;">
                     View Cart &amp; Checkout
@@ -269,30 +313,64 @@
                     var selectedOptionInput = document.getElementById('selectedOption');
                     var displayPrice = document.getElementById('displayPrice');
                     var displayWeight = document.getElementById('displayWeight');
+                    var stockNotice = document.getElementById('stockNotice');
+                    var addToCartBtn = document.getElementById('addToCartBtn');
                     var pills = document.querySelectorAll('.variant-pill');
+
+                    function updateStockUI(stock) {
+                        stock = parseInt(stock);
+                        var maxAllowed = Math.min(10, stock);
+
+                        if (stock <= 0) {
+                            stockNotice.innerHTML = '<span class="stock-badge stock-sold-out" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #FEE2E2; color: #DC2626; border-radius: 50px; font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-circle-xmark"></i> Sold Out</span>';
+                            qtyInput.value = 1;
+                            qtyInput.max = 0;
+                            qtyInput.disabled = true;
+                            addToCartBtn.disabled = true;
+                            addToCartBtn.innerHTML = '<i class="fa-solid fa-ban" aria-hidden="true"></i> Sold Out';
+                            addToCartBtn.style.opacity = '0.6';
+                            addToCartBtn.style.cursor = 'not-allowed';
+                        } else {
+                            qtyInput.disabled = false;
+                            qtyInput.max = maxAllowed;
+                            if (parseInt(qtyInput.value) > maxAllowed) {
+                                qtyInput.value = maxAllowed;
+                            }
+                            addToCartBtn.disabled = false;
+                            addToCartBtn.innerHTML = '<i class="fa-solid fa-basket-shopping" aria-hidden="true"></i> Add to Cart';
+                            addToCartBtn.style.opacity = '1';
+                            addToCartBtn.style.cursor = 'pointer';
+
+                            if (stock < 10) {
+                                stockNotice.innerHTML = '<span class="stock-badge stock-low" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #FEF3C7; color: #B45309; border-radius: 50px; font-weight: 600; font-size: 0.85rem;"><i class="fa-solid fa-triangle-exclamation"></i> Only ' + stock + ' left in stock!</span>';
+                            } else {
+                                stockNotice.innerHTML = '<span class="stock-badge stock-available" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; background: #E6F7ED; color: #7EB87A; border-radius: 50px; font-weight: 500; font-size: 0.85rem;"><i class="fa-solid fa-check"></i> In Stock</span>';
+                            }
+                        }
+                    }
 
                     document.getElementById('qtyMinus').addEventListener('click', function(){
                         if(parseInt(qtyInput.value) > 1) qtyInput.value = parseInt(qtyInput.value) - 1;
                     });
                     document.getElementById('qtyPlus').addEventListener('click', function(){
-                        if(parseInt(qtyInput.value) < 10) qtyInput.value = parseInt(qtyInput.value) + 1;
+                        var currentMax = parseInt(qtyInput.max || 10);
+                        if(parseInt(qtyInput.value) < currentMax) qtyInput.value = parseInt(qtyInput.value) + 1;
                     });
 
                     pills.forEach(function(pill) {
                         pill.addEventListener('click', function() {
-                            // Update active state
                             pills.forEach(p => p.classList.remove('active'));
                             this.classList.add('active');
 
-                            // Update hidden input
                             var key = this.getAttribute('data-key');
+                            var stock = this.getAttribute('data-stock');
                             selectedOptionInput.value = key;
 
-                            // Update display info
                             displayPrice.textContent = '$' + this.getAttribute('data-price');
                             displayWeight.textContent = '/ ' + this.getAttribute('data-weight');
 
-                            // Switch gallery image if 300g or main jar size is chosen
+                            updateStockUI(stock);
+
                             if (key.includes('300')) {
                                 var thumb300 = document.getElementById('thumb300g');
                                 if (thumb300) switchProductImg('{{ $img300Map[$product['image']] }}', thumb300);
