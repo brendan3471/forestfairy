@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WholesaleInquiryMail;
 
 class WholesaleController extends Controller
 {
@@ -32,6 +34,14 @@ class WholesaleController extends Controller
         ]);
 
         Log::info('Wholesale inquiry received:', $validated);
+
+        try {
+            $adminEmail = config('services.admin.email', 'admin@forestfairyhoney.co.nz');
+            Mail::to($adminEmail)->send(new WholesaleInquiryMail($validated));
+            Log::info('Wholesale inquiry email sent to: ' . $adminEmail);
+        } catch (\Exception $e) {
+            Log::error('Failed to send wholesale inquiry email: ' . $e->getMessage());
+        }
 
         return redirect()->back()->with('wholesale_success', 'Thank you for your bulk inquiry! Our wholesale team will get in touch with you within 24 hours with custom pricing.');
     }
