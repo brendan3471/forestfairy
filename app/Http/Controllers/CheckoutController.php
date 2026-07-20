@@ -447,12 +447,6 @@ class CheckoutController extends Controller
                         // 1. Send Order Confirmation Email
                         \Illuminate\Support\Facades\Mail::to($order->customer_email)->send(new \App\Mail\OrderConfirmationMail($order));
                         Log::info('Immediate order confirmation email sent', ['order_id' => $order->id]);
-
-                        // 2. Send Review Request Email (immediately for testing)
-                        \Illuminate\Support\Facades\Mail::to($order->customer_email)->send(new \App\Mail\ReviewRequestMail($order));
-                        $order->review_requested_at = now();
-                        $order->save();
-                        Log::info('Immediate test review request sent', ['order_id' => $order->id]);
                     } else {
                         Log::warning('Order not found for immediate email dispatch', ['session_id' => $fullSession->id]);
                     }

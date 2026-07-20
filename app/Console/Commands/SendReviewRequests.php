@@ -22,7 +22,7 @@ class SendReviewRequests extends Command
      *
      * @var string
      */
-    protected $description = 'Send post-purchase review request emails to customers who bought honey a week ago.';
+    protected $description = 'Send post-purchase review request emails to customers who bought honey 10 days ago.';
 
     /**
      * Execute the console command.
@@ -31,10 +31,10 @@ class SendReviewRequests extends Command
     {
         $this->info('Starting review request email dispatch...');
 
-        // Query orders that are paid, haven't had a review request, and are at least 7 days old
+        // Query orders that are paid, haven't had a review request, and are at least 10 days old
         $orders = Order::where('payment_status', 'paid')
             ->whereNull('review_requested_at')
-            ->where('created_at', '<=', now()->subDays(7))
+            ->where('created_at', '<=', now()->subDays(10))
             ->get();
 
         $count = $orders->count();
