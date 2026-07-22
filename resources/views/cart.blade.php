@@ -143,7 +143,7 @@
 
                 <div class="cart-trust">
                     <span><i class="fa-solid fa-lock" aria-hidden="true"></i> Secure payment</span>
-                    <span><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Easy returns</span>
+                    <a href="/return-policy" style="color: inherit; text-decoration: underline;"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Guarantee &amp; Refund Policy</a>
                 </div>
             </aside>
         </div>

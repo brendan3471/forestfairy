@@ -49,6 +49,12 @@ Route::get('/blog', function () {
 });
 
 Route::get('/blog/{slug}', function ($slug) {
+    if ($slug === 'honey-oat-biscuits') {
+        return view('blog.honey-oat-biscuits');
+    }
+    if ($slug === 'baking-with-honey') {
+        return view('blog.baking-with-honey');
+    }
     if ($slug === 'the-art-of-gifting-nz-honey-collections') {
         return view('blog.the-art-of-gifting-nz-honey-collections');
     }
@@ -82,6 +88,10 @@ Route::get('/review-policy', function () {
 
 Route::get('/return-policy', function () {
     return view('return-policy');
+});
+
+Route::get('/shipping-delivery', function () {
+    return view('shipping-delivery');
 });
 
 Route::get('/privacy-policy', function () {

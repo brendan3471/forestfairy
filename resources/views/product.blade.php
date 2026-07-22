@@ -306,6 +306,7 @@
                 </div>
 
                 <p class="product-note"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i> Free NZ shipping on orders over $75</p>
+                <p class="product-note" style="margin-top: 6px;"><i class="fa-solid fa-shield-heart" aria-hidden="true"></i> Damaged in transit guarantee — <a href="/return-policy" style="color: var(--gold-dark); text-decoration: underline; font-weight: 500;">Refund &amp; Damaged Policy</a></p>
 
                 <script>
                 (function(){

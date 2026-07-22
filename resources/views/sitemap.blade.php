@@ -200,6 +200,18 @@
                         </a>
                     </li>
                     <li class="sitemap-link-item">
+                        <a href="/shipping-delivery">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Shipping &amp; Delivery</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
+                        <a href="/return-policy">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Refund &amp; Return Policy</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
                         <a href="/privacy-policy">
                             <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                             <span>Privacy Policy</span>

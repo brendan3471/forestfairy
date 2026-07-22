@@ -167,6 +167,7 @@
                             <li><a href="/our-testing"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Lab Testing</a></li>
                             <li><a href="/review-policy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Review Policy</a></li>
                             <li><a href="/return-policy"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Return Policy</a></li>
+                            <li><a href="/shipping-delivery"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Shipping &amp; Delivery</a></li>
                             <li><a href="/contact"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Contact Us</a></li>
                             <li><a href="/wholesale"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i> Wholesale &amp; Bulk</a></li>
                         </ul>
@@ -230,7 +231,7 @@
 
         <div class="footer-bottom">
             <div class="container">
-                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-conditions">Terms &amp; Conditions</a> | <a href="/sitemap">Sitemap</a> | <a href="/admin/login" style="opacity: 0.5;">Admin</a></p>
+                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/shipping-delivery">Shipping &amp; Delivery</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-conditions">Terms &amp; Conditions</a> | <a href="/sitemap">Sitemap</a> | <a href="/admin/login" style="opacity: 0.5;">Admin</a></p>
             </div>
         </div>
     </footer>
