@@ -216,6 +216,13 @@
                     <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ $benefit }}</li>
                     @endforeach
                 </ul>
+
+                @if($slug === 'mamaku-creamed-honey')
+                <div class="mgo-info-banner" style="background: #FAF7F2; border: 1px solid var(--gold-light); padding: 15px 20px; border-radius: var(--radius); margin-top: 15px; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-calculator" style="color: var(--gold-dark);"></i>
+                    <span>Tested at <strong>MGO 125</strong>. Curious what that means? <a href="/mgo-explained" style="color: var(--gold-dark); text-decoration: underline; font-weight: 600;">Explore our MGO Explained Tool</a></span>
+                </div>
+                @endif
                 
                 @if(session('cart_flash'))
                 <div class="product-cart-flash" role="alert">

@@ -126,6 +126,30 @@
                         </a>
                     </li>
                     <li class="sitemap-link-item">
+                        <a href="/blog/baking-with-honey">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Blog: How to Substitute Sugar with Honey</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
+                        <a href="/blog/honey-oat-biscuits">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Blog: Honey Oat Biscuits Recipe</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
+                        <a href="/blog/mezes-kremes">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>Blog: Mézes Krémes (Hungarian Honey Cake) Recipe</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
+                        <a href="/mgo-explained">
+                            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                            <span>MGO Explained (Calculator Tool)</span>
+                        </a>
+                    </li>
+                    <li class="sitemap-link-item">
                         <a href="/contact">
                             <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
                             <span>Contact Us</span>

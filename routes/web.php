@@ -44,11 +44,18 @@ Route::get('/about', function () {
     return view('about');
 });
 
+Route::get('/mgo-explained', function () {
+    return view('blog.mgo-explained');
+});
+
 Route::get('/blog', function () {
     return view('blog');
 });
 
 Route::get('/blog/{slug}', function ($slug) {
+    if ($slug === 'mgo-explained') {
+        return redirect('/mgo-explained', 301);
+    }
     if ($slug === 'mezes-kremes') {
         return view('blog.mezes-kremes');
     }
