@@ -143,6 +143,10 @@
             <article class="article-body">
                 <p class="article-lead">Swapping sugar for honey in your baking is easy once you know the four adjustments that make it work. Honey is sweeter than sugar, it is a liquid, it is a little acidic, and it browns faster. Get those four things right and honey will give you a moister, better flavoured bake than sugar ever did.</p>
 
+                <div class="article-image" style="margin-bottom: 30px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                    <img src="/images/honey-recipe.jpg" alt="Honey used as a replacement for white refined sugar in baking" style="width: 100%; height: auto; display: block;">
+                </div>
+
                 <p>Here is exactly how to do it.</p>
 
                 <div class="article-divider"></div>
@@ -185,6 +189,10 @@
                 <p><strong>Moisture.</strong> Honey holds onto water, so honey bakes stay soft and fresh longer. A honey loaf or muffin is noticeably moister a day or two later, where a sugar one has started to dry out.</p>
                 <p><strong>Flavour.</strong> Sugar is only sweet. Honey brings its own character, and with our honey that character depends on which jar you use. A mild creamed honey sits quietly in the background. A darker honey makes itself known.</p>
                 <p><strong>Colour.</strong> That faster browning, once you have tamed it, gives honey bakes a lovely deep golden finish.</p>
+
+                <div class="article-image" style="margin: 30px 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                    <img src="/images/honey-recipe-2.jpg" alt="Delicious baked cookies and bread sweetened naturally with honey" style="width: 100%; height: auto; display: block;">
+                </div>
 
                 <h2>Which honey to bake with</h2>
                 <p>For most baking, reach for one of our everyday creamed honeys. The <a href="/shop/omanawa-falls-creamed-honey" style="color: var(--gold-dark); text-decoration: underline; font-weight: 600;">Omanawa Falls</a> and the <a href="/shop/otumoetai-summer-harvest-creamed-honey" style="color: var(--gold-dark); text-decoration: underline; font-weight: 600;">Otumoetai</a> are mild, smooth, and mix in easily, so they sweeten and soften your bake without taking over the flavour. They are the sensible choice for everyday cakes, muffins, loaves, and biscuits, and they are the honeys you will not mind cooking with rather than saving.</p>

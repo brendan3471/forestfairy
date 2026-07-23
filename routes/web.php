@@ -49,6 +49,9 @@ Route::get('/blog', function () {
 });
 
 Route::get('/blog/{slug}', function ($slug) {
+    if ($slug === 'mezes-kremes') {
+        return view('blog.mezes-kremes');
+    }
     if ($slug === 'honey-oat-biscuits') {
         return view('blog.honey-oat-biscuits');
     }
