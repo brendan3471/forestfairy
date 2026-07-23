@@ -35,7 +35,8 @@
     <meta name="twitter:description" content="@yield('og_description', 'Pure, raw New Zealand honey harvested from pristine NZ forests. Shop online.')">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="32x32">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,13 +74,7 @@
                 <!-- Logo -->
                 <a href="/" class="logo" aria-label="Forest Fairy Honey Home">
                     <div class="logo-mark">
-                        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <ellipse cx="20" cy="22" rx="14" ry="12" fill="#D4A843" opacity="0.15"/>
-                            <path d="M20 4C20 4 12 10 12 18C12 22.4 15.6 26 20 26C24.4 26 28 22.4 28 18C28 10 20 4 20 4Z" fill="#D4A843"/>
-                            <path d="M16 18C16 18 14 22 16 25C17.5 27 19 27.5 20 27.5" stroke="#7B5C3A" stroke-width="1.5" stroke-linecap="round"/>
-                            <circle cx="20" cy="32" r="5" fill="#7EB87A" opacity="0.7"/>
-                            <path d="M17 32 Q20 28 23 32" stroke="#fff" stroke-width="1" fill="none"/>
-                        </svg>
+                        <img src="/images/logo.png" alt="Forest Fairy Honey Logo Mark" class="header-logo-img" style="width: 40px; height: 40px; display: block; object-fit: contain;">
                     </div>
                     <div class="logo-text">
                         <span class="logo-name">Forest Fairy</span>
@@ -129,10 +124,7 @@
                     <!-- Brand Column -->
                     <div class="footer-col footer-brand">
                         <div class="footer-logo">
-                            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="footer-logo-icon">
-                                <path d="M20 4C20 4 12 10 12 18C12 22.4 15.6 26 20 26C24.4 26 28 22.4 28 18C28 10 20 4 20 4Z" fill="#D4A843"/>
-                                <circle cx="20" cy="32" r="5" fill="#7EB87A" opacity="0.7"/>
-                            </svg>
+                            <img src="/images/logo.png" alt="Forest Fairy Honey Logo Mark" class="footer-logo-icon" style="object-fit: contain;">
                             <div>
                                 <span class="footer-logo-name">Forest Fairy Honey</span>
                                 <span class="footer-logo-sub">New Zealand</span>

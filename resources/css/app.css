@@ -1096,7 +1096,8 @@ h2 em {
 }
 
 .page-hero--blog {
-    background: linear-gradient(135deg, var(--brown) 0%, var(--dark) 100%);
+    background: linear-gradient(rgba(45, 30, 20, 0.5), rgba(20, 15, 10, 0.7)), url('/images/blog-banner.jpg') no-repeat center center;
+    background-size: cover;
 }
 
 .page-hero--contact {

@@ -140,15 +140,42 @@
             .article-nav-btn--secondary:hover {
                 background-color: var(--border-light);
             }
+            /* Grid layout for intro block */
+            .article-intro-grid {
+                display: grid;
+                grid-template-columns: 1.2fr 1fr;
+                gap: 30px;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+            .article-image-small {
+                max-width: 500px;
+                margin: 40px auto 30px auto;
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                border: 1px solid var(--border-light);
+                box-shadow: var(--shadow-sm);
+            }
+            @media (max-width: 768px) {
+                .article-intro-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
+            }
         </style>
 
         <div class="article-wrapper">
             <article class="article-body">
-                <p class="article-lead">A honey label has two jobs. One is to sell you the honey. The other is to tell you what is in the jar.</p>
-
-                <p>Those jobs pull in opposite directions more often than you would think. A label can be completely legal, completely truthful, and still leave you knowing almost nothing about what you are buying.</p>
-
-                <p>So this is a short guide to reading a honey label properly, including ours. By the end you should be able to pick up any jar in any shop and work out how much the producer is actually telling you.</p>
+                <div class="article-intro-grid">
+                    <div>
+                        <p class="article-lead" style="margin-bottom: 15px;">A honey label has two jobs. One is to sell you the honey. The other is to tell you what is in the jar.</p>
+                        <p style="margin-bottom: 15px;">Those jobs pull in opposite directions more often than you would think. A label can be completely legal, completely truthful, and still leave you knowing almost nothing about what you are buying.</p>
+                        <p style="margin-bottom: 0;">So this is a short guide to reading a honey label properly, including ours. By the end you should be able to pick up any jar in any shop and work out how much the producer is actually telling you.</p>
+                    </div>
+                    <div class="article-image" style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); margin-bottom: 0;">
+                        <img src="/images/honest-labels-1.jpg" alt="Cabbage tree in bloom in New Zealand forest" style="width: 100%; height: auto; display: block;">
+                    </div>
+                </div>
 
                 <div class="article-divider"></div>
 
@@ -200,6 +227,10 @@
                 <p><strong>"Raw"</strong> has no legal definition in New Zealand, so it is a claim rather than a guarantee. Worth looking for something behind it.</p>
 
                 <p><strong>A named region or floral source</strong> is the phrase that carries the most weight, because it is specific and checkable. Vagueness is easy. Specifics are not.</p>
+
+                <div class="article-image-small">
+                    <img src="/images/honest-labels-2.jpg" alt="Close-up of cabbage tree flower spikes" style="width: 100%; height: auto; display: block;">
+                </div>
 
                 <div class="article-divider"></div>
 

@@ -20,6 +20,13 @@
         'rewarewa'      => '/images/rewarewa-honey.jpg',
     ];
 
+    $imgShowcaseMap = [
+        'omanawa-falls' => '/images/omanawa.avif',
+        'mamaku'        => '/images/mamaku.avif',
+        'otumoetai'     => '/images/otumoetai.avif',
+        'rewarewa'      => '/images/rewarewa.avif',
+    ];
+
     $img300Map = [
         'omanawa-falls' => '/images/omanawa-300g.webp',
         'mamaku'        => '/images/mamaku-300g.webp',
@@ -137,6 +144,9 @@
                 <div class="product-thumbnails" aria-label="Product Image Gallery">
                     <button type="button" class="thumb-btn active" id="thumbMain" onclick="switchProductImg('{{ $imgMap[$product['image']] }}', this)" aria-label="View Main Jar">
                         <img src="{{ $imgMap[$product['image']] }}" alt="{{ $product['name'] }} main jar thumbnail">
+                    </button>
+                    <button type="button" class="thumb-btn" id="thumbShowcase" onclick="switchProductImg('{{ $imgShowcaseMap[$product['image']] }}', this)" aria-label="View Showcase Image">
+                        <img src="{{ $imgShowcaseMap[$product['image']] }}" alt="{{ $product['name'] }} showcase thumbnail">
                     </button>
                     <button type="button" class="thumb-btn" id="thumb300g" onclick="switchProductImg('{{ $img300Map[$product['image']] }}', this)" aria-label="View 300g Jar">
                         <img src="{{ $img300Map[$product['image']] }}" alt="{{ $product['name'] }} 300g jar thumbnail">
