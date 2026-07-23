@@ -137,17 +137,41 @@
             .article-nav-btn--secondary:hover {
                 background-color: var(--border-light);
             }
+            /* Grid layout for intro block */
+            .article-intro-grid {
+                display: grid;
+                grid-template-columns: 1.2fr 1fr;
+                gap: 30px;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+            .article-image-small {
+                max-width: 500px;
+                margin: 40px auto 30px auto;
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                border: 1px solid var(--border-light);
+                box-shadow: var(--shadow-sm);
+            }
+            @media (max-width: 768px) {
+                .article-intro-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
+            }
         </style>
 
         <div class="article-wrapper">
             <article class="article-body">
-                <p class="article-lead">Swapping sugar for honey in your baking is easy once you know the four adjustments that make it work. Honey is sweeter than sugar, it is a liquid, it is a little acidic, and it browns faster. Get those four things right and honey will give you a moister, better flavoured bake than sugar ever did.</p>
-
-                <div class="article-image" style="margin-bottom: 30px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
-                    <img src="/images/honey-recipe.jpg" alt="Honey used as a replacement for white refined sugar in baking" style="width: 100%; height: auto; display: block;">
+                <div class="article-intro-grid">
+                    <div>
+                        <p class="article-lead" style="margin-bottom: 20px;">Swapping sugar for honey in your baking is easy once you know the four adjustments that make it work. Honey is sweeter than sugar, it is a liquid, it is a little acidic, and it browns faster. Get those four things right and honey will give you a moister, better flavoured bake than sugar ever did.</p>
+                        <p style="margin-bottom: 0;">Here is exactly how to do it.</p>
+                    </div>
+                    <div class="article-image" style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); margin-bottom: 0;">
+                        <img src="/images/honey-recipe.jpg" alt="Honey used as a replacement for white refined sugar in baking" style="width: 100%; height: auto; display: block;">
+                    </div>
                 </div>
-
-                <p>Here is exactly how to do it.</p>
 
                 <div class="article-divider"></div>
 
@@ -190,7 +214,7 @@
                 <p><strong>Flavour.</strong> Sugar is only sweet. Honey brings its own character, and with our honey that character depends on which jar you use. A mild creamed honey sits quietly in the background. A darker honey makes itself known.</p>
                 <p><strong>Colour.</strong> That faster browning, once you have tamed it, gives honey bakes a lovely deep golden finish.</p>
 
-                <div class="article-image" style="margin: 30px 0; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
+                <div class="article-image-small">
                     <img src="/images/honey-recipe-2.jpg" alt="Delicious baked cookies and bread sweetened naturally with honey" style="width: 100%; height: auto; display: block;">
                 </div>
 

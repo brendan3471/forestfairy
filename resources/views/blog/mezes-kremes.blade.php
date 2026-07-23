@@ -158,6 +158,28 @@
             .article-nav-btn--secondary:hover {
                 background-color: var(--border-light);
             }
+            /* Grid layout for intro block */
+            .article-intro-grid {
+                display: grid;
+                grid-template-columns: 1.2fr 1fr;
+                gap: 30px;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+            .article-image-small {
+                max-width: 500px;
+                margin: 40px auto 30px auto;
+                border-radius: var(--radius-lg);
+                overflow: hidden;
+                border: 1px solid var(--border-light);
+                box-shadow: var(--shadow-sm);
+            }
+            @media (max-width: 768px) {
+                .article-intro-grid {
+                    grid-template-columns: 1fr;
+                    gap: 20px;
+                }
+            }
             /* Servings Controls */
             .servings-widget {
                 display: inline-flex;
@@ -209,14 +231,15 @@
 
         <div class="article-wrapper">
             <article class="article-body">
-                <p class="article-lead">Mézes Krémes (Hungarian Honey Cake). The classic Hungarian honey cake. Soft, honey-spiced layers holding a rich vanilla custard cream, finished with a shiny chocolate top. A traditional project bake worth every step. Makes about 15 slices.</p>
-                
-                <!-- Main Recipe Image -->
-                <div class="article-image" style="margin-bottom: 30px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);">
-                    <img src="/images/M%C3%A9zes-Kr%C3%A9mes.jpg" alt="Hungarian Honey Cake Mézes Krémes slices" style="width: 100%; height: auto; display: block;">
+                <div class="article-intro-grid">
+                    <div>
+                        <p class="article-lead" style="margin-bottom: 20px;">Mézes Krémes (Hungarian Honey Cake). The classic Hungarian honey cake. Soft, honey-spiced layers holding a rich vanilla custard cream, finished with a shiny chocolate top. A traditional project bake worth every step. Makes about 15 slices.</p>
+                        <p style="margin-bottom: 0;">Adjust the slider or servings selector below to scale this traditional recipe. The ingredient weights and liquid measures in the lists and steps will automatically scale!</p>
+                    </div>
+                    <div class="article-image" style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); margin-bottom: 0;">
+                        <img src="/images/M%C3%A9zes-Kr%C3%A9mes.jpg" alt="Hungarian Honey Cake Mézes Krémes slices" style="width: 100%; height: auto; display: block;">
+                    </div>
                 </div>
-
-                <p>Adjust the slider or servings selector below to scale this traditional recipe. The ingredient weights and liquid measures in the lists and steps will automatically scale!</p>
 
                 <!-- Servings Selector -->
                 <div class="servings-widget">
