@@ -7,13 +7,13 @@
     <meta name="description" content="SB Painting & Decorating - Auckland's trusted painting experts. Professional interior, exterior & commercial painting services in Pukekohe and greater Auckland. Get a free quote today!">
     <meta name="keywords" content="Painting Auckland, house painter Auckland, interior painting Pukekohe, exterior painting Auckland, commercial painter Auckland, residential painting services, deck painting Auckland, fence painting">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://yourdomain.co.nz">
+    <link rel="canonical" href="https://www.forestfairyhoney.co.nz">
     
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Professional Painting Auckland | SB Painting & Decorating">
     <meta property="og:description" content="Auckland's trusted painting experts. Professional interior, exterior & commercial painting services. Get a free quote today!">
-    <meta property="og:url" content="https://yourdomain.co.nz">
+    <meta property="og:url" content="https://www.forestfairyhoney.co.nz">
     <meta property="og:site_name" content="SB Painting & Decorating">
     <meta property="og:locale" content="en_NZ">
     
@@ -38,7 +38,7 @@
         {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "@id": "https://yourdomain.co.nz",
+        "@id": "https://www.forestfairyhoney.co.nz",
         "name": "SB Painting & Decorating",
         "image": "https://i.etsystatic.com/43327242/r/il/f010ec/6670485707/il_fullxfull.6670485707_43st.jpg",
         "description": "Professional painting services in Auckland and Pukekohe. Interior, exterior, commercial painting and decorating.",
@@ -50,7 +50,7 @@
         },
         "telephone": "+64277729302",
         "email": "sambpaintingdecorating@gmail.com",
-        "url": "https://yourdomain.co.nz",
+        "url": "https://www.forestfairyhoney.co.nz",
         "openingHoursSpecification": {
             "@type": "OpeningHoursSpecification",
             "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

@@ -3,6 +3,8 @@
 @section('title', 'Terms & Conditions | Forest Fairy Honey')
 @section('meta_description', 'Terms and conditions for buying raw New Zealand honey online from Forest Fairy Honey. Learn about ordering, payment, shipping, and returns.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/terms-conditions')
+@section('og_title', 'Terms & Conditions — Forest Fairy Honey NZ')
+@section('og_description', 'Terms and conditions for buying raw NZ honey online from Forest Fairy Honey. Ordering, payment, shipping, and returns.')
 
 @section('content')
 <!-- Page Hero -->

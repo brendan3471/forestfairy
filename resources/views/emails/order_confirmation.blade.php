@@ -99,7 +99,7 @@
                     <tr>
                         <td align="center" style="padding: 20px 40px 30px 40px; background-color: #FAF7F2; border-top: 1px solid #F3EDE1;">
                             <p style="font-size: 12px; line-height: 1.5; color: #A08C7C; margin: 0;">
-                                You are receiving this email because you made a purchase on forestfairyhoney.co.nz.
+                                You are receiving this email because you made a purchase on www.forestfairyhoney.co.nz.
                             </p>
                         </td>
                     </tr>

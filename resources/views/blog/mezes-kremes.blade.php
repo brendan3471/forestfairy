@@ -3,6 +3,8 @@
 @section('title', 'Mézes Krémes (Hungarian Honey Cake) Recipe | Forest Fairy Honey')
 @section('meta_description', 'A traditional Hungarian honey cake of soft, honey-spiced layers holding a rich vanilla custard cream, finished with glossy chocolate.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/mezes-kremes')
+@section('og_title', 'Mézes Krémes (Hungarian Honey Cake) Recipe — Forest Fairy Honey')
+@section('og_description', 'A traditional Hungarian honey cake: soft, honey-spiced layers with rich vanilla custard cream, finished with glossy chocolate.')
 
 @section('content')
 <!-- Page Hero -->

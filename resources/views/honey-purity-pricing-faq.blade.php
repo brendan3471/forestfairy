@@ -4,6 +4,8 @@
 @section('meta_description', 'Simple answers about the purest and healthiest honey, why supermarket honey is cheap, why Manuka costs more, and if honey expires. From Forest Fairy Honey in New Zealand.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/honey-purity-pricing-faq')
 @section('meta_keywords', 'purest honey brand, healthiest honey, raw honey vs supermarket honey, why supermarket honey is cheap, best Manuka honey brand, why is Manuka honey so expensive, does real honey expire')
+@section('og_title', 'Honey Purity & Pricing FAQ — Forest Fairy Honey NZ')
+@section('og_description', 'Why supermarket honey is cheap, why Manuka costs more, and how to find the purest, healthiest honey in New Zealand.')
 
 @section('schema')
 <script type="application/ld+json">

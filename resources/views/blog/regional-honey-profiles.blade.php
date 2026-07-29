@@ -3,6 +3,8 @@
 @section('title', 'Regional Profiles: From Omanawa to Mamaku | Forest Fairy Honey')
 @section('meta_description', 'Why honey from the Mamaku ranges tastes nothing like honey from a Tauranga garden. A look at how land, height, and flowers shape every jar of Bay of Plenty honey.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/regional-honey-profiles')
+@section('og_title', 'Regional Honey Profiles: Omanawa to Mamaku — Forest Fairy Honey')
+@section('og_description', 'Why honey from the Mamaku ranges tastes nothing like honey from a Tauranga garden. How land, height, and flowers shape every jar.')
 
 @section('content')
 <!-- Page Hero -->

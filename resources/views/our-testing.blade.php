@@ -4,6 +4,8 @@
 @section('meta_description', 'See the independent lab results behind our raw New Zealand honey. Tested by Hill Labs for MGO, DHA, HMF and diastase. Small batch, comb to jar, nothing added.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/our-testing')
 @section('meta_keywords', 'honey lab testing NZ, honey test results, pure honey testing, raw honey NZ, Hill Labs honey testing')
+@section('og_title', 'Our Lab Test Results — Forest Fairy Honey NZ')
+@section('og_description', 'Independent lab results for our raw NZ honey. Tested by Hill Labs for MGO, DHA, HMF and diastase. Small batch, nothing added.')
 
 @section('content')
 <!-- Page Hero -->

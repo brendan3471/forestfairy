@@ -3,6 +3,8 @@
 @section('title', 'Honey Oat Biscuits Recipe | Forest Fairy Honey')
 @section('meta_description', 'Crunchy, golden, and just sweet enough. Try our interactive one-bowl Honey Oat Biscuits recipe where you can scale ingredients based on your serving size.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/honey-oat-biscuits')
+@section('og_title', 'Honey Oat Biscuits Recipe — Forest Fairy Honey')
+@section('og_description', 'Crunchy, golden, and just sweet enough. An interactive one-bowl recipe where you can scale ingredients to your serving size.')
 
 @section('content')
 <!-- Page Hero -->

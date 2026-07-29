@@ -3,6 +3,8 @@
 @section('title', 'Raw vs Processed Honey: Why Real Truly Matters | Forest Fairy Honey')
 @section('meta_description', 'Most supermarket honey is heated and filtered before it reaches the shelf. Here is what that does to it, and the two lab numbers that show whether honey was ever really heated.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/raw-vs-commercial')
+@section('og_title', 'Raw vs Processed Honey: Why It Matters — Forest Fairy Honey')
+@section('og_description', 'Most supermarket honey is heated and filtered. Here\'s what that does to it, and how lab numbers reveal whether honey was ever really heated.')
 
 @section('content')
 <!-- Page Hero -->

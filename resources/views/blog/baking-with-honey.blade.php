@@ -3,6 +3,8 @@
 @section('title', 'How to Substitute Sugar with Honey in Baking | Forest Fairy Honey')
 @section('meta_description', 'A simple guide to swapping sugar for honey in your baking. The right ratio, how much liquid to cut, and why your oven needs turning down. Tested ratios, no guesswork.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/baking-with-honey')
+@section('og_title', 'How to Substitute Sugar with Honey in Baking — Forest Fairy Honey')
+@section('og_description', 'A simple guide to swapping sugar for honey in your baking. Tested ratios, no guesswork.')
 
 @section('content')
 <!-- Page Hero -->

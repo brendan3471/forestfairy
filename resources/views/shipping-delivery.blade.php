@@ -3,6 +3,8 @@
 @section('title', 'Shipping & Delivery Info | Forest Fairy Honey NZ')
 @section('meta_description', 'Shipping and delivery rates within New Zealand. Flat-rate standard delivery is $12, rural delivery is $18, and free NZ shipping applies to all orders over $75.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/shipping-delivery')
+@section('og_title', 'Shipping & Delivery — Forest Fairy Honey NZ')
+@section('og_description', 'NZ shipping rates: $12 standard, $18 rural, free on orders over $75. Dispatched within 1–2 business days.')
 
 @section('content')
 <!-- Page Hero -->

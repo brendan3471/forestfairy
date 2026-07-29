@@ -3,6 +3,8 @@
 @section('title', 'Our Review Policy | Forest Fairy Honey NZ')
 @section('meta_description', 'How reviews work at Forest Fairy Honey. Real customers only, nothing deleted for being negative, and no paid or staff reviews. Here is exactly how we handle them.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/review-policy')
+@section('og_title', 'Our Review Policy — Forest Fairy Honey NZ')
+@section('og_description', 'How reviews work at Forest Fairy Honey. Real customers only, nothing deleted for being negative, no paid reviews.')
 
 @section('content')
 <!-- Page Hero -->

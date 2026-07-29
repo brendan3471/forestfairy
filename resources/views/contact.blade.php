@@ -3,6 +3,8 @@
 @section('title', 'Contact Forest Fairy Honey | Buy NZ Honey Online | Enquiries')
 @section('meta_description', 'Get in touch with Forest Fairy Honey NZ. Order raw NZ honey, ask about our products, wholesale enquiries, or just say hello. We\'d love to hear from you.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/contact')
+@section('og_title', 'Contact Us — Forest Fairy Honey NZ')
+@section('og_description', 'Get in touch with Forest Fairy Honey. Product enquiries, wholesale, or just say hello — we\'d love to hear from you.')
 
 @section('schema')
 <script type="application/ld+json">
@@ -21,7 +23,7 @@
   "description": "Pure, raw New Zealand honey harvested from pristine NZ forests and meadows. Online honey store shipping across New Zealand.",
   "priceRange": "$$",
   "areaServed": "New Zealand",
-  "sameAs": ["https://www.instagram.com/forestfairyhoney/", "https://facebook.com/forestfairyhoney"]
+  "sameAs": ["https://www.instagram.com/forestfairyhoney/", "https://www.facebook.com/forestfairyhoney"]
 }
 @endverbatim
 </script>

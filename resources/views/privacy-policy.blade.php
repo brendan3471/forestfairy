@@ -3,6 +3,8 @@
 @section('title', 'Privacy Policy | Forest Fairy Honey')
 @section('meta_description', 'How Forest Fairy Honey collects, uses, and protects your personal information under the New Zealand Privacy Act 2020.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/privacy-policy')
+@section('og_title', 'Privacy Policy — Forest Fairy Honey NZ')
+@section('og_description', 'How Forest Fairy Honey collects, uses, and protects your personal information under the NZ Privacy Act 2020.')
 
 @section('content')
 <!-- Page Hero -->

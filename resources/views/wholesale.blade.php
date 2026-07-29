@@ -2,6 +2,8 @@
 
 @section('title', 'Wholesale & Bulk New Zealand Honey | Forest Fairy Honey')
 @section('meta_description', 'Partner with Forest Fairy Honey for wholesale raw New Zealand honey. Supplying retailers, cafes, corporate gifts, and bulk buyers across NZ.')
+@section('og_title', 'Wholesale & Bulk NZ Honey — Forest Fairy Honey')
+@section('og_description', 'Partner with Forest Fairy Honey for wholesale raw NZ honey. Supplying retailers, cafes, corporate gifts, and bulk buyers.')
 
 @section('content')
 <!-- Hero Section -->

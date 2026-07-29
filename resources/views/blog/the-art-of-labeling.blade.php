@@ -3,6 +3,8 @@
 @section('title', 'Honest Labels: What Goes Into Every Jar | Forest Fairy Honey')
 @section('meta_description', 'How to read a honey label properly. What New Zealand law requires, which words mean nothing, and what we put on ours.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/the-art-of-labeling')
+@section('og_title', 'Honest Labels: What Goes Into Every Jar — Forest Fairy Honey')
+@section('og_description', 'How to read a honey label properly. What NZ law requires, which words mean nothing, and what we put on ours.')
 
 @section('content')
 <!-- Page Hero -->

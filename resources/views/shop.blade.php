@@ -4,6 +4,9 @@
 @section('meta_description', 'Shop Forest Fairy Honey\'s full range of pure NZ honey online. Raw Manuka, Bush, Clover and rare Honeydew honey — all cold-harvested in New Zealand. Free shipping $75+.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/shop')
 @section('og_type', 'website')
+@section('og_title', 'Shop Raw NZ Honey Online — Forest Fairy Honey')
+@section('og_description', 'Browse our full range of pure, raw New Zealand honey. Cold-harvested bush, clover & rewarewa honey. Free NZ shipping over $75.')
+@section('og_image', 'https://www.forestfairyhoney.co.nz/images/honey-collection.jpg')
 
 @section('schema')
 <script type="application/ld+json">

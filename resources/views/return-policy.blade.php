@@ -3,6 +3,8 @@
 @section('title', 'Refund & Damaged Items Policy | Forest Fairy Honey NZ')
 @section('meta_description', 'Our Refund & Damaged Items Policy. We do not accept change of mind returns for food safety reasons, but offer hassle-free refunds or replacements for faulty or damaged goods upon photo evidence.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/return-policy')
+@section('og_title', 'Refund & Returns Policy — Forest Fairy Honey NZ')
+@section('og_description', 'Hassle-free refunds or replacements for faulty or damaged goods. Full policy details for Forest Fairy Honey orders.')
 
 @section('content')
 <!-- Page Hero -->

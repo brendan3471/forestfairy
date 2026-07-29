@@ -3,6 +3,8 @@
 @section('title', 'What Does MGO Mean? MGO Explained | Forest Fairy Honey')
 @section('meta_description', 'What MGO means on a honey label, how it differs from UMF, and why an MGO number alone does not make honey manuka. Our Mamaku tests at MGO 125.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/mgo-explained')
+@section('og_title', 'What Does MGO Mean? MGO Explained — Forest Fairy Honey')
+@section('og_description', 'What MGO means on a honey label, how it differs from UMF, and why an MGO number alone does not make honey manuka.')
 
 @section('content')
 <!-- Page Hero -->

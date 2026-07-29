@@ -3,6 +3,8 @@
 @section('title', 'The Art of Gifting: Pure NZ Honey Collections | Forest Fairy Honey')
 @section('meta_description', 'Looking for a gift that feels thoughtful without being fussy? Here is how to put together a New Zealand honey gift, and which of our jars to pick for foodies, family, and friends.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog/the-art-of-gifting-nz-honey-collections')
+@section('og_title', 'The Art of Gifting: NZ Honey Collections — Forest Fairy Honey')
+@section('og_description', 'How to put together a thoughtful NZ honey gift. Which jars to pick for foodies, family, and friends.')
 
 @section('content')
 <!-- Page Hero -->

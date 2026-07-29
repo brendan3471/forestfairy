@@ -4,6 +4,17 @@
 @section('meta_description', 'Buy ' . $product['name'] . ' from Forest Fairy Honey NZ. Pure, raw, cold-harvested New Zealand honey. ' . $product['description'])
 @section('canonical', 'https://www.forestfairyhoney.co.nz/shop/' . $slug)
 @section('og_type', 'product')
+@section('og_title', $product['name'] . ' — Forest Fairy Honey NZ')
+@section('og_description', 'Buy ' . $product['name'] . ' — pure, raw, cold-harvested New Zealand honey. ' . implode('. ', $product['benefits']) . '.')
+@php
+    $ogImgMap = [
+        'omanawa-falls' => 'https://www.forestfairyhoney.co.nz/images/Omanawa-falls-creamed-honey.jpg',
+        'mamaku'        => 'https://www.forestfairyhoney.co.nz/images/mamaku-creamed-honey.jpg',
+        'otumoetai'     => 'https://www.forestfairyhoney.co.nz/images/otumoetai-summer-harvest-creamed-honey.jpg',
+        'rewarewa'      => 'https://www.forestfairyhoney.co.nz/images/rewarewa-honey.jpg',
+    ];
+@endphp
+@section('og_image', $ogImgMap[$product['image']] ?? 'https://www.forestfairyhoney.co.nz/images/og-image.jpg')
 
 @php
     $selectedOptionKey = request('option', $product['default_option']);

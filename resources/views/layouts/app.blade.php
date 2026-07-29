@@ -27,12 +27,15 @@
     <meta property="og:url" content="@yield('canonical', 'https://www.forestfairyhoney.co.nz/')">
     <meta property="og:site_name" content="Forest Fairy Honey">
     <meta property="og:locale" content="en_NZ">
-    <meta property="og:image" content="https://www.forestfairyhoney.co.nz/images/og-image.jpg">
+    <meta property="og:image" content="@yield('og_image', 'https://www.forestfairyhoney.co.nz/images/og-image.jpg')">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('og_title', 'Forest Fairy Honey NZ — Raw New Zealand Honey')">
     <meta name="twitter:description" content="@yield('og_description', 'Pure, raw New Zealand honey harvested from pristine NZ forests. Shop online.')">
+    <meta name="twitter:image" content="@yield('og_image', 'https://www.forestfairyhoney.co.nz/images/og-image.jpg')">
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
@@ -133,7 +136,7 @@
                         <p class="footer-about">Pure, raw honey harvested from New Zealand's pristine forests and meadows. From our hives to your home — nothing added, nothing taken away.</p>
                         <div class="footer-socials">
                             <a href="https://www.instagram.com/forestfairyhoney/" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Follow Forest Fairy Honey on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-                            <a href="#" class="social-link" aria-label="Like Forest Fairy Honey on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+                            <a href="https://www.facebook.com/forestfairyhoney" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Like Forest Fairy Honey on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
                         </div>
                     </div>
 
@@ -223,7 +226,7 @@
 
         <div class="footer-bottom">
             <div class="container">
-                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/shipping-delivery">Shipping &amp; Delivery</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-conditions">Terms &amp; Conditions</a> | <a href="/sitemap">Sitemap</a> | <a href="/admin/login" style="opacity: 0.5;">Admin</a></p>
+                <p>© 2026 Forest Fairy Honey. Pure New Zealand Honey. All rights reserved. | <a href="/contact">Contact</a> | <a href="/shipping-delivery">Shipping &amp; Delivery</a> | <a href="/privacy-policy">Privacy Policy</a> | <a href="/terms-conditions">Terms &amp; Conditions</a> | <a href="/sitemap">Sitemap</a></p>
             </div>
         </div>
     </footer>

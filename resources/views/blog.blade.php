@@ -3,6 +3,8 @@
 @section('title', 'Honey Blog — NZ Honey Tips, Recipes & Education | Forest Fairy Honey')
 @section('meta_description', 'Explore the Forest Fairy Honey blog for NZ honey knowledge, health benefits of raw honey, Manuka honey guides, recipes, and beekeeping insights.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/blog')
+@section('og_title', 'Honey Blog — Tips, Recipes & Education | Forest Fairy Honey')
+@section('og_description', 'NZ honey knowledge, raw honey health benefits, recipes, and beekeeping insights from Forest Fairy Honey.')
 
 @section('content')
 <section class="page-hero page-hero--blog" aria-label="Blog page hero">

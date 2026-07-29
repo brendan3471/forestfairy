@@ -4,6 +4,8 @@
 @section('meta_description', 'Simple answers to common honey questions. Learn how to buy pure honey, check if it is real, and if Manuka is worth it. From Forest Fairy Honey in New Zealand.')
 @section('canonical', 'https://www.forestfairyhoney.co.nz/honey-questions')
 @section('meta_keywords', 'best honey to buy, pure honey NZ, healthiest honey, purest honey brand, does honey expire, best honey New Zealand, how to check pure honey, is Manuka honey worth it')
+@section('og_title', 'Honey Questions Answered — Forest Fairy Honey NZ')
+@section('og_description', 'Simple answers to common honey questions. How to buy pure honey, check if it\'s real, and whether Manuka is worth it.')
 
 @section('schema')
 <script type="application/ld+json">
