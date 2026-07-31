@@ -426,6 +426,7 @@
                 <span class="section-eyebrow">Happy Customers</span>
                 <h2 class="section-title" id="testimonials-heading">What NZ Honey Lovers Say</h2>
                 <div class="section-divider"></div>
+                @if($totalApprovedReviews > 0)
                 <div class="overall-rating" aria-label="Overall rating {{ $averageRating }} out of 5">
                     <span class="rating-stars">
                         @php
@@ -439,17 +440,14 @@
                         {!! $starsHtml !!}
                     </span>
                     <span class="rating-text">
-                        @if($totalApprovedReviews > 0)
-                            {{ number_format($averageRating, 1) }} - Based on <strong>{{ $totalApprovedReviews }}</strong>
-                            verified reviews
-                        @else
-                            5.0 - Based on <strong>220+</strong> verified reviews
-                        @endif
+                        {{ number_format($averageRating, 1) }} - Based on <strong>{{ $totalApprovedReviews }}</strong>
+                        verified {{ Str::plural('review', $totalApprovedReviews) }}
                         (<a href="/review-policy"
                             style="text-decoration: underline; color: var(--gold-dark); font-weight: 500;">Review
                             Policy</a>)
                     </span>
                 </div>
+                @endif
             </div>
             <div class="testimonials-grid">
                 @foreach($displayReviews as $review)

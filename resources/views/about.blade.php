@@ -88,10 +88,7 @@
                 <span class="stat-number">5+</span>
                 <span class="stat-label">Years Beekeeping</span>
             </div>
-            <div class="stat-item animate-on-scroll">
-                <span class="stat-number">220+</span>
-                <span class="stat-label">Happy Customers</span>
-            </div>
+
             <div class="stat-item animate-on-scroll">
                 <span class="stat-number">4</span>
                 <span class="stat-label">Honey Varieties</span>
