@@ -325,6 +325,7 @@
                         </div>
                     </a>
                 </article>
+                {{--
                 <article class="blog-card animate-on-scroll">
                     <a href="/blog/the-customer-experience" class="blog-card-link" aria-label="Read: Customer Stories">
                         <div class="blog-card-image">
@@ -340,6 +341,7 @@
                         </div>
                     </a>
                 </article>
+                --}}
                 <article class="blog-card animate-on-scroll">
                     <a href="/blog/the-art-of-gifting-nz-honey-collections" class="blog-card-link"
                         aria-label="Read: Artisan Gifting">

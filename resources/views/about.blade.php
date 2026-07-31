@@ -85,7 +85,7 @@
         <h2 class="sr-only" id="stats-heading">Forest Fairy Honey by the numbers</h2>
         <div class="stats-grid">
             <div class="stat-item animate-on-scroll">
-                <span class="stat-number">6+</span>
+                <span class="stat-number">5+</span>
                 <span class="stat-label">Years Beekeeping</span>
             </div>
             <div class="stat-item animate-on-scroll">
